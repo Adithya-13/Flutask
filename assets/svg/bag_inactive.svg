@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="512" height="512" x="0" y="0" viewBox="0 0 472 472" style="enable-background:new 0 0 512 512" xml:space="preserve" class="">
+  <g>
+    <path xmlns="http://www.w3.org/2000/svg" d="m343.7 132c16.586 0 30.421 12.678 31.88 29.19l24.35 276c1.65 18.71-13.09 34.81-31.88 34.81h-264.1c-18.79 0-33.53-16.1-31.88-34.81l24.35-276c1.46-16.52 15.3-29.19 31.88-29.19z" fill="#6c6c6c" data-original="#ffaa64" style="" class=""/>
+    <path xmlns="http://www.w3.org/2000/svg" d="m352.34 182.049c-115.464 41.593-190.873 141.868-205.482 257.191-2.372 18.723-18.294 32.76-37.166 32.76h-5.741c-18.79 0-33.53-16.1-31.88-34.81l24.35-276c1.46-16.52 15.3-29.19 31.88-29.19 1.453 0 215.691-.015 216.708.026 27.959 1.128 33.658 40.54 7.331 50.023z" fill="#b7b7b7" data-original="#ffbd7b" style="" class=""/>
+    <path xmlns="http://www.w3.org/2000/svg" d="m311 184c-4.418 0-8-3.582-8-8v-93c0-36.944-30.056-67-67-67-37.023 0-67 29.974-67 67v93c0 4.418-3.582 8-8 8s-8-3.582-8-8v-93c0-45.865 37.129-83 83-83 45.767 0 83 37.233 83 83v93c0 4.418-3.582 8-8 8z" fill="#6c6c6c" data-original="#4d4e59" style="" class=""/>
+    <g xmlns="http://www.w3.org/2000/svg" fill="#fff">
+      <path d="m190 427h-58c-4.418 0-8-3.582-8-8s3.582-8 8-8h58c4.418 0 8 3.582 8 8s-3.582 8-8 8z" fill="#ffffff" data-original="#ffffff" style="" class=""/>
+      <path d="m190 387h-58c-4.418 0-8-3.582-8-8s3.582-8 8-8h58c4.418 0 8 3.582 8 8s-3.582 8-8 8z" fill="#ffffff" data-original="#ffffff" style="" class=""/>
+    </g>
+  </g>
+</svg>
