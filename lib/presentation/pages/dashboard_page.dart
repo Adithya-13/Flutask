@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutask/data/entities/entities.dart';
 import 'package:flutask/logic/blocs/blocs.dart';
 import 'package:flutask/presentation/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,14 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
-    context.read<TaskBloc>().add(TaskFetched());
+    context.read<TaskCategoryBloc>().add(TaskCategoryFetched());
+    context.read<TaskBloc>().add(WatchTask());
+    context.read<TaskBloc>().add(InsertTask(
+        taskItemEntity: TaskItemEntity(
+            categoryId: 0,
+            title: 'Mobile App Design',
+            description: 'Blabla',
+            deadline: DateTime.now())));
     super.initState();
   }
 
@@ -72,21 +80,21 @@ class _DashboardPageState extends State<DashboardPage> {
             textAlign: TextAlign.start,
           ),
           SizedBox(height: 20),
-          BlocBuilder<TaskBloc, TaskState>(
+          BlocBuilder<TaskCategoryBloc, TaskCategoryState>(
             builder: (context, state) {
-              if (state is TaskInitial) {
+              if (state is TaskCategoryInitial) {
                 return Container();
-              } else if (state is TaskLoadData) {
+              } else if (state is TaskCategoryLoadData) {
                 return Container();
-              } else if (state is TaskSuccess) {
+              } else if (state is TaskCategorySuccess) {
                 final entity = state.entity;
                 return StaggeredGridView.countBuilder(
                   crossAxisCount: 4,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: entity.tasksList.length,
+                  itemCount: entity.taskCategoryList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final taskItem = entity.tasksList[index];
+                    final taskItem = entity.taskCategoryList[index];
                     return Container(
                       decoration: BoxDecoration(
                         gradient: taskItem.gradient,
@@ -96,7 +104,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       child: Padding(
                         padding: EdgeInsets.all(16),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Flexible(
@@ -144,7 +152,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   mainAxisSpacing: 20,
                   crossAxisSpacing: 20,
                 );
-              } else if (state is TaskFailure) {
+              } else if (state is TaskCategoryFailure) {
                 return Container();
               }
               return Container();
@@ -173,53 +181,88 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
               TextButton(
                 onPressed: () {},
-                child: Text('See all', style: AppTheme.text4,),
+                child: Text(
+                  'See all',
+                  style: AppTheme.text4,
+                ),
               ),
             ],
           ),
-          SizedBox(height: 20),
-          ListView.builder(
-            itemCount: 4,
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Container(
-                padding: EdgeInsets.all(24),
-                margin: EdgeInsets.symmetric(vertical: 12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Container(
-                  child: Column(
-                    children: [
-                      Text('Startup Website Design with responsive',
-                          style: AppTheme.headline3),
-                      SizedBox(height: 16),
-                      Row(
-                        children: [
-                          SvgPicture.asset(Resources.clock, width: 20),
-                          SizedBox(width: 8),
-                          Text('10:00 AM', style: AppTheme.text3),
-                        ],
-                      ),
-                      SizedBox(height: 16),
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: AppTheme.perano.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child:
-                              Text('Mobile App Design', style: AppTheme.text3),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
+          BlocConsumer<TaskBloc, TaskState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              if (state is TaskInitial) {
+                return Container();
+              } else if (state is TaskLoading) {
+                return Container();
+              } else if (state is TaskStream) {
+                final entity = state.entity;
+                return StreamBuilder<TaskEntity>(
+                    stream: entity,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final data = snapshot.data!;
+                        return ListView.builder(
+                          itemCount: data.tasksList.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            final item = data.tasksList[index];
+                            return GestureDetector(
+                              onLongPress: () {
+                                context.read<TaskBloc>().add(DeleteTask(taskItemEntity: item));
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(24),
+                                margin: EdgeInsets.symmetric(vertical: 12),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Container(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      Text(item.id.toString() + item.title, style: AppTheme.headline3),
+                                      SizedBox(height: 16),
+                                      Row(
+                                        children: [
+                                          SvgPicture.asset(Resources.clock,
+                                              width: 20),
+                                          SizedBox(width: 8),
+                                          Text(item.deadline.format('hh:mm aa'),
+                                              style: AppTheme.text3),
+                                        ],
+                                      ),
+                                      SizedBox(height: 16),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Container(
+                                          padding: EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                AppTheme.perano.withOpacity(0.2),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: Text('Mobile App Design',
+                                              style: AppTheme.text3),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      }
+                      return Container();
+                    });
+              } else if (state is TaskCategoryFailure) {
+                return Container();
+              }
+              return Container();
             },
           ),
         ],

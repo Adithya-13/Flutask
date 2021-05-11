@@ -1,3 +1,4 @@
+import 'package:flutask/data/data_providers/local/moor_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -10,19 +11,29 @@ import 'presentation/utils/utils.dart';
 
 void main() {
   Bloc.observer = SimpleBlocObserver();
+  final AppDatabase appDatabase = AppDatabase();
   runApp(
     MultiRepositoryProvider(
       providers: [
         RepositoryProvider<HomeRepository>(
           create: (context) => HomeRepository(),
         ),
+        RepositoryProvider<TaskRepository>(
+          create: (context) => TaskRepository(appDatabase: appDatabase),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<TaskBloc>(
-            create: (context) => TaskBloc(
+          BlocProvider<TaskCategoryBloc>(
+            create: (context) => TaskCategoryBloc(
               repository: context.read<HomeRepository>(),
             ),
+          ),
+          BlocProvider<TaskBloc>(
+            create: (context) => TaskBloc(
+              taskRepository: context.read<TaskRepository>(),
+            ),
+            child: Container(),
           ),
         ],
         child: MyApp(),

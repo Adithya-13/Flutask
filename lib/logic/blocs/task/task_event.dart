@@ -7,5 +7,33 @@ abstract class TaskEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class TaskFetched extends TaskEvent {}
+class GetTask extends TaskEvent {}
 
+class WatchTask extends TaskEvent {}
+
+class InsertTask extends TaskEvent {
+  final TaskItemEntity taskItemEntity;
+
+  InsertTask({required this.taskItemEntity});
+
+  @override
+  List<Object?> get props => [taskItemEntity];
+}
+
+class UpdateTask extends TaskEvent {
+  final TaskItemEntity taskItemEntity;
+
+  UpdateTask({required this.taskItemEntity});
+
+  @override
+  List<Object?> get props => [taskItemEntity];
+}
+
+class DeleteTask extends TaskEvent {
+  final TaskItemEntity taskItemEntity;
+
+  DeleteTask({required this.taskItemEntity});
+
+  @override
+  List<Object?> get props => [taskItemEntity];
+}

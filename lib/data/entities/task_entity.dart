@@ -1,5 +1,4 @@
 import 'package:flutask/data/entities/entities.dart';
-import 'package:flutter/material.dart';
 
 class TaskEntity extends BaseEntity {
   final List<TaskItemEntity> tasksList;
@@ -8,14 +7,16 @@ class TaskEntity extends BaseEntity {
 }
 
 class TaskItemEntity extends BaseEntity {
-  final int id;
+  final int? id;
+  final int categoryId;
   final String title;
-  final int totalTask;
-  final LinearGradient gradient;
+  final String description;
+  final DateTime deadline;
 
   TaskItemEntity(
-      {required this.id,
+      {this.id,
+      required this.categoryId,
       required this.title,
-      required this.totalTask,
-      required this.gradient});
+      required this.description,
+      required this.deadline});
 }

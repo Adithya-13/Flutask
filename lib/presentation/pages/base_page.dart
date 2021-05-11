@@ -1,7 +1,10 @@
+import 'package:flutask/data/entities/entities.dart';
+import 'package:flutask/logic/blocs/blocs.dart';
 import 'package:flutask/presentation/pages/pages.dart';
 import 'package:flutask/presentation/utils/utils.dart';
 import 'package:flutask/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BasePage extends StatefulWidget {
   @override
@@ -40,7 +43,15 @@ class _BasePageState extends State<BasePage> {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(56),
-          child: Icon(Icons.add, color: Colors.white).addRipple(onTap: () {}),
+          child: Icon(Icons.add, color: Colors.white).addRipple(onTap: () {
+
+            context.read<TaskBloc>().add(InsertTask(
+                taskItemEntity: TaskItemEntity(
+                    categoryId: 0,
+                    title: 'Mobile App Design',
+                    description: 'Blabla',
+                    deadline: DateTime.now())));
+          }),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

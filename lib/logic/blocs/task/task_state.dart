@@ -9,12 +9,21 @@ abstract class TaskState extends Equatable {
 
 class TaskInitial extends TaskState {}
 
-class TaskLoadData extends TaskState {}
+class TaskLoading extends TaskState {}
 
 class TaskSuccess extends TaskState {
   final TaskEntity entity;
 
   TaskSuccess({required this.entity});
+
+  @override
+  List<Object> get props => [entity];
+}
+
+class TaskStream extends TaskState {
+  final Stream<TaskEntity> entity;
+
+  TaskStream({required this.entity});
 
   @override
   List<Object> get props => [entity];
