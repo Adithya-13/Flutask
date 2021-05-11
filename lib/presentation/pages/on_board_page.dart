@@ -1,7 +1,10 @@
 import 'dart:math';
 
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutask/data/models/models.dart';
 import 'package:flutask/presentation/routes/routes.dart';
 import 'package:flutask/presentation/utils/utils.dart';
+import 'package:flutask/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -12,7 +15,8 @@ class OnBoardPage extends StatefulWidget {
 
 class _OnBoardPageState extends State<OnBoardPage> {
   int currentContent = 0;
-  List contentList = [];
+  final CarouselController onBoardController = CarouselController();
+  List<OnBoardModel> contentList = [];
 
   @override
   void initState() {
@@ -29,6 +33,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
     setState(() {
       currentContent++;
     });
+    onBoardController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeIn);
   }
 
   void _backContent() {
@@ -39,6 +44,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
     setState(() {
       currentContent--;
     });
+    onBoardController.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeIn);
   }
 
   void _goToBasePage() {
@@ -126,25 +132,42 @@ class _OnBoardPageState extends State<OnBoardPage> {
     );
   }
 
-  Expanded _carouselOnBoard() {
+  Widget _carouselOnBoard() {
     return Expanded(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Flexible(
-            child: SvgPicture.asset(
-              contentList[currentContent][1],
-            ),
-          ),
-          SizedBox(height: 20),
-          Text(contentList[currentContent][0], style: AppTheme.headline1),
-          SizedBox(height: 20),
-          Text(
-            contentList[currentContent][2],
-            style: AppTheme.text3.moreLineSpace,
-            textAlign: TextAlign.center,
-          ),
-        ],
+      child: CarouselSlider(
+        items: contentList
+            .map((items) => Column(
+                  children: [
+                    Flexible(
+                      child: SvgPicture.asset(
+                        items.illustration,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Text(items.title,
+                        style: AppTheme.headline1),
+                    SizedBox(height: 20),
+                    Text(
+                      items.description,
+                      style: AppTheme.text3.moreLineSpace,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ))
+            .toList(),
+        carouselController: onBoardController,
+        options: CarouselOptions(
+          viewportFraction: 1,
+          enableInfiniteScroll: false,
+          aspectRatio: 4/3,
+          scrollPhysics: BouncingScrollPhysics(),
+          initialPage: currentContent,
+          onPageChanged: (index, reason) {
+            setState(() {
+              currentContent = index;
+            });
+          },
+        ),
       ),
     );
   }
