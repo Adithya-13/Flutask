@@ -25,6 +25,10 @@ class Resources {
 
   // IMAGE ASSETS
   static const String avatarImage = 'assets/img/avatar_img.jpg';
+
+  // LOTTIE ASSETS
+  static const String loading = 'assets/lottie/loading.json';
+  static const String empty = 'assets/lottie/empty.json';
 }
 
 class FormatDate {

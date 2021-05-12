@@ -9,12 +9,21 @@ abstract class TaskCategoryState extends Equatable {
 
 class TaskCategoryInitial extends TaskCategoryState {}
 
-class TaskCategoryLoadData extends TaskCategoryState {}
+class TaskCategoryLoading extends TaskCategoryState {}
 
 class TaskCategorySuccess extends TaskCategoryState {
   final TaskCategoryEntity entity;
 
   TaskCategorySuccess({required this.entity});
+
+  @override
+  List<Object> get props => [entity];
+}
+
+class TaskCategoryStream extends TaskCategoryState {
+  final Stream<TaskCategoryEntity> entity;
+
+  TaskCategoryStream({required this.entity});
 
   @override
   List<Object> get props => [entity];

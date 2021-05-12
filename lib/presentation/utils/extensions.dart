@@ -66,6 +66,10 @@ extension TextStyling on TextStyle {
     return this.copyWith(color: Colors.white);
   }
 
+  TextStyle get withPink {
+    return this.copyWith(color: AppTheme.frenchRose);
+  }
+
   TextStyle get moreLineSpace {
     return this.copyWith(height: 1.5);
   }

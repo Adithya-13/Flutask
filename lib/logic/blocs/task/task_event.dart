@@ -11,6 +11,15 @@ class GetTask extends TaskEvent {}
 
 class WatchTask extends TaskEvent {}
 
+class WatchTaskByCategory extends TaskEvent {
+  final int id;
+
+  WatchTaskByCategory({required this.id});
+
+  @override
+  List<Object?> get props => [id];
+}
+
 class InsertTask extends TaskEvent {
   final TaskItemEntity taskItemEntity;
 
@@ -30,10 +39,10 @@ class UpdateTask extends TaskEvent {
 }
 
 class DeleteTask extends TaskEvent {
-  final TaskItemEntity taskItemEntity;
+  final int id;
 
-  DeleteTask({required this.taskItemEntity});
+  DeleteTask({required this.id});
 
   @override
-  List<Object?> get props => [taskItemEntity];
+  List<Object?> get props => [id];
 }

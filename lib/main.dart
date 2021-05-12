@@ -1,4 +1,5 @@
 import 'package:flutask/data/data_providers/local/moor_database.dart';
+import 'package:flutask/data/data_providers/local/task_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -19,14 +20,14 @@ void main() {
           create: (context) => HomeRepository(),
         ),
         RepositoryProvider<TaskRepository>(
-          create: (context) => TaskRepository(appDatabase: appDatabase),
+          create: (context) => TaskRepository(taskDao: TaskDao(appDatabase)),
         ),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<TaskCategoryBloc>(
             create: (context) => TaskCategoryBloc(
-              repository: context.read<HomeRepository>(),
+              taskRepository: context.read<TaskRepository>(),
             ),
           ),
           BlocProvider<TaskBloc>(

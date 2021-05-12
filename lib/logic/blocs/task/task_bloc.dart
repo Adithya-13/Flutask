@@ -24,6 +24,8 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       yield* _mapGetTaskToState(event);
     } else if (event is WatchTask) {
       yield* _mapWatchTaskToState(event);
+    } else if (event is WatchTaskByCategory) {
+      yield* _mapWatchTaskByCategoryToState(event);
     } else if (event is InsertTask) {
       yield* _mapInsertTaskToState(event);
     } else if (event is UpdateTask) {
@@ -45,6 +47,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
   Stream<TaskState> _mapWatchTaskToState(WatchTask event) async* {
     yield TaskLoading();
+    await Future.delayed(Duration(seconds: 5));
     try {
       final Stream<TaskEntity> entity = _taskRepository.watchAllTasks();
       yield TaskStream(entity: entity);
@@ -53,8 +56,19 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     }
   }
 
+  Stream<TaskState> _mapWatchTaskByCategoryToState(
+      WatchTaskByCategory event) async* {
+    yield TaskLoading();
+    try {
+      final Stream<TaskEntity> entity =
+      _taskRepository.getAllTaskByCategory(event.id);
+      yield TaskStream(entity: entity);
+    } catch (e) {
+      yield TaskFailure(message: e.toString());
+    }
+  }
+
   Stream<TaskState> _mapInsertTaskToState(InsertTask event) async* {
-    print(event.taskItemEntity.title);
     _taskRepository.insertNewTask(event.taskItemEntity);
   }
 
@@ -63,6 +77,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   }
 
   Stream<TaskState> _mapDeleteTaskToState(DeleteTask event) async* {
-    _taskRepository.deleteTask(event.taskItemEntity.id!);
+    _taskRepository.deleteTask(event.id);
   }
 }

@@ -11,11 +11,13 @@ class TaskCategoryItemEntity extends BaseEntity {
   final int id;
   final String title;
   final int totalTask;
-  final LinearGradient gradient;
+  final int startColor;
+  final int endColor;
 
   TaskCategoryItemEntity(
       {required this.id,
       required this.title,
       required this.totalTask,
-      required this.gradient});
+      required this.startColor,
+      required this.endColor});
 }

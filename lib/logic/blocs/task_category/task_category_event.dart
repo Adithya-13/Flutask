@@ -7,5 +7,33 @@ abstract class TaskCategoryEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class TaskCategoryFetched extends TaskCategoryEvent {}
+class GetTaskCategory extends TaskCategoryEvent {}
 
+class WatchTaskCategory extends TaskCategoryEvent {}
+
+class InsertTaskCategory extends TaskCategoryEvent {
+  final TaskCategoryItemEntity taskCategoryItemEntity;
+
+  InsertTaskCategory({required this.taskCategoryItemEntity});
+
+  @override
+  List<Object?> get props => [taskCategoryItemEntity];
+}
+
+class UpdateTaskCategory extends TaskCategoryEvent {
+  final TaskCategoryItemEntity taskCategoryItemEntity;
+
+  UpdateTaskCategory({required this.taskCategoryItemEntity});
+
+  @override
+  List<Object?> get props => [taskCategoryItemEntity];
+}
+
+class DeleteTaskCategory extends TaskCategoryEvent {
+  final int id;
+
+  DeleteTaskCategory({required this.id});
+
+  @override
+  List<Object?> get props => [id];
+}

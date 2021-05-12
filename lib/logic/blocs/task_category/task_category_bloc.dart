@@ -10,26 +10,66 @@ part 'task_category_event.dart';
 part 'task_category_state.dart';
 
 class TaskCategoryBloc extends Bloc<TaskCategoryEvent, TaskCategoryState> {
-  final HomeRepository repository;
+  final TaskRepository _taskRepository;
 
-  TaskCategoryBloc({required this.repository}) : super(TaskCategoryInitial());
+  TaskCategoryBloc({required TaskRepository taskRepository})
+      : _taskRepository = taskRepository,
+        super(TaskCategoryInitial());
 
   @override
   Stream<TaskCategoryState> mapEventToState(
     TaskCategoryEvent event,
   ) async* {
-    if (event is TaskCategoryFetched) {
+    if (event is GetTaskCategory) {
       yield* _mapTaskCategoryFetchedToState(event);
+    } else if (event is WatchTaskCategory) {
+      yield* _mapWatchTaskCategoryToState(event);
+    } else if (event is InsertTaskCategory) {
+      yield* _mapInsertTaskCategoryToState(event);
+    } else if (event is UpdateTaskCategory) {
+      yield* _mapUpdateTaskCategoryToState(event);
+    } else if (event is DeleteTaskCategory) {
+      yield* _mapDeleteTaskCategoryToState(event);
     }
   }
 
-  Stream<TaskCategoryState>_mapTaskCategoryFetchedToState(TaskCategoryFetched event) async* {
-    yield TaskCategoryLoadData();
+  Stream<TaskCategoryState> _mapTaskCategoryFetchedToState(
+      GetTaskCategory event) async* {
+    yield TaskCategoryLoading();
     try {
-      final TaskCategoryEntity entity = await repository.getTaskCategoryEntity();
+      final TaskCategoryEntity entity =
+          await _taskRepository.getAllTaskCategories();
       yield TaskCategorySuccess(entity: entity);
     } catch (e) {
       yield TaskCategoryFailure(message: e.toString());
     }
+  }
+
+  Stream<TaskCategoryState> _mapWatchTaskCategoryToState(
+      WatchTaskCategory event) async* {
+    yield TaskCategoryLoading();
+    await Future.delayed(Duration(seconds: 5));
+    try {
+      final Stream<TaskCategoryEntity> entity =
+          _taskRepository.watchAllTaskCategories();
+      yield TaskCategoryStream(entity: entity);
+    } catch (e) {
+      yield TaskCategoryFailure(message: e.toString());
+    }
+  }
+
+  Stream<TaskCategoryState> _mapInsertTaskCategoryToState(
+      InsertTaskCategory event) async* {
+    _taskRepository.insertNewCategory(event.taskCategoryItemEntity);
+  }
+
+  Stream<TaskCategoryState> _mapUpdateTaskCategoryToState(
+      UpdateTaskCategory event) async* {
+    _taskRepository.updateCategory(event.taskCategoryItemEntity);
+  }
+
+  Stream<TaskCategoryState> _mapDeleteTaskCategoryToState(
+      DeleteTaskCategory event) async* {
+    _taskRepository.deleteCategory(event.id);
   }
 }
