@@ -143,12 +143,12 @@ class _DashboardPageState extends State<DashboardPage> {
                         }
                         return taskCategoryGridView(data);
                       }
-                      return Container();
+                      return EmptyWidget();
                     });
               } else if (state is TaskCategoryFailure) {
-                return Container();
+                return FailureWidget(message: state.message);
               }
-              return Container();
+              return EmptyWidget();
             },
           )
         ],
@@ -184,7 +184,7 @@ class _DashboardPageState extends State<DashboardPage> {
           BlocBuilder<TaskBloc, TaskState>(
             builder: (context, state) {
               if (state is TaskInitial) {
-                return Container();
+                return LoadingWidget();
               } else if (state is TaskLoading) {
                 return LoadingWidget();
               } else if (state is TaskStream) {
@@ -199,12 +199,12 @@ class _DashboardPageState extends State<DashboardPage> {
                         }
                         return taskListView(data);
                       }
-                      return Container();
+                      return EmptyWidget();
                     });
-              } else if (state is TaskCategoryFailure) {
-                return Container();
+              } else if (state is TaskFailure) {
+                return FailureWidget(message: state.message);
               }
-              return Container();
+              return EmptyWidget();
             },
           ),
         ],
