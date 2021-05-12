@@ -232,8 +232,7 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget taskCategoryItemWidget(TaskCategoryItemEntity taskItem, int index) {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-            colors: [Color(taskItem.startColor), Color(taskItem.endColor)]),
+        gradient: taskItem.gradient.withDiagonalGradient,
         borderRadius: BorderRadius.circular(32),
         boxShadow: AppTheme.getShadow(AppTheme.cornflowerBlue),
       ),

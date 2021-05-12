@@ -17,9 +17,13 @@ class Tasks extends Table {
 @DataClassName('TaskCategory')
 class TaskCategories extends Table {
   IntColumn get id => integer().autoIncrement()();
+
   TextColumn get title => text()();
+
   IntColumn get totalTasks => integer().withDefault(const Constant(0))();
+
   IntColumn get startColor => integer()();
+
   IntColumn get endColor => integer()();
 }
 
