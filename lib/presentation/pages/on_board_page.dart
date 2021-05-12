@@ -83,7 +83,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
                   children: [
                     Align(
                       alignment: Alignment.topRight,
-                      child: RippleButton(onTap: _goToBasePage),
+                      child: RippleButton(onTap: _goToBasePage, text: 'Skip',),
                     ),
                     SizedBox(height: 20),
                     _carouselOnBoard(),

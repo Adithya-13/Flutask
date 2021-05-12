@@ -136,11 +136,14 @@ class _DashboardPageState extends State<DashboardPage> {
                 return StreamBuilder<TaskCategoryEntity>(
                     stream: entity,
                     builder: (context, snapshot) {
-                      final data = snapshot.data!;
-                      if (data.taskCategoryList.isEmpty) {
-                        return EmptyWidget();
+                      if(snapshot.hasData){
+                        final data = snapshot.data!;
+                        if (data.taskCategoryList.isEmpty) {
+                          return EmptyWidget();
+                        }
+                        return taskCategoryGridView(data);
                       }
-                      return taskCategoryGridView(data);
+                      return Container();
                     });
               } else if (state is TaskCategoryFailure) {
                 return Container();
@@ -189,11 +192,14 @@ class _DashboardPageState extends State<DashboardPage> {
                 return StreamBuilder<TaskEntity>(
                     stream: entity,
                     builder: (context, snapshot) {
+                      if(snapshot.hasData){
                         final data = snapshot.data!;
                         if (data.tasksList.isEmpty) {
                           return EmptyWidget();
                         }
                         return taskListView(data);
+                      }
+                      return Container();
                     });
               } else if (state is TaskCategoryFailure) {
                 return Container();
