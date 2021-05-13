@@ -33,6 +33,11 @@ class Resources {
   static const String error = 'assets/lottie/error.json';
 }
 
+class Keys {
+  static const String isInitial = 'isInitial';
+}
+
 class FormatDate {
   static const String monthDayYear = 'MMM dd, yyyy';
+  static const String deadline = 'hh:mm aa, MMM dd, yyyy';
 }

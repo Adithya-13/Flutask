@@ -46,26 +46,15 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   }
 
   Stream<TaskState> _mapWatchTaskToState(WatchTask event) async* {
-    yield TaskLoading();
-    await Future.delayed(Duration(seconds: 5));
-    try {
-      final Stream<TaskEntity> entity = _taskRepository.watchAllTasks();
-      yield TaskStream(entity: entity);
-    } catch (e) {
-      yield TaskFailure(message: e.toString());
-    }
+    final Stream<TaskEntity> entity = _taskRepository.watchAllTasks();
+    yield TaskStream(entity: entity);
   }
 
   Stream<TaskState> _mapWatchTaskByCategoryToState(
       WatchTaskByCategory event) async* {
-    yield TaskLoading();
-    try {
-      final Stream<TaskEntity> entity =
-      _taskRepository.getAllTaskByCategory(event.id);
-      yield TaskStream(entity: entity);
-    } catch (e) {
-      yield TaskFailure(message: e.toString());
-    }
+    final Stream<TaskEntity> entity =
+        _taskRepository.getAllTaskByCategory(event.id);
+    yield TaskStream(entity: entity);
   }
 
   Stream<TaskState> _mapInsertTaskToState(InsertTask event) async* {

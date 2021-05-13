@@ -334,13 +334,11 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
 class TaskCategory extends DataClass implements Insertable<TaskCategory> {
   final int id;
   final String title;
-  final int totalTasks;
   final int startColor;
   final int endColor;
   TaskCategory(
       {required this.id,
       required this.title,
-      required this.totalTasks,
       required this.startColor,
       required this.endColor});
   factory TaskCategory.fromData(Map<String, dynamic> data, GeneratedDatabase db,
@@ -352,8 +350,6 @@ class TaskCategory extends DataClass implements Insertable<TaskCategory> {
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       title:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}title'])!,
-      totalTasks: intType
-          .mapFromDatabaseResponse(data['${effectivePrefix}total_tasks'])!,
       startColor: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}start_color'])!,
       endColor:
@@ -365,7 +361,6 @@ class TaskCategory extends DataClass implements Insertable<TaskCategory> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['title'] = Variable<String>(title);
-    map['total_tasks'] = Variable<int>(totalTasks);
     map['start_color'] = Variable<int>(startColor);
     map['end_color'] = Variable<int>(endColor);
     return map;
@@ -375,7 +370,6 @@ class TaskCategory extends DataClass implements Insertable<TaskCategory> {
     return TaskCategoriesCompanion(
       id: Value(id),
       title: Value(title),
-      totalTasks: Value(totalTasks),
       startColor: Value(startColor),
       endColor: Value(endColor),
     );
@@ -387,7 +381,6 @@ class TaskCategory extends DataClass implements Insertable<TaskCategory> {
     return TaskCategory(
       id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
-      totalTasks: serializer.fromJson<int>(json['totalTasks']),
       startColor: serializer.fromJson<int>(json['startColor']),
       endColor: serializer.fromJson<int>(json['endColor']),
     );
@@ -398,22 +391,16 @@ class TaskCategory extends DataClass implements Insertable<TaskCategory> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'title': serializer.toJson<String>(title),
-      'totalTasks': serializer.toJson<int>(totalTasks),
       'startColor': serializer.toJson<int>(startColor),
       'endColor': serializer.toJson<int>(endColor),
     };
   }
 
   TaskCategory copyWith(
-          {int? id,
-          String? title,
-          int? totalTasks,
-          int? startColor,
-          int? endColor}) =>
+          {int? id, String? title, int? startColor, int? endColor}) =>
       TaskCategory(
         id: id ?? this.id,
         title: title ?? this.title,
-        totalTasks: totalTasks ?? this.totalTasks,
         startColor: startColor ?? this.startColor,
         endColor: endColor ?? this.endColor,
       );
@@ -422,7 +409,6 @@ class TaskCategory extends DataClass implements Insertable<TaskCategory> {
     return (StringBuffer('TaskCategory(')
           ..write('id: $id, ')
           ..write('title: $title, ')
-          ..write('totalTasks: $totalTasks, ')
           ..write('startColor: $startColor, ')
           ..write('endColor: $endColor')
           ..write(')'))
@@ -430,19 +416,14 @@ class TaskCategory extends DataClass implements Insertable<TaskCategory> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode,
-      $mrjc(
-          title.hashCode,
-          $mrjc(totalTasks.hashCode,
-              $mrjc(startColor.hashCode, endColor.hashCode)))));
+  int get hashCode => $mrjf($mrjc(id.hashCode,
+      $mrjc(title.hashCode, $mrjc(startColor.hashCode, endColor.hashCode))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is TaskCategory &&
           other.id == this.id &&
           other.title == this.title &&
-          other.totalTasks == this.totalTasks &&
           other.startColor == this.startColor &&
           other.endColor == this.endColor);
 }
@@ -450,20 +431,17 @@ class TaskCategory extends DataClass implements Insertable<TaskCategory> {
 class TaskCategoriesCompanion extends UpdateCompanion<TaskCategory> {
   final Value<int> id;
   final Value<String> title;
-  final Value<int> totalTasks;
   final Value<int> startColor;
   final Value<int> endColor;
   const TaskCategoriesCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
-    this.totalTasks = const Value.absent(),
     this.startColor = const Value.absent(),
     this.endColor = const Value.absent(),
   });
   TaskCategoriesCompanion.insert({
     this.id = const Value.absent(),
     required String title,
-    this.totalTasks = const Value.absent(),
     required int startColor,
     required int endColor,
   })  : title = Value(title),
@@ -472,14 +450,12 @@ class TaskCategoriesCompanion extends UpdateCompanion<TaskCategory> {
   static Insertable<TaskCategory> custom({
     Expression<int>? id,
     Expression<String>? title,
-    Expression<int>? totalTasks,
     Expression<int>? startColor,
     Expression<int>? endColor,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (title != null) 'title': title,
-      if (totalTasks != null) 'total_tasks': totalTasks,
       if (startColor != null) 'start_color': startColor,
       if (endColor != null) 'end_color': endColor,
     });
@@ -488,13 +464,11 @@ class TaskCategoriesCompanion extends UpdateCompanion<TaskCategory> {
   TaskCategoriesCompanion copyWith(
       {Value<int>? id,
       Value<String>? title,
-      Value<int>? totalTasks,
       Value<int>? startColor,
       Value<int>? endColor}) {
     return TaskCategoriesCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
-      totalTasks: totalTasks ?? this.totalTasks,
       startColor: startColor ?? this.startColor,
       endColor: endColor ?? this.endColor,
     );
@@ -508,9 +482,6 @@ class TaskCategoriesCompanion extends UpdateCompanion<TaskCategory> {
     }
     if (title.present) {
       map['title'] = Variable<String>(title.value);
-    }
-    if (totalTasks.present) {
-      map['total_tasks'] = Variable<int>(totalTasks.value);
     }
     if (startColor.present) {
       map['start_color'] = Variable<int>(startColor.value);
@@ -526,7 +497,6 @@ class TaskCategoriesCompanion extends UpdateCompanion<TaskCategory> {
     return (StringBuffer('TaskCategoriesCompanion(')
           ..write('id: $id, ')
           ..write('title: $title, ')
-          ..write('totalTasks: $totalTasks, ')
           ..write('startColor: $startColor, ')
           ..write('endColor: $endColor')
           ..write(')'))
@@ -558,14 +528,6 @@ class $TaskCategoriesTable extends TaskCategories
     );
   }
 
-  final VerificationMeta _totalTasksMeta = const VerificationMeta('totalTasks');
-  @override
-  late final GeneratedIntColumn totalTasks = _constructTotalTasks();
-  GeneratedIntColumn _constructTotalTasks() {
-    return GeneratedIntColumn('total_tasks', $tableName, false,
-        defaultValue: const Constant(0));
-  }
-
   final VerificationMeta _startColorMeta = const VerificationMeta('startColor');
   @override
   late final GeneratedIntColumn startColor = _constructStartColor();
@@ -589,8 +551,7 @@ class $TaskCategoriesTable extends TaskCategories
   }
 
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, title, totalTasks, startColor, endColor];
+  List<GeneratedColumn> get $columns => [id, title, startColor, endColor];
   @override
   $TaskCategoriesTable get asDslTable => this;
   @override
@@ -610,12 +571,6 @@ class $TaskCategoriesTable extends TaskCategories
           _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
     } else if (isInserting) {
       context.missing(_titleMeta);
-    }
-    if (data.containsKey('total_tasks')) {
-      context.handle(
-          _totalTasksMeta,
-          totalTasks.isAcceptableOrUnknown(
-              data['total_tasks']!, _totalTasksMeta));
     }
     if (data.containsKey('start_color')) {
       context.handle(

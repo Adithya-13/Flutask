@@ -76,10 +76,25 @@ class AddTaskSheet extends StatefulWidget {
 }
 
 class _AddTaskSheetState extends State<AddTaskSheet> {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  String? taskCategoryItemEntity;
+  DateTime? datePicked;
+  TimeOfDay? timePicked;
 
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
+  @override
+  void initState() {
+    titleController = TextEditingController();
+    descriptionController = TextEditingController();
+    super.initState();
+  }
 
+  @override
+  void dispose() {
+    titleController.dispose();
+    descriptionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,12 +156,19 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                       onTap: () async {
                         final DateTime? picked = await showDatePicker(
                           context: context,
-                          initialDate: DateTime.now(),
+                          initialDate: datePicked ?? DateTime.now(),
                           firstDate: DateTime.now(),
                           lastDate: DateTime(2025),
                         );
+                        if (picked != null && picked != datePicked) {
+                          setState(() {
+                            datePicked = picked;
+                          });
+                        }
                       },
-                      text: 'Date',
+                      text: datePicked != null
+                          ? datePicked!.format(FormatDate.monthDayYear)
+                          : 'Date',
                       icon: SvgPicture.asset(Resources.date,
                           color: Colors.white, width: 16),
                     ),
@@ -157,10 +179,17 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                       onTap: () async {
                         final TimeOfDay? picked = await showTimePicker(
                           context: context,
-                          initialTime: TimeOfDay.now(),
+                          initialTime: timePicked ?? TimeOfDay.now(),
                         );
+                        if (picked != null && picked != timePicked) {
+                          setState(() {
+                            timePicked = picked;
+                          });
+                        }
                       },
-                      text: 'Time',
+                      text: timePicked != null
+                          ? timePicked!.format(context)
+                          : 'Time',
                       icon: SvgPicture.asset(Resources.clock,
                           color: Colors.white, width: 16),
                     ),
@@ -171,15 +200,22 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
               BlocBuilder<TaskCategoryBloc, TaskCategoryState>(
                 builder: (context, state) {
                   if (state is TaskCategorySuccess) {
-                    return DropdownButton<TaskCategoryItemEntity>(
+                    return DropdownButton<String>(
+                      hint: Text('Choose Category', style: AppTheme.text1),
                       onChanged: (value) {
-
+                        setState(() {
+                          taskCategoryItemEntity = value;
+                        });
                       },
-                        items: state.entity.taskCategoryList
-                            .map((e) => DropdownMenuItem<TaskCategoryItemEntity>(
-                                  child: Text(e.title),
-                                ))
-                            .toList());
+                      items: ['Mobile App Design','Pending','Blabla'].map((e) {
+                        return DropdownMenuItem<String>(
+                          child: Text(e),
+                        );
+                      }).toList(),
+                      style: AppTheme.text1.withDarkPurple,
+                      value: taskCategoryItemEntity,
+                      underline: Container(),
+                    );
                   }
                   return Container();
                 },

@@ -2,6 +2,7 @@ import 'package:flutask/data/data_providers/local/moor_database.dart';
 import 'package:flutask/data/data_providers/local/task_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:logging/logging.dart';
 
 import 'data/exceptions/api_exception.dart';
@@ -10,7 +11,8 @@ import 'logic/blocs/blocs.dart';
 import 'presentation/routes/routes.dart';
 import 'presentation/utils/utils.dart';
 
-void main() {
+void main() async {
+  await GetStorage.init();
   Bloc.observer = SimpleBlocObserver();
   final AppDatabase appDatabase = AppDatabase();
   runApp(

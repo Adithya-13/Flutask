@@ -10,12 +10,10 @@ class TaskCategoryEntity extends BaseEntity {
 class TaskCategoryItemEntity extends BaseEntity {
   final int id;
   final String title;
-  final int totalTask;
   final LinearGradient gradient;
 
   TaskCategoryItemEntity(
       {required this.id,
       required this.title,
-      required this.totalTask,
       required this.gradient});
 }

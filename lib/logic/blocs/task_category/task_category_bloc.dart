@@ -47,15 +47,9 @@ class TaskCategoryBloc extends Bloc<TaskCategoryEvent, TaskCategoryState> {
 
   Stream<TaskCategoryState> _mapWatchTaskCategoryToState(
       WatchTaskCategory event) async* {
-    yield TaskCategoryLoading();
-    await Future.delayed(Duration(seconds: 5));
-    try {
-      final Stream<TaskCategoryEntity> entity =
-          _taskRepository.watchAllTaskCategories();
-      yield TaskCategoryStream(entity: entity);
-    } catch (e) {
-      yield TaskCategoryFailure(message: e.toString());
-    }
+    final Stream<TaskCategoryEntity> entity =
+        _taskRepository.watchAllTaskCategories();
+    yield TaskCategoryStream(entity: entity);
   }
 
   Stream<TaskCategoryState> _mapInsertTaskCategoryToState(

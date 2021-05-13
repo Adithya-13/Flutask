@@ -29,7 +29,6 @@ class DataMapper {
               (item) => TaskCategoryItemEntity(
                 id: item.id,
                 title: item.title,
-                totalTask: item.totalTasks,
                 gradient: LinearGradient(
                   colors: [
                     Color(item.startColor),
@@ -46,6 +45,5 @@ class DataMapper {
         title: item.title,
         startColor: item.gradient.colors[0].value,
         endColor: item.gradient.colors[1].value,
-        totalTasks: Value(item.totalTask),
       );
 }

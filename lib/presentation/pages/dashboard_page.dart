@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_storage/get_storage.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -14,41 +15,43 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  static GetStorage getStorage = GetStorage();
+  bool isInitial = getStorage.read(Keys.isInitial) ?? true;
+
   @override
   void initState() {
+    print(isInitial);
+    if (isInitial) {
+      context.read<TaskCategoryBloc>().add(InsertTaskCategory(
+            taskCategoryItemEntity: TaskCategoryItemEntity(
+              id: 0,
+              title: "Mobile App Design",
+              gradient: AppTheme.pinkGradient,
+            ),
+          ));
+      context.read<TaskCategoryBloc>().add(InsertTaskCategory(
+            taskCategoryItemEntity: TaskCategoryItemEntity(
+              id: 1,
+              title: "Pending",
+              gradient: AppTheme.orangeGradient,
+            ),
+          ));
+      context.read<TaskCategoryBloc>().add(InsertTaskCategory(
+              taskCategoryItemEntity: TaskCategoryItemEntity(
+            id: 2,
+            title: "Illustration",
+            gradient: AppTheme.blueGradient,
+          )));
+      context.read<TaskCategoryBloc>().add(InsertTaskCategory(
+            taskCategoryItemEntity: TaskCategoryItemEntity(
+              id: 3,
+              title: "Website Design",
+              gradient: AppTheme.purpleGradient,
+            ),
+          ));
+      getStorage.write(Keys.isInitial, false);
+    }
     context.read<TaskCategoryBloc>().add(WatchTaskCategory());
-    // context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-    //       taskCategoryItemEntity: TaskCategoryItemEntity(
-    //           id: 0,
-    //           title: "Mobile App Design",
-    //           totalTask: 10,
-    //           startColor: AppTheme.pinkGradient.colors[0].value,
-    //           endColor: AppTheme.pinkGradient.colors[1].value),
-    //     ));
-    // context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-    //       taskCategoryItemEntity: TaskCategoryItemEntity(
-    //           id: 1,
-    //           title: "Pending",
-    //           totalTask: 26,
-    //           startColor: AppTheme.orangeGradient.colors[0].value,
-    //           endColor: AppTheme.orangeGradient.colors[1].value),
-    //     ));
-    // context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-    //       taskCategoryItemEntity: TaskCategoryItemEntity(
-    //           id: 2,
-    //           title: "Illustration",
-    //           totalTask: 6,
-    //           startColor: AppTheme.blueGradient.colors[0].value,
-    //           endColor: AppTheme.blueGradient.colors[1].value),
-    //     ));
-    // context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-    //       taskCategoryItemEntity: TaskCategoryItemEntity(
-    //           id: 3,
-    //           title: "Website Design",
-    //           totalTask: 10,
-    //           startColor: AppTheme.purpleGradient.colors[0].value,
-    //           endColor: AppTheme.purpleGradient.colors[1].value),
-    //     ));
     context.read<TaskBloc>().add(WatchTask());
     // context.read<TaskBloc>().add(InsertTask(
     //     taskItemEntity: TaskItemEntity(
@@ -126,27 +129,30 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           SizedBox(height: 20),
           BlocBuilder<TaskCategoryBloc, TaskCategoryState>(
+            buildWhen: (previous, current) {
+              return current is TaskCategoryStream;
+            },
             builder: (context, state) {
-              if (state is TaskCategoryInitial) {
-                return Container();
-              } else if (state is TaskCategoryLoading) {
-                return LoadingWidget();
-              } else if (state is TaskCategoryStream) {
+              if (state is TaskCategoryStream) {
                 final entity = state.entity;
                 return StreamBuilder<TaskCategoryEntity>(
-                    stream: entity,
-                    builder: (context, snapshot) {
-                      if(snapshot.hasData){
-                        final data = snapshot.data!;
-                        if (data.taskCategoryList.isEmpty) {
-                          return EmptyWidget();
-                        }
-                        return taskCategoryGridView(data);
+                  stream: entity,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return LoadingWidget();
+                    } else if (snapshot.hasData) {
+                      final data = snapshot.data!;
+                      if (data.taskCategoryList.isEmpty) {
+                        return EmptyWidget();
                       }
-                      return EmptyWidget();
-                    });
-              } else if (state is TaskCategoryFailure) {
-                return FailureWidget(message: state.message);
+                      return taskCategoryGridView(data);
+                    } else if (snapshot.hasError) {
+                      return FailureWidget(
+                          message: snapshot.stackTrace.toString());
+                    }
+                    return EmptyWidget();
+                  },
+                );
               }
               return EmptyWidget();
             },
@@ -182,27 +188,30 @@ class _DashboardPageState extends State<DashboardPage> {
             ],
           ),
           BlocBuilder<TaskBloc, TaskState>(
+            buildWhen: (previous, current) {
+              return false;
+            },
             builder: (context, state) {
-              if (state is TaskInitial) {
-                return LoadingWidget();
-              } else if (state is TaskLoading) {
-                return LoadingWidget();
-              } else if (state is TaskStream) {
+              if (state is TaskStream) {
                 final entity = state.entity;
                 return StreamBuilder<TaskEntity>(
-                    stream: entity,
-                    builder: (context, snapshot) {
-                      if(snapshot.hasData){
-                        final data = snapshot.data!;
-                        if (data.tasksList.isEmpty) {
-                          return EmptyWidget();
-                        }
-                        return taskListView(data);
+                  stream: entity,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return LoadingWidget();
+                    } else if (snapshot.hasData) {
+                      final data = snapshot.data!;
+                      if (data.tasksList.isEmpty) {
+                        return EmptyWidget();
                       }
-                      return EmptyWidget();
-                    });
-              } else if (state is TaskFailure) {
-                return FailureWidget(message: state.message);
+                      return taskListView(data);
+                    } else if (snapshot.hasError) {
+                      return FailureWidget(
+                          message: snapshot.stackTrace.toString());
+                    }
+                    return EmptyWidget();
+                  },
+                );
               }
               return EmptyWidget();
             },
@@ -273,7 +282,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             SizedBox(height: 16),
             Text(
-              '${taskItem.totalTask} Task',
+              '0 Task',
               style: AppTheme.text2,
             ),
           ],
@@ -316,7 +325,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 children: [
                   SvgPicture.asset(Resources.clock, width: 20),
                   SizedBox(width: 8),
-                  Text(item.deadline.format('hh:mm aa'), style: AppTheme.text3),
+                  Text(item.deadline.format(FormatDate.deadline), style: AppTheme.text3),
                 ],
               ),
               SizedBox(height: 16),
