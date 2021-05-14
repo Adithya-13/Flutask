@@ -18,6 +18,7 @@ class AddTaskSheet extends StatefulWidget {
 class _AddTaskSheetState extends State<AddTaskSheet> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   int? selectedCategory;
   bool validateCategory = false;
   DateTime? datePicked;
@@ -90,35 +91,30 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
   }
 
   _saveTask() {
-    if(selectedCategory == null){
-      setState(() {
-        validateCategory = true;
-      });
-      return;
-    }
-
-    TaskItemEntity taskItemEntity = TaskItemEntity(
-      title: titleController.text,
-      description: descriptionController.text,
-      categoryId: selectedCategory!,
-    );
-    if (datePicked != null && timePicked != null) {
-      final DateTime savedDeadline = DateTime(
-        datePicked!.year,
-        datePicked!.month,
-        datePicked!.day,
-        timePicked!.hour,
-        timePicked!.minute,
-      );
-      taskItemEntity = TaskItemEntity(
+    if (_formKey.currentState!.validate()) {
+      TaskItemEntity taskItemEntity = TaskItemEntity(
         title: titleController.text,
         description: descriptionController.text,
         categoryId: selectedCategory!,
-        deadline: savedDeadline,
       );
+      if (datePicked != null && timePicked != null) {
+        final DateTime savedDeadline = DateTime(
+          datePicked!.year,
+          datePicked!.month,
+          datePicked!.day,
+          timePicked!.hour,
+          timePicked!.minute,
+        );
+        taskItemEntity = TaskItemEntity(
+          title: titleController.text,
+          description: descriptionController.text,
+          categoryId: selectedCategory!,
+          deadline: savedDeadline,
+        );
+      }
+      context.read<TaskBloc>().add(InsertTask(taskItemEntity: taskItemEntity));
+      Navigator.pop(context);
     }
-    context.read<TaskBloc>().add(InsertTask(taskItemEntity: taskItemEntity));
-    Navigator.pop(context);
   }
 
   @override
@@ -136,107 +132,124 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                     ? LoadingWidget()
                     : SingleChildScrollView(
                         physics: NeverScrollableScrollPhysics(),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            Center(
-                              child:
-                                  Text('Add Task', style: AppTheme.headline3),
-                            ),
-                            SizedBox(height: 20),
-                            TextField(
-                              style: AppTheme.text1.withDarkPurple,
-                              controller: titleController,
-                              decoration: InputDecoration(
-                                enabledBorder: AppTheme.enabledBorder,
-                                focusedBorder: AppTheme.focusedBorder,
-                                isDense: true,
-                                hintText: 'Type your title here',
-                                hintStyle: AppTheme.text1,
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Center(
+                                child:
+                                    Text('Add Task', style: AppTheme.headline3),
                               ),
-                            ),
-                            SizedBox(height: 20),
-                            TextField(
-                              style: AppTheme.text1.withDarkPurple,
-                              controller: descriptionController,
-                              decoration: InputDecoration(
-                                enabledBorder: AppTheme.enabledBorder,
-                                focusedBorder: AppTheme.focusedBorder,
-                                isDense: true,
-                                hintText: 'Type your description here',
-                                hintStyle: AppTheme.text1,
+                              SizedBox(height: 20),
+                              TextFormField(
+                                style: AppTheme.text1.withDarkPurple,
+                                controller: titleController,
+                                decoration: InputDecoration(
+                                  enabledBorder: AppTheme.enabledBorder,
+                                  focusedBorder: AppTheme.focusedBorder,
+                                  errorBorder: AppTheme.enabledBorder,
+                                  isDense: true,
+                                  hintText: 'Type your title here',
+                                  hintStyle: AppTheme.text1,
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your title task';
+                                  }
+                                  return null;
+                                },
                               ),
-                              maxLines: 5,
-                              scrollPhysics: BouncingScrollPhysics(),
-                            ),
-                            SizedBox(height: 20),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: RippleButton(
-                                    onTap: _showDeadlineDatePicker,
-                                    text: datePicked != null
-                                        ? datePicked!
-                                            .format(FormatDate.monthDayYear)
-                                        : 'Date',
-                                    icon: SvgPicture.asset(Resources.date,
-                                        color: Colors.white, width: 16),
-                                  ),
+                              SizedBox(height: 20),
+                              TextFormField(
+                                style: AppTheme.text1.withDarkPurple,
+                                controller: descriptionController,
+                                decoration: InputDecoration(
+                                  enabledBorder: AppTheme.enabledBorder,
+                                  focusedBorder: AppTheme.focusedBorder,
+                                  errorBorder: AppTheme.enabledBorder,
+                                  isDense: true,
+                                  hintText: 'Type your description here',
+                                  hintStyle: AppTheme.text1,
                                 ),
-                                SizedBox(width: 20),
-                                Expanded(
-                                  child: RippleButton(
-                                    onTap: _showDeadlineTimePicker,
-                                    text: timePicked != null
-                                        ? timePicked!.format(context)
-                                        : 'Time',
-                                    icon: SvgPicture.asset(Resources.clock,
-                                        color: Colors.white, width: 16),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 20),
-                            state is TaskCategorySuccess
-                                ? DropdownButtonFormField<int>(
-                                    decoration: InputDecoration(
-                                      enabledBorder: AppTheme.enabledBorder,
-                                      focusedBorder: AppTheme.focusedBorder,
-                                      errorBorder: AppTheme.enabledBorder,
-                                      isDense: true,
-                                      hintText: 'Choose Category',
-                                      hintStyle: AppTheme.text1,
-                                      errorText: validateCategory
-                                          ? 'Please Choose Category'
-                                          : null,
+                                maxLines: 5,
+                                scrollPhysics: BouncingScrollPhysics(),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter your description task';
+                                  }
+                                  return null;
+                                },
+                              ),
+                              SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: RippleButton(
+                                      onTap: _showDeadlineDatePicker,
+                                      text: datePicked != null
+                                          ? datePicked!
+                                              .format(FormatDate.monthDayYear)
+                                          : 'Date',
+                                      icon: SvgPicture.asset(Resources.date,
+                                          color: Colors.white, width: 16),
                                     ),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedCategory = value;
-                                        if(selectedCategory != null){
-                                          validateCategory = false;
+                                  ),
+                                  SizedBox(width: 20),
+                                  Expanded(
+                                    child: RippleButton(
+                                      onTap: _showDeadlineTimePicker,
+                                      text: timePicked != null
+                                          ? timePicked!.format(context)
+                                          : 'Time',
+                                      icon: SvgPicture.asset(Resources.clock,
+                                          color: Colors.white, width: 16),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 20),
+                              state is TaskCategorySuccess
+                                  ? DropdownButtonFormField<int>(
+                                      decoration: InputDecoration(
+                                        enabledBorder: AppTheme.enabledBorder,
+                                        focusedBorder: AppTheme.focusedBorder,
+                                        errorBorder: AppTheme.enabledBorder,
+                                        isDense: true,
+                                        hintText: 'Choose Category',
+                                        hintStyle: AppTheme.text1,
+                                      ),
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'Please fill in category';
                                         }
-                                      });
-                                    },
-                                    items:
-                                        state.entity.taskCategoryList.map((e) {
-                                      return DropdownMenuItem(
-                                        value: e.id,
-                                        child: Text(e.title),
-                                      );
-                                    }).toList(),
-                                    style: AppTheme.text1.withDarkPurple,
-                                    value: selectedCategory,
-                                  )
-                                : Container(),
-                            SizedBox(height: 20),
-                            PinkButton(
-                              text: 'Save Task',
-                              onTap: _saveTask,
-                            ),
-                            SizedBox(height: 20),
-                          ],
+                                        return null;
+                                      },
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedCategory = value;
+                                        });
+                                      },
+                                      items: state.entity.taskCategoryList
+                                          .map((e) {
+                                        return DropdownMenuItem(
+                                          value: e.id,
+                                          child: Text(e.title),
+                                        );
+                                      }).toList(),
+                                      style: AppTheme.text1.withDarkPurple,
+                                      value: selectedCategory,
+                                    )
+                                  : Container(),
+                              SizedBox(height: 20),
+                              PinkButton(
+                                text: 'Save Task',
+                                onTap: _saveTask,
+                              ),
+                              SizedBox(height: 20),
+                            ],
+                          ),
                         ),
                       ),
               ),
