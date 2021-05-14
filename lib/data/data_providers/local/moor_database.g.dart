@@ -13,18 +13,21 @@ class Task extends DataClass implements Insertable<Task> {
   final String title;
   final String description;
   final DateTime? deadline;
+  final bool isCompleted;
   Task(
       {required this.id,
       required this.categoryId,
       required this.title,
       required this.description,
-      this.deadline});
+      this.deadline,
+      required this.isCompleted});
   factory Task.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
     final dateTimeType = db.typeSystem.forDartType<DateTime>();
+    final boolType = db.typeSystem.forDartType<bool>();
     return Task(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       categoryId: intType
@@ -35,6 +38,8 @@ class Task extends DataClass implements Insertable<Task> {
           .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
       deadline: dateTimeType
           .mapFromDatabaseResponse(data['${effectivePrefix}deadline']),
+      isCompleted: boolType
+          .mapFromDatabaseResponse(data['${effectivePrefix}is_completed'])!,
     );
   }
   @override
@@ -47,6 +52,7 @@ class Task extends DataClass implements Insertable<Task> {
     if (!nullToAbsent || deadline != null) {
       map['deadline'] = Variable<DateTime?>(deadline);
     }
+    map['is_completed'] = Variable<bool>(isCompleted);
     return map;
   }
 
@@ -59,6 +65,7 @@ class Task extends DataClass implements Insertable<Task> {
       deadline: deadline == null && nullToAbsent
           ? const Value.absent()
           : Value(deadline),
+      isCompleted: Value(isCompleted),
     );
   }
 
@@ -71,6 +78,7 @@ class Task extends DataClass implements Insertable<Task> {
       title: serializer.fromJson<String>(json['title']),
       description: serializer.fromJson<String>(json['description']),
       deadline: serializer.fromJson<DateTime?>(json['deadline']),
+      isCompleted: serializer.fromJson<bool>(json['isCompleted']),
     );
   }
   @override
@@ -82,6 +90,7 @@ class Task extends DataClass implements Insertable<Task> {
       'title': serializer.toJson<String>(title),
       'description': serializer.toJson<String>(description),
       'deadline': serializer.toJson<DateTime?>(deadline),
+      'isCompleted': serializer.toJson<bool>(isCompleted),
     };
   }
 
@@ -90,13 +99,15 @@ class Task extends DataClass implements Insertable<Task> {
           int? categoryId,
           String? title,
           String? description,
-          DateTime? deadline}) =>
+          DateTime? deadline,
+          bool? isCompleted}) =>
       Task(
         id: id ?? this.id,
         categoryId: categoryId ?? this.categoryId,
         title: title ?? this.title,
         description: description ?? this.description,
         deadline: deadline ?? this.deadline,
+        isCompleted: isCompleted ?? this.isCompleted,
       );
   @override
   String toString() {
@@ -105,7 +116,8 @@ class Task extends DataClass implements Insertable<Task> {
           ..write('categoryId: $categoryId, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
-          ..write('deadline: $deadline')
+          ..write('deadline: $deadline, ')
+          ..write('isCompleted: $isCompleted')
           ..write(')'))
         .toString();
   }
@@ -115,8 +127,10 @@ class Task extends DataClass implements Insertable<Task> {
       id.hashCode,
       $mrjc(
           categoryId.hashCode,
-          $mrjc(title.hashCode,
-              $mrjc(description.hashCode, deadline.hashCode)))));
+          $mrjc(
+              title.hashCode,
+              $mrjc(description.hashCode,
+                  $mrjc(deadline.hashCode, isCompleted.hashCode))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -125,7 +139,8 @@ class Task extends DataClass implements Insertable<Task> {
           other.categoryId == this.categoryId &&
           other.title == this.title &&
           other.description == this.description &&
-          other.deadline == this.deadline);
+          other.deadline == this.deadline &&
+          other.isCompleted == this.isCompleted);
 }
 
 class TasksCompanion extends UpdateCompanion<Task> {
@@ -134,12 +149,14 @@ class TasksCompanion extends UpdateCompanion<Task> {
   final Value<String> title;
   final Value<String> description;
   final Value<DateTime?> deadline;
+  final Value<bool> isCompleted;
   const TasksCompanion({
     this.id = const Value.absent(),
     this.categoryId = const Value.absent(),
     this.title = const Value.absent(),
     this.description = const Value.absent(),
     this.deadline = const Value.absent(),
+    this.isCompleted = const Value.absent(),
   });
   TasksCompanion.insert({
     this.id = const Value.absent(),
@@ -147,6 +164,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
     required String title,
     required String description,
     this.deadline = const Value.absent(),
+    this.isCompleted = const Value.absent(),
   })  : categoryId = Value(categoryId),
         title = Value(title),
         description = Value(description);
@@ -156,6 +174,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
     Expression<String>? title,
     Expression<String>? description,
     Expression<DateTime?>? deadline,
+    Expression<bool>? isCompleted,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -163,6 +182,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
       if (title != null) 'title': title,
       if (description != null) 'description': description,
       if (deadline != null) 'deadline': deadline,
+      if (isCompleted != null) 'is_completed': isCompleted,
     });
   }
 
@@ -171,13 +191,15 @@ class TasksCompanion extends UpdateCompanion<Task> {
       Value<int>? categoryId,
       Value<String>? title,
       Value<String>? description,
-      Value<DateTime?>? deadline}) {
+      Value<DateTime?>? deadline,
+      Value<bool>? isCompleted}) {
     return TasksCompanion(
       id: id ?? this.id,
       categoryId: categoryId ?? this.categoryId,
       title: title ?? this.title,
       description: description ?? this.description,
       deadline: deadline ?? this.deadline,
+      isCompleted: isCompleted ?? this.isCompleted,
     );
   }
 
@@ -199,6 +221,9 @@ class TasksCompanion extends UpdateCompanion<Task> {
     if (deadline.present) {
       map['deadline'] = Variable<DateTime?>(deadline.value);
     }
+    if (isCompleted.present) {
+      map['is_completed'] = Variable<bool>(isCompleted.value);
+    }
     return map;
   }
 
@@ -209,7 +234,8 @@ class TasksCompanion extends UpdateCompanion<Task> {
           ..write('categoryId: $categoryId, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
-          ..write('deadline: $deadline')
+          ..write('deadline: $deadline, ')
+          ..write('isCompleted: $isCompleted')
           ..write(')'))
         .toString();
   }
@@ -272,9 +298,18 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
     );
   }
 
+  final VerificationMeta _isCompletedMeta =
+      const VerificationMeta('isCompleted');
+  @override
+  late final GeneratedBoolColumn isCompleted = _constructIsCompleted();
+  GeneratedBoolColumn _constructIsCompleted() {
+    return GeneratedBoolColumn('is_completed', $tableName, false,
+        defaultValue: const Constant(false));
+  }
+
   @override
   List<GeneratedColumn> get $columns =>
-      [id, categoryId, title, description, deadline];
+      [id, categoryId, title, description, deadline, isCompleted];
   @override
   $TasksTable get asDslTable => this;
   @override
@@ -314,6 +349,12 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
     if (data.containsKey('deadline')) {
       context.handle(_deadlineMeta,
           deadline.isAcceptableOrUnknown(data['deadline']!, _deadlineMeta));
+    }
+    if (data.containsKey('is_completed')) {
+      context.handle(
+          _isCompletedMeta,
+          isCompleted.isAcceptableOrUnknown(
+              data['is_completed']!, _isCompletedMeta));
     }
     return context;
   }

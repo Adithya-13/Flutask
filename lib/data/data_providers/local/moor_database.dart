@@ -12,6 +12,8 @@ class Tasks extends Table {
   TextColumn get description => text()();
 
   DateTimeColumn get deadline => dateTime().nullable()();
+
+  BoolColumn get isCompleted => boolean().withDefault(const Constant(false))();
 }
 
 @DataClassName('TaskCategory')
@@ -31,5 +33,18 @@ class AppDatabase extends _$AppDatabase {
       : super(FlutterQueryExecutor.inDatabaseFolder(
             path: "db.sqlite", logStatements: true));
 
-  int get schemaVersion => 1;
+  @override
+  int get schemaVersion => 3;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+      onCreate: (Migrator m) {
+        return m.createAll();
+      },
+      onUpgrade: (Migrator m, int from, int to) async {
+        if (from <= 3) {
+          await m.addColumn(tasks, tasks.isCompleted);
+        }
+      }
+  );
 }

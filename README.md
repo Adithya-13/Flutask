@@ -17,5 +17,5 @@ Flutter Task Management App
 ## Util Tasks
 
 - [*] Focus Node unfocused
-- [] dropdown null value
+- [*] dropdown null value
 - [] completed attribute

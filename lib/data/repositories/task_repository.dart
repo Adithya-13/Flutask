@@ -20,6 +20,9 @@ class TaskRepository {
   Future<bool> updateTask(TaskItemEntity item) =>
       _taskDao.updateTask(DataMapper.toTask(item));
 
+  Future<bool> updateCompletedTask(TaskItemEntity item) =>
+      _taskDao.updateTask(DataMapper.toTask(item.copyWith(isCompleted: true)));
+
   Future<int> deleteTask(int id) => _taskDao.deleteTask(id);
 
   Future<TaskCategoryEntity> getAllTaskCategories() async => _taskDao
