@@ -54,14 +54,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'FluTask',
-      theme: ThemeData(
-          primarySwatch: Colors.deepPurple,
-          scaffoldBackgroundColor: AppTheme.scaffoldColor,
-          fontFamily: 'Gotham'),
-      onGenerateRoute: _router.getRoute,
-      navigatorObservers: [_router.routeObserver],
+    return GestureDetector(
+      onTap: () {
+        WidgetsBinding.instance!.focusManager.primaryFocus?.unfocus();
+      },
+      child: MaterialApp(
+        title: 'FluTask',
+        theme: ThemeData(
+            primarySwatch: Colors.deepPurple,
+            scaffoldBackgroundColor: AppTheme.scaffoldColor,
+            fontFamily: 'Gotham'),
+        onGenerateRoute: _router.getRoute,
+        navigatorObservers: [_router.routeObserver],
+      ),
     );
   }
 
