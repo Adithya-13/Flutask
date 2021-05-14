@@ -35,6 +35,7 @@ class Resources {
 
 class Keys {
   static const String isInitial = 'isInitial';
+  static const String isOnBoardInitial = 'isOnBoardInitial';
 }
 
 class FormatDate {

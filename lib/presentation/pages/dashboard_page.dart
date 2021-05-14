@@ -339,7 +339,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     },
                     builder: (context, state) {
                       if(state is TaskCategorySuccess){
-                        return Text(state.entity.taskCategoryList[item.categoryId].title, style: AppTheme.text3);
+                        return Text(state.entity.taskCategoryList.singleWhere((element) => element.id == item.categoryId).title, style: AppTheme.text3);
                       }
                       return Container();
                     },

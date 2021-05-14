@@ -21,7 +21,6 @@ class _SplashPageState extends State<SplashPage> {
     GetStorage _getStorage = GetStorage();
     bool isInitial = _getStorage.read(Keys.isOnBoardInitial) ?? true;
     if(isInitial){
-      _getStorage.write(Keys.isOnBoardInitial, false);
       Future.delayed(Duration(seconds: 3))
           .then((_) => Navigator.pushReplacementNamed(context, PagePath.onBoard));
     } else {

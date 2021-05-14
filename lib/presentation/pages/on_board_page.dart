@@ -7,6 +7,7 @@ import 'package:flutask/presentation/utils/utils.dart';
 import 'package:flutask/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_storage/get_storage.dart';
 
 class OnBoardPage extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class OnBoardPage extends StatefulWidget {
 
 class _OnBoardPageState extends State<OnBoardPage> {
   int currentContent = 0;
+  final GetStorage _getStorage = GetStorage();
   final CarouselController onBoardController = CarouselController();
   List<OnBoardModel> contentList = [];
 
@@ -26,7 +28,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
 
   void _nextContent() {
     if (currentContent == 2) {
-      Navigator.pushReplacementNamed(context, PagePath.base);
+      _goToBasePage();
       return;
     }
 
@@ -48,6 +50,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
   }
 
   void _goToBasePage() {
+    _getStorage.write(Keys.isOnBoardInitial, false);
     Navigator.pushReplacementNamed(context, PagePath.base);
   }
 
