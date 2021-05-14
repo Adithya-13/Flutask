@@ -16,7 +16,6 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-
   @override
   void initState() {
     setInitialCategory();
@@ -26,22 +25,22 @@ class _DashboardPageState extends State<DashboardPage> {
     super.initState();
   }
 
-  void setInitialCategory(){
+  void setInitialCategory() {
     GetStorage getStorage = GetStorage();
     bool isInitial = getStorage.read(Keys.isInitial) ?? true;
     if (isInitial) {
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-        taskCategoryItemEntity: TaskCategoryItemEntity(
-          title: "School",
-          gradient: AppTheme.pinkGradient,
-        ),
-      ));
+            taskCategoryItemEntity: TaskCategoryItemEntity(
+              title: "School",
+              gradient: AppTheme.pinkGradient,
+            ),
+          ));
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-        taskCategoryItemEntity: TaskCategoryItemEntity(
-          title: "Other",
-          gradient: AppTheme.orangeGradient,
-        ),
-      ));
+            taskCategoryItemEntity: TaskCategoryItemEntity(
+              title: "Other",
+              gradient: AppTheme.orangeGradient,
+            ),
+          ));
       getStorage.write(Keys.isInitial, false);
     }
   }
@@ -206,7 +205,8 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget taskCategoryGridView(TaskCategoryEntity data) {
-    final dataList = DummyData.getTaskCategoryEntity().taskCategoryList + data.taskCategoryList;
+    final dataList = DummyData.getTaskCategoryEntity().taskCategoryList +
+        data.taskCategoryList;
     return StaggeredGridView.countBuilder(
       crossAxisCount: 4,
       shrinkWrap: true,
@@ -310,32 +310,54 @@ class _DashboardPageState extends State<DashboardPage> {
                 children: [
                   SvgPicture.asset(Resources.clock, width: 20),
                   SizedBox(width: 8),
-                  Text(item.deadline != null ? item.deadline!.format(
-                      FormatDate.deadline) : 'No Deadline',
+                  Text(
+                      item.deadline != null
+                          ? item.deadline!.format(FormatDate.deadline)
+                          : 'No Deadline',
                       style: AppTheme.text3),
                 ],
               ),
               SizedBox(height: 16),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: AppTheme.perano.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(8),
+              Wrap(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppTheme.perano.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: BlocBuilder<TaskCategoryBloc, TaskCategoryState>(
+                      buildWhen: (previous, current) {
+                        return current is TaskCategorySuccess;
+                      },
+                      builder: (context, state) {
+                        if (state is TaskCategorySuccess) {
+                          return Text(
+                              state.entity.taskCategoryList
+                                  .singleWhere((element) =>
+                                      element.id == item.categoryId)
+                                  .title,
+                              style: AppTheme.text3);
+                        }
+                        return Container();
+                      },
+                    ),
                   ),
-                  child: BlocBuilder<TaskCategoryBloc, TaskCategoryState>(
-                    buildWhen: (previous, current) {
-                      return current is TaskCategorySuccess;
-                    },
-                    builder: (context, state) {
-                      if(state is TaskCategorySuccess){
-                        return Text(state.entity.taskCategoryList.singleWhere((element) => element.id == item.categoryId).title, style: AppTheme.text3);
-                      }
-                      return Container();
-                    },
+                  SizedBox(width: 8),
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: (item.isCompleted
+                              ? AppTheme.completedColor
+                              : AppTheme.uncompletedColor)
+                          .withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                        item.isCompleted ? 'Done' : 'On Going',
+                        style: AppTheme.text3),
                   ),
-                ),
+                ],
               ),
             ],
           ),

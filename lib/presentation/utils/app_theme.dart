@@ -96,6 +96,9 @@ class AppTheme {
 
   static const Color scaffoldColor = Color(0xFFFBFAFF);
 
+  static const Color completedColor = Color(0xFF90F0B3);
+  static const Color uncompletedColor = Color(0xFFF97C7C);
+
   static const TextStyle headline1 = TextStyle(
     fontSize: 28,
     color: boldColorFont,
