@@ -15,12 +15,20 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  static GetStorage getStorage = GetStorage();
-  bool isInitial = getStorage.read(Keys.isInitial) ?? true;
 
   @override
   void initState() {
-    print(isInitial);
+    setInitialCategory();
+    context.read<TaskCategoryBloc>().add(WatchTaskCategory());
+    context.read<TaskCategoryBloc>().add(GetTaskCategory());
+    context.read<TaskBloc>().add(WatchTask());
+    super.initState();
+  }
+
+  void setInitialCategory(){
+    GetStorage getStorage = GetStorage();
+    bool isInitial = getStorage.read(Keys.isInitial) ?? true;
+
     if (isInitial) {
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
         taskCategoryItemEntity: TaskCategoryItemEntity(
@@ -51,16 +59,6 @@ class _DashboardPageState extends State<DashboardPage> {
       ));
       getStorage.write(Keys.isInitial, false);
     }
-    context.read<TaskCategoryBloc>().add(WatchTaskCategory());
-    context.read<TaskCategoryBloc>().add(GetTaskCategory());
-    context.read<TaskBloc>().add(WatchTask());
-    // context.read<TaskBloc>().add(InsertTask(
-    //     taskItemEntity: TaskItemEntity(
-    //         categoryId: 0,
-    //         title: 'Mobile App Design',
-    //         description: 'Blabla',
-    //         deadline: DateTime.now())));
-    super.initState();
   }
 
   @override
