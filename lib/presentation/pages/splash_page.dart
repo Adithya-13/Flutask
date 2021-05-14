@@ -2,6 +2,7 @@ import 'package:flutask/presentation/routes/routes.dart';
 import 'package:flutask/presentation/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_storage/get_storage.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -9,11 +10,24 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 3))
-        .then((_) => Navigator.pushReplacementNamed(context, PagePath.onBoard));
+    _navigateOtherScreen();
     super.initState();
+  }
+
+  void _navigateOtherScreen() {
+    GetStorage _getStorage = GetStorage();
+    bool isInitial = _getStorage.read(Keys.isOnBoardInitial) ?? true;
+    if(isInitial){
+      _getStorage.write(Keys.isOnBoardInitial, false);
+      Future.delayed(Duration(seconds: 3))
+          .then((_) => Navigator.pushReplacementNamed(context, PagePath.onBoard));
+    } else {
+      Future.delayed(Duration(seconds: 3))
+          .then((_) => Navigator.pushReplacementNamed(context, PagePath.base));
+    }
   }
 
   @override
