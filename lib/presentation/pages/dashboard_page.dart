@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutask/data/data_providers/local/dummy_data.dart';
 import 'package:flutask/data/entities/entities.dart';
 import 'package:flutask/logic/blocs/blocs.dart';
 import 'package:flutask/presentation/utils/utils.dart';
@@ -29,17 +30,6 @@ class _DashboardPageState extends State<DashboardPage> {
     GetStorage getStorage = GetStorage();
     bool isInitial = getStorage.read(Keys.isInitial) ?? true;
     if (isInitial) {
-      context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-          taskCategoryItemEntity: TaskCategoryItemEntity(
-            title: "On Going",
-            gradient: AppTheme.blueGradient,
-          )));
-      context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-        taskCategoryItemEntity: TaskCategoryItemEntity(
-          title: "Done",
-          gradient: AppTheme.purpleGradient,
-        ),
-      ));
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
         taskCategoryItemEntity: TaskCategoryItemEntity(
           title: "School",
@@ -216,13 +206,14 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget taskCategoryGridView(TaskCategoryEntity data) {
+    final dataList = DummyData.getTaskCategoryEntity().taskCategoryList + data.taskCategoryList;
     return StaggeredGridView.countBuilder(
       crossAxisCount: 4,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: data.taskCategoryList.length,
+      itemCount: dataList.length,
       itemBuilder: (BuildContext context, int index) {
-        final taskItem = data.taskCategoryList[index];
+        final taskItem = dataList[index];
         return taskCategoryItemWidget(taskItem, index);
       },
       staggeredTileBuilder: (int index) =>
