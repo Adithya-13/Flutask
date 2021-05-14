@@ -10,13 +10,22 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
 
   Future<List<Task>> getAllTasks() => select(tasks).get();
 
-  Stream<List<Task>> watchAllTasks() => (select(tasks)
-        ..orderBy([
-              (t) => OrderingTerm(
-              expression: t.deadline.isNotNull(), mode: OrderingMode.desc),
-              (t) => OrderingTerm(
-              expression: t.deadline, mode: OrderingMode.asc),
-        ]))
+  Stream<List<Task>> watchAllTasks() =>
+      (select(tasks)..orderBy(orderTaskByDate())).watch();
+
+  Stream<List<Task>> watchAllTaskByCategory(int categoryId) => (select(tasks)
+        ..where((tbl) => tbl.categoryId.equals(categoryId))
+        ..orderBy(orderTaskByDate()))
+      .watch();
+
+  Stream<List<Task>> watchOnGoingTask() => (select(tasks)
+        ..where((tbl) => tbl.isCompleted.equals(false))
+        ..orderBy(orderTaskByDate()))
+      .watch();
+
+  Stream<List<Task>> watchCompletedTask() => (select(tasks)
+        ..where((tbl) => tbl.isCompleted.equals(true))
+        ..orderBy(orderTaskByDate()))
       .watch();
 
   Future<int> insertNewTask(TasksCompanion newTask) =>
@@ -34,10 +43,6 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
   Stream<List<TaskCategory>> watchAllTaskCategories() =>
       select(taskCategories).watch();
 
-  Stream<List<Task>> getAllTaskByCategory(int categoryId) =>
-      (select(tasks)..where((tbl) => tbl.categoryId.equals(categoryId)))
-          .watch();
-
   Future<int> insertNewCategory(TaskCategoriesCompanion newCategory) =>
       into(taskCategories).insert(newCategory);
 
@@ -46,4 +51,10 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
 
   Future<int> deleteCategory(int id) =>
       (delete(taskCategories)..where((t) => t.id.equals(id))).go();
+
+  List<OrderingTerm Function($TasksTable)> orderTaskByDate() => [
+        (t) => OrderingTerm(
+            expression: t.deadline.isNotNull(), mode: OrderingMode.desc),
+        (t) => OrderingTerm(expression: t.deadline, mode: OrderingMode.asc),
+      ];
 }
