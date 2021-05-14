@@ -13,7 +13,17 @@ class TaskCategoryItemEntity extends BaseEntity {
   final LinearGradient gradient;
 
   TaskCategoryItemEntity(
-      {this.id,
-      required this.title,
-      required this.gradient});
+      {this.id, required this.title, required this.gradient});
+
+  TaskCategoryItemEntity copyWith({
+    int? id,
+    String? title,
+    LinearGradient? gradient,
+  }) {
+    return TaskCategoryItemEntity(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      gradient: gradient ?? this.gradient,
+    );
+  }
 }
