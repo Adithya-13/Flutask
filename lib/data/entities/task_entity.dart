@@ -11,12 +11,12 @@ class TaskItemEntity extends BaseEntity {
   final int categoryId;
   final String title;
   final String description;
-  final DateTime deadline;
+  final DateTime? deadline;
 
   TaskItemEntity(
       {this.id,
       required this.categoryId,
       required this.title,
       required this.description,
-      required this.deadline});
+      this.deadline});
 }

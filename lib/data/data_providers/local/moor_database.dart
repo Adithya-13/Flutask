@@ -11,7 +11,7 @@ class Tasks extends Table {
 
   TextColumn get description => text()();
 
-  DateTimeColumn get deadline => dateTime()();
+  DateTimeColumn get deadline => dateTime().nullable()();
 }
 
 @DataClassName('TaskCategory')

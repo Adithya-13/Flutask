@@ -18,7 +18,7 @@ class DataMapper {
         categoryId: item.categoryId,
         title: item.title,
         description: item.description,
-        deadline: item.deadline,
+        deadline: Value(item.deadline),
       );
 
   static TaskCategoryEntity toTaskCategoryEntity(

@@ -189,7 +189,7 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           BlocBuilder<TaskBloc, TaskState>(
             buildWhen: (previous, current) {
-              return false;
+              return current is TaskStream;
             },
             builder: (context, state) {
               if (state is TaskStream) {
@@ -325,7 +325,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 children: [
                   SvgPicture.asset(Resources.clock, width: 20),
                   SizedBox(width: 8),
-                  Text(item.deadline.format(FormatDate.deadline), style: AppTheme.text3),
+                  Text(item.deadline != null ? item.deadline!.format(FormatDate.deadline) : 'No Deadline', style: AppTheme.text3),
                 ],
               ),
               SizedBox(height: 16),

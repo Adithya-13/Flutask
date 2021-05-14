@@ -12,13 +12,13 @@ class Task extends DataClass implements Insertable<Task> {
   final int categoryId;
   final String title;
   final String description;
-  final DateTime deadline;
+  final DateTime? deadline;
   Task(
       {required this.id,
       required this.categoryId,
       required this.title,
       required this.description,
-      required this.deadline});
+      this.deadline});
   factory Task.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -34,7 +34,7 @@ class Task extends DataClass implements Insertable<Task> {
       description: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
       deadline: dateTimeType
-          .mapFromDatabaseResponse(data['${effectivePrefix}deadline'])!,
+          .mapFromDatabaseResponse(data['${effectivePrefix}deadline']),
     );
   }
   @override
@@ -44,7 +44,9 @@ class Task extends DataClass implements Insertable<Task> {
     map['category_id'] = Variable<int>(categoryId);
     map['title'] = Variable<String>(title);
     map['description'] = Variable<String>(description);
-    map['deadline'] = Variable<DateTime>(deadline);
+    if (!nullToAbsent || deadline != null) {
+      map['deadline'] = Variable<DateTime?>(deadline);
+    }
     return map;
   }
 
@@ -54,7 +56,9 @@ class Task extends DataClass implements Insertable<Task> {
       categoryId: Value(categoryId),
       title: Value(title),
       description: Value(description),
-      deadline: Value(deadline),
+      deadline: deadline == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deadline),
     );
   }
 
@@ -66,7 +70,7 @@ class Task extends DataClass implements Insertable<Task> {
       categoryId: serializer.fromJson<int>(json['categoryId']),
       title: serializer.fromJson<String>(json['title']),
       description: serializer.fromJson<String>(json['description']),
-      deadline: serializer.fromJson<DateTime>(json['deadline']),
+      deadline: serializer.fromJson<DateTime?>(json['deadline']),
     );
   }
   @override
@@ -77,7 +81,7 @@ class Task extends DataClass implements Insertable<Task> {
       'categoryId': serializer.toJson<int>(categoryId),
       'title': serializer.toJson<String>(title),
       'description': serializer.toJson<String>(description),
-      'deadline': serializer.toJson<DateTime>(deadline),
+      'deadline': serializer.toJson<DateTime?>(deadline),
     };
   }
 
@@ -129,7 +133,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
   final Value<int> categoryId;
   final Value<String> title;
   final Value<String> description;
-  final Value<DateTime> deadline;
+  final Value<DateTime?> deadline;
   const TasksCompanion({
     this.id = const Value.absent(),
     this.categoryId = const Value.absent(),
@@ -142,17 +146,16 @@ class TasksCompanion extends UpdateCompanion<Task> {
     required int categoryId,
     required String title,
     required String description,
-    required DateTime deadline,
+    this.deadline = const Value.absent(),
   })  : categoryId = Value(categoryId),
         title = Value(title),
-        description = Value(description),
-        deadline = Value(deadline);
+        description = Value(description);
   static Insertable<Task> custom({
     Expression<int>? id,
     Expression<int>? categoryId,
     Expression<String>? title,
     Expression<String>? description,
-    Expression<DateTime>? deadline,
+    Expression<DateTime?>? deadline,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -168,7 +171,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
       Value<int>? categoryId,
       Value<String>? title,
       Value<String>? description,
-      Value<DateTime>? deadline}) {
+      Value<DateTime?>? deadline}) {
     return TasksCompanion(
       id: id ?? this.id,
       categoryId: categoryId ?? this.categoryId,
@@ -194,7 +197,7 @@ class TasksCompanion extends UpdateCompanion<Task> {
       map['description'] = Variable<String>(description.value);
     }
     if (deadline.present) {
-      map['deadline'] = Variable<DateTime>(deadline.value);
+      map['deadline'] = Variable<DateTime?>(deadline.value);
     }
     return map;
   }
@@ -265,7 +268,7 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
     return GeneratedDateTimeColumn(
       'deadline',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -311,8 +314,6 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
     if (data.containsKey('deadline')) {
       context.handle(_deadlineMeta,
           deadline.isAcceptableOrUnknown(data['deadline']!, _deadlineMeta));
-    } else if (isInserting) {
-      context.missing(_deadlineMeta);
     }
     return context;
   }
