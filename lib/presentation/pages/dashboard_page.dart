@@ -23,35 +23,36 @@ class _DashboardPageState extends State<DashboardPage> {
     print(isInitial);
     if (isInitial) {
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-            taskCategoryItemEntity: TaskCategoryItemEntity(
-              id: 0,
-              title: "Mobile App Design",
-              gradient: AppTheme.pinkGradient,
-            ),
-          ));
+        taskCategoryItemEntity: TaskCategoryItemEntity(
+          id: 0,
+          title: "Mobile App Design",
+          gradient: AppTheme.pinkGradient,
+        ),
+      ));
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-            taskCategoryItemEntity: TaskCategoryItemEntity(
-              id: 1,
-              title: "Pending",
-              gradient: AppTheme.orangeGradient,
-            ),
-          ));
+        taskCategoryItemEntity: TaskCategoryItemEntity(
+          id: 1,
+          title: "Pending",
+          gradient: AppTheme.orangeGradient,
+        ),
+      ));
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-              taskCategoryItemEntity: TaskCategoryItemEntity(
+          taskCategoryItemEntity: TaskCategoryItemEntity(
             id: 2,
             title: "Illustration",
             gradient: AppTheme.blueGradient,
           )));
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-            taskCategoryItemEntity: TaskCategoryItemEntity(
-              id: 3,
-              title: "Website Design",
-              gradient: AppTheme.purpleGradient,
-            ),
-          ));
+        taskCategoryItemEntity: TaskCategoryItemEntity(
+          id: 3,
+          title: "Website Design",
+          gradient: AppTheme.purpleGradient,
+        ),
+      ));
       getStorage.write(Keys.isInitial, false);
     }
     context.read<TaskCategoryBloc>().add(WatchTaskCategory());
+    context.read<TaskCategoryBloc>().add(GetTaskCategory());
     context.read<TaskBloc>().add(WatchTask());
     // context.read<TaskBloc>().add(InsertTask(
     //     taskItemEntity: TaskItemEntity(
@@ -325,7 +326,9 @@ class _DashboardPageState extends State<DashboardPage> {
                 children: [
                   SvgPicture.asset(Resources.clock, width: 20),
                   SizedBox(width: 8),
-                  Text(item.deadline != null ? item.deadline!.format(FormatDate.deadline) : 'No Deadline', style: AppTheme.text3),
+                  Text(item.deadline != null ? item.deadline!.format(
+                      FormatDate.deadline) : 'No Deadline',
+                      style: AppTheme.text3),
                 ],
               ),
               SizedBox(height: 16),
@@ -337,7 +340,17 @@ class _DashboardPageState extends State<DashboardPage> {
                     color: AppTheme.perano.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Text('Mobile App Design', style: AppTheme.text3),
+                  child: BlocBuilder<TaskCategoryBloc, TaskCategoryState>(
+                    buildWhen: (previous, current) {
+                      return current is TaskCategorySuccess;
+                    },
+                    builder: (context, state) {
+                      if(state is TaskCategorySuccess){
+                        return Text(state.entity.taskCategoryList[item.categoryId].title, style: AppTheme.text3);
+                      }
+                      return Container();
+                    },
+                  ),
                 ),
               ),
             ],
