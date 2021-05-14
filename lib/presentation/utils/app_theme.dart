@@ -138,6 +138,17 @@ class AppTheme {
     fontWeight: FontWeight.w700,
   );
 
+  static OutlineInputBorder enabledBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8),
+    borderSide: BorderSide(color: AppTheme.perano),
+  );
+
+  static OutlineInputBorder focusedBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8),
+    borderSide:
+    BorderSide(color: AppTheme.cornflowerBlue),
+  );
+
   static List<BoxShadow> getShadow(Color color) {
     return [
       BoxShadow(
