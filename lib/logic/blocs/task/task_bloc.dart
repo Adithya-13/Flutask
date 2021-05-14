@@ -24,6 +24,10 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       yield* _mapGetTaskToState(event);
     } else if (event is WatchTask) {
       yield* _mapWatchTaskToState(event);
+    } else if (event is WatchOnGoingTask) {
+      yield* _mapWatchOnGoingTaskToState(event);
+    } else if (event is WatchCompletedTask) {
+      yield* _mapWatchCompletedTaskToState(event);
     } else if (event is WatchTaskByCategory) {
       yield* _mapWatchTaskByCategoryToState(event);
     } else if (event is InsertTask) {
@@ -48,6 +52,16 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   Stream<TaskState> _mapWatchTaskToState(WatchTask event) async* {
     final Stream<TaskEntity> entity = _taskRepository.watchAllTasks();
     yield TaskStream(entity: entity);
+  }
+
+  Stream<TaskState> _mapWatchOnGoingTaskToState(WatchOnGoingTask event) async* {
+    final Stream<TaskEntity> entity = _taskRepository.watchOnGoingTasks();
+    yield OnGoingTaskStream(entity: entity);
+  }
+
+  Stream<TaskState> _mapWatchCompletedTaskToState(WatchCompletedTask event) async* {
+    final Stream<TaskEntity> entity = _taskRepository.watchCompletedTasks();
+    yield CompletedTaskStream(entity: entity);
   }
 
   Stream<TaskState> _mapWatchTaskByCategoryToState(

@@ -11,6 +11,10 @@ class GetTask extends TaskEvent {}
 
 class WatchTask extends TaskEvent {}
 
+class WatchOnGoingTask extends TaskEvent {}
+
+class WatchCompletedTask extends TaskEvent {}
+
 class WatchTaskByCategory extends TaskEvent {
   final int id;
 

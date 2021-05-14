@@ -29,6 +29,24 @@ class TaskStream extends TaskState {
   List<Object> get props => [entity];
 }
 
+class OnGoingTaskStream extends TaskState {
+  final Stream<TaskEntity> entity;
+
+  OnGoingTaskStream({required this.entity});
+
+  @override
+  List<Object> get props => [entity];
+}
+
+class CompletedTaskStream extends TaskState {
+  final Stream<TaskEntity> entity;
+
+  CompletedTaskStream({required this.entity});
+
+  @override
+  List<Object> get props => [entity];
+}
+
 class TaskFailure extends TaskState {
   final String message;
 

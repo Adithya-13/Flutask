@@ -21,7 +21,7 @@ class _DashboardPageState extends State<DashboardPage> {
     setInitialCategory();
     context.read<TaskCategoryBloc>().add(WatchTaskCategory());
     context.read<TaskCategoryBloc>().add(GetTaskCategory());
-    context.read<TaskBloc>().add(WatchTask());
+    context.read<TaskBloc>().add(WatchOnGoingTask());
     super.initState();
   }
 
@@ -121,19 +121,15 @@ class _DashboardPageState extends State<DashboardPage> {
                 return StreamBuilder<TaskCategoryEntity>(
                   stream: entity,
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return LoadingWidget();
-                    } else if (snapshot.hasData) {
-                      final data = snapshot.data!;
-                      if (data.taskCategoryList.isEmpty) {
-                        return EmptyWidget();
-                      }
-                      return taskCategoryGridView(data);
-                    } else if (snapshot.hasError) {
+                    if (snapshot.hasError) {
                       return FailureWidget(
                           message: snapshot.stackTrace.toString());
+                    } else if (!snapshot.hasData) {
+                      return LoadingWidget();
+                    } else if (snapshot.data!.taskCategoryList.isEmpty) {
+                      return EmptyWidget();
                     }
-                    return EmptyWidget();
+                    return taskCategoryGridView(snapshot.data!);
                   },
                 );
               }
@@ -172,27 +168,23 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           BlocBuilder<TaskBloc, TaskState>(
             buildWhen: (previous, current) {
-              return current is TaskStream;
+              return current is OnGoingTaskStream;
             },
             builder: (context, state) {
-              if (state is TaskStream) {
+              if (state is OnGoingTaskStream) {
                 final entity = state.entity;
                 return StreamBuilder<TaskEntity>(
                   stream: entity,
                   builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return LoadingWidget();
-                    } else if (snapshot.hasData) {
-                      final data = snapshot.data!;
-                      if (data.tasksList.isEmpty) {
-                        return EmptyWidget();
-                      }
-                      return taskListView(data);
-                    } else if (snapshot.hasError) {
+                    if (snapshot.hasError) {
                       return FailureWidget(
                           message: snapshot.stackTrace.toString());
+                    } else if (!snapshot.hasData) {
+                      return LoadingWidget();
+                    } else if (snapshot.data!.tasksList.isEmpty) {
+                      return EmptyWidget();
                     }
-                    return EmptyWidget();
+                    return taskListView(snapshot.data!);
                   },
                 );
               }
@@ -353,8 +345,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           .withOpacity(0.2),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Text(
-                        item.isCompleted ? 'Done' : 'On Going',
+                    child: Text(item.isCompleted ? 'Done' : 'On Going',
                         style: AppTheme.text3),
                   ),
                 ],
