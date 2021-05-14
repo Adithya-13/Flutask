@@ -8,12 +8,12 @@ class TaskCategoryEntity extends BaseEntity {
 }
 
 class TaskCategoryItemEntity extends BaseEntity {
-  final int id;
+  final int? id;
   final String title;
   final LinearGradient gradient;
 
   TaskCategoryItemEntity(
-      {required this.id,
+      {this.id,
       required this.title,
       required this.gradient});
 }

@@ -28,33 +28,28 @@ class _DashboardPageState extends State<DashboardPage> {
   void setInitialCategory(){
     GetStorage getStorage = GetStorage();
     bool isInitial = getStorage.read(Keys.isInitial) ?? true;
-
     if (isInitial) {
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
+          taskCategoryItemEntity: TaskCategoryItemEntity(
+            title: "On Going",
+            gradient: AppTheme.blueGradient,
+          )));
+      context.read<TaskCategoryBloc>().add(InsertTaskCategory(
         taskCategoryItemEntity: TaskCategoryItemEntity(
-          id: 0,
-          title: "Mobile App Design",
+          title: "Done",
+          gradient: AppTheme.purpleGradient,
+        ),
+      ));
+      context.read<TaskCategoryBloc>().add(InsertTaskCategory(
+        taskCategoryItemEntity: TaskCategoryItemEntity(
+          title: "School",
           gradient: AppTheme.pinkGradient,
         ),
       ));
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
         taskCategoryItemEntity: TaskCategoryItemEntity(
-          id: 1,
-          title: "Pending",
+          title: "Other",
           gradient: AppTheme.orangeGradient,
-        ),
-      ));
-      context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-          taskCategoryItemEntity: TaskCategoryItemEntity(
-            id: 2,
-            title: "Illustration",
-            gradient: AppTheme.blueGradient,
-          )));
-      context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-        taskCategoryItemEntity: TaskCategoryItemEntity(
-          id: 3,
-          title: "Website Design",
-          gradient: AppTheme.purpleGradient,
         ),
       ));
       getStorage.write(Keys.isInitial, false);
