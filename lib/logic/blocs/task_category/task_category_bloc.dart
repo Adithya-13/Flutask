@@ -36,6 +36,7 @@ class TaskCategoryBloc extends Bloc<TaskCategoryEvent, TaskCategoryState> {
   Stream<TaskCategoryState> _mapTaskCategoryFetchedToState(
       GetTaskCategory event) async* {
     yield TaskCategoryLoading();
+    await Future.delayed(Duration(seconds: 3));
     try {
       final TaskCategoryEntity entity =
           await _taskRepository.getAllTaskCategories();

@@ -43,3 +43,47 @@ class RippleButton extends StatelessWidget {
     );
   }
 }
+
+class PinkButton extends StatelessWidget {
+  final String text;
+  final Widget? icon;
+  final VoidCallback onTap;
+
+  const PinkButton({
+    Key? key,
+    required this.text,
+    required this.onTap,
+    this.icon,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: AppTheme.pinkGradient.withHorizontalGradient,
+        boxShadow: AppTheme.getShadow(AppTheme.frenchRose),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        child: icon != null ? Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            icon!,
+            SizedBox(width: 8),
+            Text(
+              text,
+              style: AppTheme.headline3.withWhite,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ): Text(
+          text,
+          style: AppTheme.headline3.withWhite,
+          textAlign: TextAlign.center,
+        ),
+      ).addRipple(onTap: onTap),
+    );
+  }
+}
+
