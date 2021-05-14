@@ -171,6 +171,19 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                                           initialDate: datePicked ?? DateTime.now(),
                                           firstDate: DateTime.now(),
                                           lastDate: DateTime(2025),
+                                              helpText: 'Select Deadline Date',
+                                              confirmText: 'Select',
+                                              cancelText: 'No Deadline',
+                                              builder: (context, child) {
+                                                return Theme(
+                                                  data: ThemeData(fontFamily: 'Gotham').copyWith(
+                                                    colorScheme: ColorScheme.light().copyWith(
+                                                      primary: AppTheme.cornflowerBlue,
+                                                    ),
+                                                  ), // This will change to light theme.
+                                                  child: child!,
+                                                );
+                                              },
                                         );
                                         if (picked != null &&
                                             picked != datePicked) {
@@ -196,6 +209,19 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                                           context: context,
                                           initialTime:
                                               timePicked ?? TimeOfDay.now(),
+                                              helpText: 'Select Deadline Time',
+                                              confirmText: 'Select',
+                                              cancelText: 'No Deadline',
+                                              builder: (context, child) {
+                                                return Theme(
+                                                  data: ThemeData(fontFamily: 'Gotham').copyWith(
+                                                    colorScheme: ColorScheme.light().copyWith(
+                                                      primary: AppTheme.cornflowerBlue,
+                                                    ),
+                                                  ), // This will change to light theme.
+                                                  child: child!,
+                                                );
+                                              },
                                         );
                                         if (picked != null &&
                                             picked != timePicked) {
