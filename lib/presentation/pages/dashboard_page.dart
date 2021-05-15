@@ -30,25 +30,25 @@ class _DashboardPageState extends State<DashboardPage> {
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
             taskCategoryItemEntity: TaskCategoryItemEntity(
               title: "On Going",
-              gradient: AppTheme.pinkGradient,
+              gradient: AppTheme.gradient.randomGradientColor,
             ),
           ));
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
             taskCategoryItemEntity: TaskCategoryItemEntity(
               title: "Complete",
-              gradient: AppTheme.pinkGradient,
+              gradient: AppTheme.gradient.randomGradientColor,
             ),
           ));
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
             taskCategoryItemEntity: TaskCategoryItemEntity(
               title: "School",
-              gradient: AppTheme.pinkGradient,
+              gradient: AppTheme.gradient.randomGradientColor,
             ),
           ));
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
             taskCategoryItemEntity: TaskCategoryItemEntity(
               title: "Other",
-              gradient: AppTheme.orangeGradient,
+              gradient: AppTheme.gradient.randomGradientColor,
             ),
           ));
       getStorage.write(Keys.isInitial, false);

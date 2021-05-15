@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
+  static const LinearGradient gradient = LinearGradient(colors: []);
+
   static const Color pinkSalmon = Color(0xFFFE95B4);
   static const Color frenchRose = Color(0xFFF15082);
   static const LinearGradient pinkGradient = LinearGradient(
