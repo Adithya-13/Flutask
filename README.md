@@ -7,12 +7,12 @@ Flutter Task Management App
 - [x] Splash Page
 - [x] OnBoard Page
 - [x] Dashboard Page
-- [] Bag Page
-- [] Calendar Page
-- [] Profile Page
+- [ ] Bag Page
+- [ ] Calendar Page
+- [ ] Profile Page
 - [x] Add Task BottomSheet
-- [] Detail Task
-- [] Detail Category
+- [ ] Detail Task
+- [ ] Detail Category
 
 ## Util Tasks
 
@@ -20,3 +20,5 @@ Flutter Task Management App
 - [x] dropdown null value
 - [x] completed attribute
 - [x] task with category list
+- [ ] category with total tasks
+- [ ] done tasks
