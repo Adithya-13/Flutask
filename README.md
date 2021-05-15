@@ -4,19 +4,19 @@ Flutter Task Management App
 
 
 ## Screen
-[*] Splash Page
-[*] OnBoard Page
-[*] Dashboard Page
-[] Bag Page
-[] Calendar Page
-[] Profile Page
-[*] Add Task BottomSheet
-[] Detail Task
-[] Detail Category
+- [x] Splash Page
+- [x] OnBoard Page
+- [x] Dashboard Page
+- [] Bag Page
+- [] Calendar Page
+- [] Profile Page
+- [x] Add Task BottomSheet
+- [] Detail Task
+- [] Detail Category
 
 ## Util Tasks
 
-[*] Focus Node unfocused
-[*] dropdown null value
-[*] completed attribute
-[*] task with category list 
+- [x] Focus Node unfocused
+- [x] dropdown null value
+- [x] completed attribute
+- [x] task with category list
