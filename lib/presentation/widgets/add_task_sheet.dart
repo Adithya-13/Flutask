@@ -150,7 +150,8 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                                 decoration: InputDecoration(
                                   enabledBorder: AppTheme.enabledBorder,
                                   focusedBorder: AppTheme.focusedBorder,
-                                  errorBorder: AppTheme.enabledBorder,
+                                  errorBorder: AppTheme.errorBorder,
+                                  focusedErrorBorder: AppTheme.focusedErrorBorder,
                                   isDense: true,
                                   hintText: 'Type your title here',
                                   hintStyle: AppTheme.text1,
@@ -169,7 +170,8 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                                 decoration: InputDecoration(
                                   enabledBorder: AppTheme.enabledBorder,
                                   focusedBorder: AppTheme.focusedBorder,
-                                  errorBorder: AppTheme.enabledBorder,
+                                  errorBorder: AppTheme.errorBorder,
+                                  focusedErrorBorder: AppTheme.focusedErrorBorder,
                                   isDense: true,
                                   hintText: 'Type your description here',
                                   hintStyle: AppTheme.text1,
@@ -216,7 +218,8 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                                       decoration: InputDecoration(
                                         enabledBorder: AppTheme.enabledBorder,
                                         focusedBorder: AppTheme.focusedBorder,
-                                        errorBorder: AppTheme.enabledBorder,
+                                        errorBorder: AppTheme.errorBorder,
+                                        focusedErrorBorder: AppTheme.focusedErrorBorder,
                                         isDense: true,
                                         hintText: 'Choose Category',
                                         hintStyle: AppTheme.text1,

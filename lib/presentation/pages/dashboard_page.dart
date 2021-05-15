@@ -338,8 +338,8 @@ class _DashboardPageState extends State<DashboardPage> {
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: (item.isCompleted
-                              ? AppTheme.completedColor
-                              : AppTheme.uncompletedColor)
+                              ? AppTheme.greenPastel
+                              : AppTheme.redPastel)
                           .withOpacity(0.2),
                       borderRadius: BorderRadius.circular(8),
                     ),

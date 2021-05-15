@@ -98,8 +98,9 @@ class AppTheme {
 
   static const Color scaffoldColor = Color(0xFFFBFAFF);
 
-  static const Color completedColor = Color(0xFF90F0B3);
-  static const Color uncompletedColor = Color(0xFFF97C7C);
+  static const Color greenPastel = Color(0xFF90F0B3);
+  static const Color redPastel = Color(0xFFF97C7C);
+  static const Color redDarkPastel = Color(0xFFC23A22);
 
   static const TextStyle headline1 = TextStyle(
     fontSize: 28,
@@ -152,6 +153,16 @@ class AppTheme {
     borderRadius: BorderRadius.circular(8),
     borderSide:
     BorderSide(color: AppTheme.cornflowerBlue),
+  );
+
+  static OutlineInputBorder errorBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8),
+    borderSide: BorderSide(color: AppTheme.redPastel),
+  );
+
+  static OutlineInputBorder focusedErrorBorder = OutlineInputBorder(
+    borderRadius: BorderRadius.circular(8),
+    borderSide: BorderSide(color: AppTheme.redDarkPastel),
   );
 
   static List<BoxShadow> getShadow(Color color) {

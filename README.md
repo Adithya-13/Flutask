@@ -23,3 +23,6 @@ Flutter Task Management App
 - [x] category with total tasks
 - [ ] done tasks
 - [x] fix padding in bottom nav bar item
+- [x] cleaning up dao
+- [x] error border
+- [ ] showcaseview library
