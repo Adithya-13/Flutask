@@ -164,10 +164,11 @@ class TasksCompanion extends UpdateCompanion<Task> {
     required String title,
     required String description,
     this.deadline = const Value.absent(),
-    this.isCompleted = const Value.absent(),
+    required bool isCompleted,
   })  : categoryId = Value(categoryId),
         title = Value(title),
-        description = Value(description);
+        description = Value(description),
+        isCompleted = Value(isCompleted);
   static Insertable<Task> custom({
     Expression<int>? id,
     Expression<int>? categoryId,
@@ -303,8 +304,11 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
   @override
   late final GeneratedBoolColumn isCompleted = _constructIsCompleted();
   GeneratedBoolColumn _constructIsCompleted() {
-    return GeneratedBoolColumn('is_completed', $tableName, false,
-        defaultValue: const Constant(false));
+    return GeneratedBoolColumn(
+      'is_completed',
+      $tableName,
+      false,
+    );
   }
 
   @override
@@ -355,6 +359,8 @@ class $TasksTable extends Tasks with TableInfo<$TasksTable, Task> {
           _isCompletedMeta,
           isCompleted.isAcceptableOrUnknown(
               data['is_completed']!, _isCompletedMeta));
+    } else if (isInserting) {
+      context.missing(_isCompletedMeta);
     }
     return context;
   }

@@ -13,7 +13,7 @@ class Tasks extends Table {
 
   DateTimeColumn get deadline => dateTime().nullable()();
 
-  BoolColumn get isCompleted => boolean().withDefault(const Constant(false))();
+  BoolColumn get isCompleted => boolean()();
 }
 
 @DataClassName('TaskCategory')
@@ -34,17 +34,6 @@ class AppDatabase extends _$AppDatabase {
             path: "db.sqlite", logStatements: true));
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 1;
 
-  @override
-  MigrationStrategy get migration => MigrationStrategy(
-      onCreate: (Migrator m) {
-        return m.createAll();
-      },
-      onUpgrade: (Migrator m, int from, int to) async {
-        if (from <= 3) {
-          await m.addColumn(tasks, tasks.isCompleted);
-        }
-      }
-  );
 }

@@ -1,3 +1,4 @@
+import 'package:flutask/data/models/models.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
 import 'moor_database.dart';
@@ -12,6 +13,21 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
 
   Stream<List<Task>> watchAllTasks() =>
       (select(tasks)..orderBy(orderTaskByDate())).watch();
+
+  Stream<List<TaskWithCategory>> watchAllTaskWithCategory() {
+    final query = select(tasks).join([
+      leftOuterJoin(
+          taskCategories, taskCategories.id.equalsExp(tasks.categoryId))
+    ]);
+    return query.watch().map((rows) {
+      return rows.map((row) {
+        return TaskWithCategory(
+          row.readTable(tasks),
+          row.readTableOrNull(taskCategories)!,
+        );
+      }).toList();
+    });
+  }
 
   Stream<List<Task>> watchAllTaskByCategory(int categoryId) => (select(tasks)
         ..where((tbl) => tbl.categoryId.equals(categoryId))

@@ -1,5 +1,6 @@
 import 'package:flutask/data/data_providers/local/task_dao.dart';
 import 'package:flutask/data/entities/entities.dart';
+import 'package:flutask/data/entities/task_with_category_entity.dart';
 import 'package:flutask/data/utils/data_mapper.dart';
 
 class TaskRepository {
@@ -13,6 +14,9 @@ class TaskRepository {
   Stream<TaskEntity> watchAllTasks() =>
       _taskDao.watchAllTasks().map((event) => DataMapper.toTaskEntity(event));
 
+  Stream<TaskWithCategoryEntity> watchAllTaskWithCategory() =>
+      _taskDao.watchAllTaskWithCategory().map((event) => DataMapper.toTaskWithCategoryEntity(event));
+
   Stream<TaskEntity> watchOnGoingTasks() =>
       _taskDao.watchOnGoingTask().map((event) => DataMapper.toTaskEntity(event));
 
@@ -24,10 +28,7 @@ class TaskRepository {
   }
 
   Future<bool> updateTask(TaskItemEntity item) =>
-      _taskDao.updateTask(DataMapper.toTask(item));
-
-  Future<bool> updateCompletedTask(TaskItemEntity item) =>
-      _taskDao.updateTask(DataMapper.toTask(item.copyWith(isCompleted: true)));
+      _taskDao.updateTask(DataMapper.toUpdatedTask(item));
 
   Future<int> deleteTask(int id) => _taskDao.deleteTask(id);
 

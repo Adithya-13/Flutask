@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutask/data/data_providers/local/dummy_data.dart';
 import 'package:flutask/data/entities/entities.dart';
+import 'package:flutask/data/entities/task_with_category_entity.dart';
 import 'package:flutask/logic/blocs/blocs.dart';
 import 'package:flutask/presentation/utils/utils.dart';
 import 'package:flutask/presentation/widgets/widgets.dart';
@@ -20,8 +21,7 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     setInitialCategory();
     context.read<TaskCategoryBloc>().add(WatchTaskCategory());
-    context.read<TaskCategoryBloc>().add(GetTaskCategory());
-    context.read<TaskBloc>().add(WatchOnGoingTask());
+    context.read<TaskBloc>().add(WatchTaskWithCategory());
     super.initState();
   }
 
@@ -168,25 +168,27 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           BlocBuilder<TaskBloc, TaskState>(
             buildWhen: (previous, current) {
-              return current is OnGoingTaskStream;
+              return current is TaskStream;
             },
             builder: (context, state) {
-              if (state is OnGoingTaskStream) {
+              if (state is TaskStream) {
                 final entity = state.entity;
-                return StreamBuilder<TaskEntity>(
-                  stream: entity,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return FailureWidget(
-                          message: snapshot.stackTrace.toString());
-                    } else if (!snapshot.hasData) {
-                      return LoadingWidget();
-                    } else if (snapshot.data!.tasksList.isEmpty) {
-                      return EmptyWidget();
-                    }
-                    return taskListView(snapshot.data!);
-                  },
-                );
+                if (entity is Stream<TaskWithCategoryEntity>) {
+                  return StreamBuilder<TaskWithCategoryEntity>(
+                    stream: entity,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return FailureWidget(
+                            message: snapshot.stackTrace.toString());
+                      } else if (!snapshot.hasData) {
+                        return LoadingWidget();
+                      } else if (snapshot.data!.taskWithCategoryList.isEmpty) {
+                        return EmptyWidget();
+                      }
+                      return taskListView(snapshot.data!);
+                    },
+                  );
+                }
               }
               return EmptyWidget();
             },
@@ -268,22 +270,26 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget taskListView(TaskEntity data) {
+  Widget taskListView(TaskWithCategoryEntity data) {
     return ListView.builder(
-      itemCount: data.tasksList.length,
+      itemCount: data.taskWithCategoryList.length,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        final item = data.tasksList[index];
-        return taskItemWidget(context, item);
+        final item = data.taskWithCategoryList[index];
+        return taskItemWidget(
+            context, item.taskItemEntity, item.taskCategoryItemEntity);
       },
     );
   }
 
-  Widget taskItemWidget(BuildContext context, TaskItemEntity item) {
+  Widget taskItemWidget(BuildContext context, TaskItemEntity item,
+      TaskCategoryItemEntity category) {
     return GestureDetector(
       onLongPress: () {
-        context.read<TaskBloc>().add(DeleteTask(id: item.id!));
+        context
+            .read<TaskBloc>()
+            .add(UpdateTask(taskItemEntity: item.copyWith(isCompleted: true)));
       },
       child: Container(
         padding: EdgeInsets.all(24),
@@ -318,22 +324,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       color: AppTheme.perano.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: BlocBuilder<TaskCategoryBloc, TaskCategoryState>(
-                      buildWhen: (previous, current) {
-                        return current is TaskCategorySuccess;
-                      },
-                      builder: (context, state) {
-                        if (state is TaskCategorySuccess) {
-                          return Text(
-                              state.entity.taskCategoryList
-                                  .singleWhere((element) =>
-                                      element.id == item.categoryId)
-                                  .title,
-                              style: AppTheme.text3);
-                        }
-                        return Container();
-                      },
-                    ),
+                    child: Text(category.title, style: AppTheme.text3),
                   ),
                   SizedBox(width: 8),
                   Container(

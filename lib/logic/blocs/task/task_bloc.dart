@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutask/data/entities/entities.dart';
+import 'package:flutask/data/entities/task_with_category_entity.dart';
 import 'package:flutask/data/repositories/repositories.dart';
 
 part 'task_event.dart';
@@ -24,6 +25,8 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       yield* _mapGetTaskToState(event);
     } else if (event is WatchTask) {
       yield* _mapWatchTaskToState(event);
+    } else if (event is WatchTaskWithCategory) {
+      yield* _mapWatchTaskWithCategoryToState(event);
     } else if (event is WatchOnGoingTask) {
       yield* _mapWatchOnGoingTaskToState(event);
     } else if (event is WatchCompletedTask) {
@@ -51,6 +54,11 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
   Stream<TaskState> _mapWatchTaskToState(WatchTask event) async* {
     final Stream<TaskEntity> entity = _taskRepository.watchAllTasks();
+    yield TaskStream(entity: entity);
+  }
+
+  Stream<TaskState> _mapWatchTaskWithCategoryToState(WatchTaskWithCategory event) async* {
+    final Stream<TaskWithCategoryEntity> entity = _taskRepository.watchAllTaskWithCategory();
     yield TaskStream(entity: entity);
   }
 

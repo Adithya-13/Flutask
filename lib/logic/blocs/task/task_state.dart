@@ -21,7 +21,7 @@ class TaskSuccess extends TaskState {
 }
 
 class TaskStream extends TaskState {
-  final Stream<TaskEntity> entity;
+  final Stream<BaseEntity> entity;
 
   TaskStream({required this.entity});
 

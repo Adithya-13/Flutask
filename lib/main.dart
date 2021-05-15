@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
         WidgetsBinding.instance!.focusManager.primaryFocus?.unfocus();
       },
       child: MaterialApp(
-        title: 'FluTask',
+        title: 'Flutask',
         theme: ThemeData(
             primarySwatch: Colors.deepPurple,
             scaffoldBackgroundColor: AppTheme.scaffoldColor,

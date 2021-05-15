@@ -11,6 +11,8 @@ class GetTask extends TaskEvent {}
 
 class WatchTask extends TaskEvent {}
 
+class WatchTaskWithCategory extends TaskEvent {}
+
 class WatchOnGoingTask extends TaskEvent {}
 
 class WatchCompletedTask extends TaskEvent {}

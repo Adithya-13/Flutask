@@ -110,6 +110,7 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
           description: descriptionController.text,
           categoryId: selectedCategory!,
           deadline: savedDeadline,
+          isCompleted: false,
         );
       }
       context.read<TaskBloc>().add(InsertTask(taskItemEntity: taskItemEntity));
