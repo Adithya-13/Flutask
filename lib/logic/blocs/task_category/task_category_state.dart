@@ -21,7 +21,7 @@ class TaskCategorySuccess extends TaskCategoryState {
 }
 
 class TaskCategoryStream extends TaskCategoryState {
-  final Stream<BaseEntity> entity;
+  final Stream<CategoryTotalTaskEntity> entity;
 
   TaskCategoryStream({required this.entity});
 

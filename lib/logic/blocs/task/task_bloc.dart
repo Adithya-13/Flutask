@@ -24,8 +24,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       yield* _mapGetTaskToState(event);
     } else if (event is WatchTask) {
       yield* _mapWatchTaskToState(event);
-    } else if (event is WatchTaskWithCategory) {
-      yield* _mapWatchTaskWithCategoryToState(event);
     } else if (event is WatchOnGoingTask) {
       yield* _mapWatchOnGoingTaskToState(event);
     } else if (event is WatchCompletedTask) {
@@ -52,28 +50,23 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   }
 
   Stream<TaskState> _mapWatchTaskToState(WatchTask event) async* {
-    final Stream<TaskEntity> entity = _taskRepository.watchAllTasks();
-    yield TaskStream(entity: entity);
-  }
-
-  Stream<TaskState> _mapWatchTaskWithCategoryToState(WatchTaskWithCategory event) async* {
-    final Stream<TaskWithCategoryEntity> entity = _taskRepository.watchAllTaskWithCategory();
+    final Stream<TaskWithCategoryEntity> entity = _taskRepository.watchAllTasks();
     yield TaskStream(entity: entity);
   }
 
   Stream<TaskState> _mapWatchOnGoingTaskToState(WatchOnGoingTask event) async* {
-    final Stream<TaskEntity> entity = _taskRepository.watchOnGoingTasks();
+    final Stream<TaskWithCategoryEntity> entity = _taskRepository.watchOnGoingTasks();
     yield OnGoingTaskStream(entity: entity);
   }
 
   Stream<TaskState> _mapWatchCompletedTaskToState(WatchCompletedTask event) async* {
-    final Stream<TaskEntity> entity = _taskRepository.watchCompletedTasks();
+    final Stream<TaskWithCategoryEntity> entity = _taskRepository.watchCompletedTasks();
     yield CompletedTaskStream(entity: entity);
   }
 
   Stream<TaskState> _mapWatchTaskByCategoryToState(
       WatchTaskByCategory event) async* {
-    final Stream<TaskEntity> entity =
+    final Stream<TaskWithCategoryEntity> entity =
         _taskRepository.watchAllTaskByCategory(event.id);
     yield TaskStream(entity: entity);
   }

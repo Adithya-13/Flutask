@@ -21,7 +21,7 @@ class TaskSuccess extends TaskState {
 }
 
 class TaskStream extends TaskState {
-  final Stream<BaseEntity> entity;
+  final Stream<TaskWithCategoryEntity> entity;
 
   TaskStream({required this.entity});
 
@@ -30,7 +30,7 @@ class TaskStream extends TaskState {
 }
 
 class OnGoingTaskStream extends TaskState {
-  final Stream<TaskEntity> entity;
+  final Stream<TaskWithCategoryEntity> entity;
 
   OnGoingTaskStream({required this.entity});
 
@@ -39,9 +39,18 @@ class OnGoingTaskStream extends TaskState {
 }
 
 class CompletedTaskStream extends TaskState {
-  final Stream<TaskEntity> entity;
+  final Stream<TaskWithCategoryEntity> entity;
 
   CompletedTaskStream({required this.entity});
+
+  @override
+  List<Object> get props => [entity];
+}
+
+class TaskByCategoryStream extends TaskState {
+  final Stream<TaskWithCategoryEntity> entity;
+
+  TaskByCategoryStream({required this.entity});
 
   @override
   List<Object> get props => [entity];

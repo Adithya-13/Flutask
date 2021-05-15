@@ -10,20 +10,22 @@ class TaskRepository {
   Future<TaskEntity> getAllTasks() async =>
       _taskDao.getAllTasks().then((value) => DataMapper.toTaskEntity(value));
 
-  Stream<TaskEntity> watchAllTasks() =>
-      _taskDao.watchAllTasks().map((event) => DataMapper.toTaskEntity(event));
-
-  Stream<TaskWithCategoryEntity> watchAllTaskWithCategory() => _taskDao
-      .watchAllTaskWithCategory()
+  Stream<TaskWithCategoryEntity> watchAllTasks() => _taskDao
+      .watchAllTasks()
       .map((event) => DataMapper.toTaskWithCategoryEntity(event));
 
-  Stream<TaskEntity> watchOnGoingTasks() => _taskDao
+  Stream<TaskWithCategoryEntity> watchOnGoingTasks() => _taskDao
       .watchOnGoingTask()
-      .map((event) => DataMapper.toTaskEntity(event));
+      .map((event) => DataMapper.toTaskWithCategoryEntity(event));
 
-  Stream<TaskEntity> watchCompletedTasks() => _taskDao
+  Stream<TaskWithCategoryEntity> watchCompletedTasks() => _taskDao
       .watchCompletedTask()
-      .map((event) => DataMapper.toTaskEntity(event));
+      .map((event) => DataMapper.toTaskWithCategoryEntity(event));
+
+  Stream<TaskWithCategoryEntity> watchAllTaskByCategory(int categoryId) =>
+      _taskDao
+          .watchAllTaskByCategory(categoryId)
+          .map((event) => DataMapper.toTaskWithCategoryEntity(event));
 
   Future<int> insertNewTask(TaskItemEntity item) {
     return _taskDao.insertNewTask(DataMapper.toTask(item));
@@ -41,10 +43,6 @@ class TaskRepository {
   Stream<CategoryTotalTaskEntity> watchAllTaskCategories() => _taskDao
       .watchAllTaskCategories()
       .map((event) => DataMapper.toCategoryTotalTaskEntity(event));
-
-  Stream<TaskEntity> watchAllTaskByCategory(int categoryId) => _taskDao
-      .watchAllTaskByCategory(categoryId)
-      .map((event) => DataMapper.toTaskEntity(event));
 
   Future<int> insertNewCategory(TaskCategoryItemEntity newCategory) =>
       _taskDao.insertNewCategory(DataMapper.toCategory(newCategory));

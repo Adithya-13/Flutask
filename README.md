@@ -20,5 +20,6 @@ Flutter Task Management App
 - [x] dropdown null value
 - [x] completed attribute
 - [x] task with category list
-- [ ] category with total tasks
+- [x] category with total tasks
 - [ ] done tasks
+- [x] fix padding in bottom nav bar item

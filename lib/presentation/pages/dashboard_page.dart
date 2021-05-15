@@ -19,7 +19,7 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     setInitialCategory();
     context.read<TaskCategoryBloc>().add(WatchTaskCategory());
-    context.read<TaskBloc>().add(WatchTaskWithCategory());
+    context.read<TaskBloc>().add(WatchOnGoingTask());
     super.initState();
   }
 
@@ -128,22 +128,20 @@ class _DashboardPageState extends State<DashboardPage> {
             builder: (context, state) {
               if (state is TaskCategoryStream) {
                 final entity = state.entity;
-                if(entity is Stream<CategoryTotalTaskEntity>){
-                  return StreamBuilder<CategoryTotalTaskEntity>(
-                    stream: entity,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return FailureWidget(
-                            message: snapshot.stackTrace.toString());
-                      } else if (!snapshot.hasData) {
-                        return LoadingWidget();
-                      } else if (snapshot.data!.categoryTotalTaskList.isEmpty) {
-                        return EmptyWidget();
-                      }
-                      return taskCategoryGridView(snapshot.data!);
-                    },
-                  );
-                }
+                return StreamBuilder<CategoryTotalTaskEntity>(
+                  stream: entity,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return FailureWidget(
+                          message: snapshot.stackTrace.toString());
+                    } else if (!snapshot.hasData) {
+                      return LoadingWidget();
+                    } else if (snapshot.data!.categoryTotalTaskList.isEmpty) {
+                      return EmptyWidget();
+                    }
+                    return taskCategoryGridView(snapshot.data!);
+                  },
+                );
               }
               return EmptyWidget();
             },
@@ -180,27 +178,25 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           BlocBuilder<TaskBloc, TaskState>(
             buildWhen: (previous, current) {
-              return current is TaskStream;
+              return current is OnGoingTaskStream;
             },
             builder: (context, state) {
-              if (state is TaskStream) {
+              if (state is OnGoingTaskStream) {
                 final entity = state.entity;
-                if (entity is Stream<TaskWithCategoryEntity>) {
-                  return StreamBuilder<TaskWithCategoryEntity>(
-                    stream: entity,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return FailureWidget(
-                            message: snapshot.stackTrace.toString());
-                      } else if (!snapshot.hasData) {
-                        return LoadingWidget();
-                      } else if (snapshot.data!.taskWithCategoryList.isEmpty) {
-                        return EmptyWidget();
-                      }
-                      return taskListView(snapshot.data!);
-                    },
-                  );
-                }
+                return StreamBuilder<TaskWithCategoryEntity>(
+                  stream: entity,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return FailureWidget(
+                          message: snapshot.stackTrace.toString());
+                    } else if (!snapshot.hasData) {
+                      return LoadingWidget();
+                    } else if (snapshot.data!.taskWithCategoryList.isEmpty) {
+                      return EmptyWidget();
+                    }
+                    return taskListView(snapshot.data!);
+                  },
+                );
               }
               return EmptyWidget();
             },
@@ -219,7 +215,8 @@ class _DashboardPageState extends State<DashboardPage> {
       itemCount: dataList.length,
       itemBuilder: (BuildContext context, int index) {
         final taskItem = dataList[index];
-        return taskCategoryItemWidget(taskItem.taskCategoryItemEntity, taskItem.totalTasks, index);
+        return taskCategoryItemWidget(
+            taskItem.taskCategoryItemEntity, taskItem.totalTasks, index);
       },
       staggeredTileBuilder: (int index) =>
           StaggeredTile.count(2, index.isEven ? 2.4 : 1.8),
@@ -228,7 +225,8 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  Widget taskCategoryItemWidget(TaskCategoryItemEntity taskItem, int totalTasks, int index) {
+  Widget taskCategoryItemWidget(
+      TaskCategoryItemEntity taskItem, int totalTasks, int index) {
     return Container(
       decoration: BoxDecoration(
         gradient: taskItem.gradient.withDiagonalGradient,
@@ -298,9 +296,7 @@ class _DashboardPageState extends State<DashboardPage> {
       TaskCategoryItemEntity category) {
     return GestureDetector(
       onLongPress: () {
-        context
-            .read<TaskBloc>()
-            .add(DeleteTask(id: item.id!));
+        context.read<TaskBloc>().add(DeleteTask(id: item.id!));
       },
       child: Container(
         padding: EdgeInsets.all(24),
