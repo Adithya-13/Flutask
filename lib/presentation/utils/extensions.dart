@@ -31,7 +31,7 @@ extension Gradient on LinearGradient {
   }
 
   LinearGradient get randomGradientColor {
-    return AppTheme.listGradient[Random().nextInt(4)];
+    return AppTheme.listGradient[Random().nextInt(12)];
   }
 }
 

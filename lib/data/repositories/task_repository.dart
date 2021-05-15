@@ -1,6 +1,5 @@
 import 'package:flutask/data/data_providers/local/task_dao.dart';
 import 'package:flutask/data/entities/entities.dart';
-import 'package:flutask/data/entities/task_with_category_entity.dart';
 import 'package:flutask/data/utils/data_mapper.dart';
 
 class TaskRepository {
@@ -14,14 +13,17 @@ class TaskRepository {
   Stream<TaskEntity> watchAllTasks() =>
       _taskDao.watchAllTasks().map((event) => DataMapper.toTaskEntity(event));
 
-  Stream<TaskWithCategoryEntity> watchAllTaskWithCategory() =>
-      _taskDao.watchAllTaskWithCategory().map((event) => DataMapper.toTaskWithCategoryEntity(event));
+  Stream<TaskWithCategoryEntity> watchAllTaskWithCategory() => _taskDao
+      .watchAllTaskWithCategory()
+      .map((event) => DataMapper.toTaskWithCategoryEntity(event));
 
-  Stream<TaskEntity> watchOnGoingTasks() =>
-      _taskDao.watchOnGoingTask().map((event) => DataMapper.toTaskEntity(event));
+  Stream<TaskEntity> watchOnGoingTasks() => _taskDao
+      .watchOnGoingTask()
+      .map((event) => DataMapper.toTaskEntity(event));
 
-  Stream<TaskEntity> watchCompletedTasks() =>
-      _taskDao.watchCompletedTask().map((event) => DataMapper.toTaskEntity(event));
+  Stream<TaskEntity> watchCompletedTasks() => _taskDao
+      .watchCompletedTask()
+      .map((event) => DataMapper.toTaskEntity(event));
 
   Future<int> insertNewTask(TaskItemEntity item) {
     return _taskDao.insertNewTask(DataMapper.toTask(item));
@@ -36,9 +38,9 @@ class TaskRepository {
       .getAllTaskCategories()
       .then((item) => DataMapper.toTaskCategoryEntity(item));
 
-  Stream<TaskCategoryEntity> watchAllTaskCategories() => _taskDao
+  Stream<CategoryTotalTaskEntity> watchAllTaskCategories() => _taskDao
       .watchAllTaskCategories()
-      .map((event) => DataMapper.toTaskCategoryEntity(event));
+      .map((event) => DataMapper.toCategoryTotalTaskEntity(event));
 
   Stream<TaskEntity> watchAllTaskByCategory(int categoryId) => _taskDao
       .watchAllTaskByCategory(categoryId)

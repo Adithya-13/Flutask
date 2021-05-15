@@ -56,8 +56,25 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
   Future<List<TaskCategory>> getAllTaskCategories() =>
       select(taskCategories).get();
 
-  Stream<List<TaskCategory>> watchAllTaskCategories() =>
-      select(taskCategories).watch();
+  Stream<List<CategoryTotalTask>> watchAllTaskCategories() {
+    final amountOfTasks = tasks.id.count();
+
+    final query = db.select(taskCategories).join([
+      leftOuterJoin(tasks, tasks.categoryId.equalsExp(taskCategories.id),
+          useColumns: false)
+    ]);
+
+    query
+      ..addColumns([amountOfTasks])
+      ..groupBy([taskCategories.id]);
+
+    return query.watch().map((event) {
+      return event
+          .map((row) => CategoryTotalTask(
+              row.readTable(taskCategories), row.read(amountOfTasks)))
+          .toList();
+    });
+  }
 
   Future<int> insertNewCategory(TaskCategoriesCompanion newCategory) =>
       into(taskCategories).insert(newCategory);

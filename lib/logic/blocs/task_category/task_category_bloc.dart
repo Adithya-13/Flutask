@@ -47,7 +47,7 @@ class TaskCategoryBloc extends Bloc<TaskCategoryEvent, TaskCategoryState> {
 
   Stream<TaskCategoryState> _mapWatchTaskCategoryToState(
       WatchTaskCategory event) async* {
-    final Stream<TaskCategoryEntity> entity =
+    final Stream<CategoryTotalTaskEntity> entity =
         _taskRepository.watchAllTaskCategories();
     yield TaskCategoryStream(entity: entity);
   }

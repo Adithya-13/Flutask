@@ -1,6 +1,5 @@
 import 'package:flutask/data/data_providers/local/moor_database.dart';
 import 'package:flutask/data/entities/entities.dart';
-import 'package:flutask/data/entities/task_with_category_entity.dart';
 import 'package:flutask/data/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:moor_flutter/moor_flutter.dart';
@@ -33,6 +32,17 @@ class DataMapper {
                   taskItemEntity: toTaskItemEntity(item.task),
                   taskCategoryItemEntity:
                       toTaskCategoryItemEntity(item.taskCategory)))
+              .toList());
+
+  static CategoryTotalTaskEntity toCategoryTotalTaskEntity(
+          List<CategoryTotalTask> categoryTotalTasks) =>
+      CategoryTotalTaskEntity(
+          categoryTotalTaskList: categoryTotalTasks
+              .map((item) => CategoryTotalTaskItemEntity(
+                    taskCategoryItemEntity:
+                        toTaskCategoryItemEntity(item.category),
+                    totalTasks: item.totalTasks,
+                  ))
               .toList());
 
   static TasksCompanion toTask(TaskItemEntity item) => TasksCompanion.insert(

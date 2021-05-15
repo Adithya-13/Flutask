@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutask/data/entities/entities.dart';
-import 'package:flutask/data/entities/task_with_category_entity.dart';
 import 'package:flutask/data/repositories/repositories.dart';
 
 part 'task_event.dart';
