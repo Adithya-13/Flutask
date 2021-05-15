@@ -24,46 +24,59 @@ class BottomNavBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               GestureDetector(
-                child: SvgPicture.asset(
-                  selectedIndex == 0
-                      ? Resources.dashboardActive
-                      : Resources.dashboardInactive,
-                  height: 20,
-                  width: 20,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SvgPicture.asset(
+                    selectedIndex == 0
+                        ? Resources.dashboardActive
+                        : Resources.dashboardInactive,
+                    height: 20,
+                    width: 20,
+                  ),
                 ),
                 onTap: () => onItemTapped(0),
               ),
               GestureDetector(
-                child: SvgPicture.asset(
-                  selectedIndex == 1
-                      ? Resources.bagActive
-                      : Resources.bagInactive,
-                  height: 20,
-                  width: 20,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SvgPicture.asset(
+                    selectedIndex == 1
+                        ? Resources.bagActive
+                        : Resources.bagInactive,
+                    height: 20,
+                    width: 20,
+                  ),
                 ),
                 onTap: () => onItemTapped(1),
               ),
               Container(
                 width: 20,
                 height: 20,
+                padding: const EdgeInsets.all(16),
               ),
               GestureDetector(
-                child: SvgPicture.asset(
-                  selectedIndex == 2
-                      ? Resources.calendarActive
-                      : Resources.calendarInactive,
-                  height: 20,
-                  width: 20,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SvgPicture.asset(
+                    selectedIndex == 2
+                        ? Resources.calendarActive
+                        : Resources.calendarInactive,
+                    height: 20,
+                    width: 20,
+                  ),
                 ),
                 onTap: () => onItemTapped(2),
               ),
               GestureDetector(
-                child: SvgPicture.asset(
-                  selectedIndex == 3
-                      ? Resources.profileActive
-                      : Resources.profileInactive,
-                  height: 20,
-                  width: 20,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SvgPicture.asset(
+                    selectedIndex == 3
+                        ? Resources.profileActive
+                        : Resources.profileInactive,
+                    height: 20,
+                    width: 20,
+                  ),
                 ),
                 onTap: () => onItemTapped(3),
               ),
