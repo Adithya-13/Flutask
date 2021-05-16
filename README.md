@@ -11,7 +11,7 @@ Flutter Task Management App
 - [ ] Calendar Page
 - [ ] Profile Page
 - [x] Add Task BottomSheet
-- [ ] Detail Task
+- [x] Detail Task
 - [ ] Detail Category
 
 ## Util Tasks
@@ -26,6 +26,8 @@ Flutter Task Management App
 - [x] cleaning up dao
 - [x] error border
 - [ ] show case view library
+- [x] update & delete tasks
+- [ ] create snackBar
 
 ## Future Feature
 

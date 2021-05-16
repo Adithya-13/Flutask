@@ -21,6 +21,7 @@ class _DashboardPageState extends State<DashboardPage> {
     setInitialCategory();
     context.read<TaskCategoryBloc>().add(WatchTaskCategory());
     context.read<TaskBloc>().add(WatchOnGoingTask());
+    context.read<TaskBloc>().add(WatchCompletedTask());
     super.initState();
   }
 
@@ -68,6 +69,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 _topBar(),
                 _myTasks(),
                 _onGoing(),
+                _complete(),
               ],
             ),
           ),
@@ -183,6 +185,61 @@ class _DashboardPageState extends State<DashboardPage> {
             },
             builder: (context, state) {
               if (state is OnGoingTaskStream) {
+                final entity = state.entity;
+                return StreamBuilder<TaskWithCategoryEntity>(
+                  stream: entity,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return FailureWidget(
+                          message: snapshot.stackTrace.toString());
+                    } else if (!snapshot.hasData) {
+                      return LoadingWidget();
+                    } else if (snapshot.data!.taskWithCategoryList.isEmpty) {
+                      return EmptyWidget();
+                    }
+                    return taskListView(snapshot.data!);
+                  },
+                );
+              }
+              return EmptyWidget();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  _complete() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Complete',
+                style: AppTheme.headline2,
+                textAlign: TextAlign.start,
+              ),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  'See all',
+                  style: AppTheme.text2.withPink,
+                ),
+              ),
+            ],
+          ),
+          BlocBuilder<TaskBloc, TaskState>(
+            buildWhen: (previous, current) {
+              return current is CompletedTaskStream;
+            },
+            builder: (context, state) {
+              if (state is CompletedTaskStream) {
                 final entity = state.entity;
                 return StreamBuilder<TaskWithCategoryEntity>(
                   stream: entity,

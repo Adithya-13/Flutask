@@ -162,6 +162,7 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
                                     ),
                                     onTap: () {
                                       context.read<TaskBloc>().add(DeleteTask(id: taskItem.id!));
+                                      Navigator.pop(context);
                                     },
                                   ),
                                   Text('Update Task', style: AppTheme.headline3),
