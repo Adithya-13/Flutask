@@ -25,4 +25,10 @@ Flutter Task Management App
 - [x] fix padding in bottom nav bar item
 - [x] cleaning up dao
 - [x] error border
-- [ ] showcaseview library
+- [ ] show case view library
+
+## Future Feature
+
+- [ ] save to excel
+- [ ] notification
+- [ ] statistics

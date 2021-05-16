@@ -23,6 +23,8 @@ class Resources {
   static const String on_board_3 = 'assets/svg/on_board_3.svg';
   static const String clock = 'assets/svg/clock.svg';
   static const String date = 'assets/svg/date.svg';
+  static const String trash = 'assets/svg/trash.svg';
+  static const String complete = 'assets/svg/complete.svg';
 
   // IMAGE ASSETS
   static const String avatarImage = 'assets/img/avatar_img.jpg';

@@ -6,27 +6,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class AddTaskSheet extends StatefulWidget {
-  const AddTaskSheet({
-    Key? key,
-  }) : super(key: key);
+class UpdateTaskSheet extends StatefulWidget {
+  final TaskWithCategoryItemEntity item;
+
+  const UpdateTaskSheet({Key? key, required this.item}) : super(key: key);
 
   @override
-  _AddTaskSheetState createState() => _AddTaskSheetState();
+  _UpdateTaskSheetState createState() => _UpdateTaskSheetState();
 }
 
-class _AddTaskSheetState extends State<AddTaskSheet> {
+class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
+
+  late TaskItemEntity taskItem;
+  late TaskCategoryItemEntity categoryItem;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   int? selectedCategory;
   DateTime? datePicked;
   TimeOfDay? timePicked;
+  bool isCompleted = false;
 
   @override
   void initState() {
-    titleController = TextEditingController();
-    descriptionController = TextEditingController();
+    taskItem = widget.item.taskItemEntity;
+    categoryItem = widget.item.taskCategoryItemEntity;
+    titleController = TextEditingController(text: taskItem.title);
+    descriptionController = TextEditingController(text: taskItem.description);
+    selectedCategory = categoryItem.id;
+    datePicked = taskItem.deadline;
+    timePicked = taskItem.deadline != null ? TimeOfDay.fromDateTime(taskItem.deadline!) : null;
+    isCompleted = taskItem.isCompleted;
     super.initState();
   }
 
@@ -89,12 +99,14 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
     }
   }
 
-  _saveTask() {
+  _updateTask() {
     if (_formKey.currentState!.validate()) {
       TaskItemEntity taskItemEntity = TaskItemEntity(
+        id: taskItem.id,
         title: titleController.text,
         description: descriptionController.text,
         categoryId: selectedCategory!,
+        isCompleted: isCompleted,
       );
       if (datePicked != null && timePicked != null) {
         final DateTime savedDeadline = DateTime(
@@ -105,14 +117,15 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
           timePicked!.minute,
         );
         taskItemEntity = TaskItemEntity(
+          id: taskItem.id,
           title: titleController.text,
           description: descriptionController.text,
           categoryId: selectedCategory!,
           deadline: savedDeadline,
-          isCompleted: false,
+          isCompleted: isCompleted,
         );
       }
-      context.read<TaskBloc>().add(InsertTask(taskItemEntity: taskItemEntity));
+      context.read<TaskBloc>().add(UpdateTask(taskItemEntity: taskItemEntity));
       Navigator.pop(context);
     }
   }
@@ -138,9 +151,32 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
-                              Center(
-                                child:
-                                    Text('Add Task', style: AppTheme.headline3),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  GestureDetector(
+                                    child: SvgPicture.asset(
+                                      Resources.trash,
+                                      height: 20,
+                                      width: 20,
+                                    ),
+                                    onTap: () {
+                                      context.read<TaskBloc>().add(DeleteTask(id: taskItem.id!));
+                                    },
+                                  ),
+                                  Text('Update Task', style: AppTheme.headline3),
+                                  GestureDetector(
+                                    child: SvgPicture.asset(
+                                      Resources.complete,
+                                      height: 20,
+                                      width: 20,
+                                    ),
+                                    onTap: () {
+                                      isCompleted = true;
+                                      _updateTask();
+                                    },
+                                  ),
+                                ],
                               ),
                               SizedBox(height: 20),
                               TextFormField(
@@ -247,8 +283,8 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                                   : Container(),
                               SizedBox(height: 20),
                               PinkButton(
-                                text: 'Save Task',
-                                onTap: _saveTask,
+                                text: 'Update Task',
+                                onTap: _updateTask,
                               ),
                               SizedBox(height: 20),
                             ],

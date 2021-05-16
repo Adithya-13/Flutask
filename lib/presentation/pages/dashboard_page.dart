@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -295,8 +296,20 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget taskItemWidget(BuildContext context, TaskItemEntity item,
       TaskCategoryItemEntity category) {
     return GestureDetector(
-      onLongPress: () {
-        context.read<TaskBloc>().add(DeleteTask(id: item.id!));
+      onTap: () {
+        context.read<TaskCategoryBloc>().add(GetTaskCategory());
+        showCupertinoModalBottomSheet(
+          expand: false,
+          context: context,
+          enableDrag: true,
+          topRadius: Radius.circular(20),
+          backgroundColor: Colors.transparent,
+          builder: (context) => UpdateTaskSheet(
+              item: TaskWithCategoryItemEntity(
+            taskItemEntity: item,
+            taskCategoryItemEntity: category,
+          )),
+        );
       },
       child: Container(
         padding: EdgeInsets.all(24),
