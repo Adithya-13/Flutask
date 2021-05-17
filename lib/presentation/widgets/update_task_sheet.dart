@@ -5,6 +5,7 @@ import 'package:flutask/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_color/flutter_color.dart';
 
 class UpdateTaskSheet extends StatefulWidget {
   final TaskWithCategoryItemEntity item;
@@ -126,6 +127,11 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
         );
       }
       context.read<TaskBloc>().add(UpdateTask(taskItemEntity: taskItemEntity));
+      Helper.showCustomSnackBar(
+        context,
+        content: 'Success Update Task',
+        bgColor: AppTheme.greenPastel,
+      );
       Navigator.pop(context);
     }
   }
@@ -162,6 +168,11 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
                                     ),
                                     onTap: () {
                                       context.read<TaskBloc>().add(DeleteTask(id: taskItem.id!));
+                                      Helper.showCustomSnackBar(
+                                        context,
+                                        content: 'Success Delete Task',
+                                        bgColor: AppTheme.redPastel.lighter(30),
+                                      );
                                       Navigator.pop(context);
                                     },
                                   ),
