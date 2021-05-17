@@ -38,6 +38,10 @@ class Resources {
 class Keys {
   static const String isInitial = 'isInitial';
   static const String isOnBoardInitial = 'isOnBoardInitial';
+  static const String categoryItem = 'categoryItem';
+  static const String totalTasks = 'totalTasks';
+  static const String index = 'index';
+  static const String heroTitleCategory = 'heroTitleCategory';
 }
 
 class FormatDate {

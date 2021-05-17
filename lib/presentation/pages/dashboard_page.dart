@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutask/data/entities/entities.dart';
 import 'package:flutask/logic/blocs/blocs.dart';
+import 'package:flutask/presentation/routes/routes.dart';
 import 'package:flutask/presentation/utils/utils.dart';
 import 'package:flutask/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -272,10 +273,10 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget taskCategoryItemWidget(
-      TaskCategoryItemEntity taskItem, int totalTasks, int index) {
+      TaskCategoryItemEntity categoryItem, int totalTasks, int index) {
     return Container(
       decoration: BoxDecoration(
-        gradient: taskItem.gradient.withDiagonalGradient,
+        gradient: categoryItem.gradient.withDiagonalGradient,
         borderRadius: BorderRadius.circular(32),
         boxShadow: AppTheme.getShadow(AppTheme.cornflowerBlue),
       ),
@@ -303,11 +304,14 @@ class _DashboardPageState extends State<DashboardPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text(
-                      taskItem.title,
-                      style: AppTheme.headline3.withWhite,
-                      maxLines: index.isEven ? 3 : 2,
-                      overflow: TextOverflow.ellipsis,
+                    child: Hero(
+                      tag: Keys.heroTitleCategory + index.toString(),
+                      child: Text(
+                        categoryItem.title,
+                        style: AppTheme.headline3.withWhite,
+                        maxLines: index.isEven ? 3 : 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                   Icon(Icons.arrow_right, color: Colors.white),
@@ -321,7 +325,19 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ],
         ),
-      ).addRipple(onTap: () {}),
+      ).addRipple(onTap: () {
+        Navigator.pushNamed(
+          context,
+          PagePath.detailCategory,
+          arguments: ArgumentBundle(
+              extras: {
+                Keys.categoryItem: categoryItem,
+                Keys.totalTasks: totalTasks,
+                Keys.index: index,
+              },
+              identifier: 'detail Category'),
+        );
+      }),
     );
   }
 
