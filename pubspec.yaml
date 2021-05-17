@@ -41,6 +41,7 @@ dependencies:
   uuid: ^3.0.4
   modal_bottom_sheet: ^2.0.0
   get_storage: ^2.0.2
+  flutter_color: ^2.0.0
 
 dev_dependencies:
   flutter_test:

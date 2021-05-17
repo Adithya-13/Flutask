@@ -5,6 +5,7 @@ import 'package:flutask/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_color/flutter_color.dart';
 
 class AddTaskSheet extends StatefulWidget {
   const AddTaskSheet({
@@ -113,6 +114,11 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
         );
       }
       context.read<TaskBloc>().add(InsertTask(taskItemEntity: taskItemEntity));
+      Helper.showCustomSnackBar(
+        context,
+        content: 'Success Add Task',
+        bgColor: AppTheme.lightPurple.lighter(30),
+      );
       Navigator.pop(context);
     }
   }
@@ -150,7 +156,8 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                                   enabledBorder: AppTheme.enabledBorder,
                                   focusedBorder: AppTheme.focusedBorder,
                                   errorBorder: AppTheme.errorBorder,
-                                  focusedErrorBorder: AppTheme.focusedErrorBorder,
+                                  focusedErrorBorder:
+                                      AppTheme.focusedErrorBorder,
                                   isDense: true,
                                   hintText: 'Type your title here',
                                   hintStyle: AppTheme.text1,
@@ -170,7 +177,8 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                                   enabledBorder: AppTheme.enabledBorder,
                                   focusedBorder: AppTheme.focusedBorder,
                                   errorBorder: AppTheme.errorBorder,
-                                  focusedErrorBorder: AppTheme.focusedErrorBorder,
+                                  focusedErrorBorder:
+                                      AppTheme.focusedErrorBorder,
                                   isDense: true,
                                   hintText: 'Type your description here',
                                   hintStyle: AppTheme.text1,
@@ -218,7 +226,8 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                                         enabledBorder: AppTheme.enabledBorder,
                                         focusedBorder: AppTheme.focusedBorder,
                                         errorBorder: AppTheme.errorBorder,
-                                        focusedErrorBorder: AppTheme.focusedErrorBorder,
+                                        focusedErrorBorder:
+                                            AppTheme.focusedErrorBorder,
                                         isDense: true,
                                         hintText: 'Choose Category',
                                         hintStyle: AppTheme.text1,

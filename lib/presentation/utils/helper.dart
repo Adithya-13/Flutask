@@ -3,19 +3,18 @@ import 'package:flutter/material.dart';
 
 class Helper {
   static showCustomSnackBar(BuildContext context,
-      {required String content,
-      required bool isHasAction,
-      VoidCallback? onPressed}) {
+      {required String content, required Color bgColor}) {
     final snackBar = SnackBar(
       content: Text(
         content,
-        style: AppTheme.text1,
+        style: AppTheme.text1.withDarkPurple,
       ),
-      action:
-          isHasAction ? SnackBarAction(label: '', onPressed: onPressed!) : null,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+        borderRadius: BorderRadius.circular(12),
       ),
+      backgroundColor: bgColor.withOpacity(0.7),
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
     );
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
