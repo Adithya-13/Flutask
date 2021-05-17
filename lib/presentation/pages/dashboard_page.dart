@@ -31,18 +31,6 @@ class _DashboardPageState extends State<DashboardPage> {
     if (isInitial) {
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
             taskCategoryItemEntity: TaskCategoryItemEntity(
-              title: "On Going",
-              gradient: AppTheme.gradient.randomGradientColor,
-            ),
-          ));
-      context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-            taskCategoryItemEntity: TaskCategoryItemEntity(
-              title: "Complete",
-              gradient: AppTheme.gradient.randomGradientColor,
-            ),
-          ));
-      context.read<TaskCategoryBloc>().add(InsertTaskCategory(
-            taskCategoryItemEntity: TaskCategoryItemEntity(
               title: "School",
               gradient: AppTheme.gradient.randomGradientColor,
             ),
