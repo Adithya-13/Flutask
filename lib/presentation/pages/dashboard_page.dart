@@ -278,7 +278,7 @@ class _DashboardPageState extends State<DashboardPage> {
       decoration: BoxDecoration(
         gradient: categoryItem.gradient.withDiagonalGradient,
         borderRadius: BorderRadius.circular(32),
-        boxShadow: AppTheme.getShadow(AppTheme.cornflowerBlue),
+        boxShadow: AppTheme.getShadow(categoryItem.gradient.colors[1]),
       ),
       child: Padding(
         padding: EdgeInsets.all(16),
