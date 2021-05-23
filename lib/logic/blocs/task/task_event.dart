@@ -11,6 +11,15 @@ class GetTask extends TaskEvent {}
 
 class WatchTask extends TaskEvent {}
 
+class WatchTaskByStatus extends TaskEvent {
+  final StatusType statusType;
+
+  WatchTaskByStatus({required this.statusType});
+
+  @override
+  List<Object?> get props => [statusType];
+}
+
 class WatchOnGoingTask extends TaskEvent {}
 
 class WatchCompletedTask extends TaskEvent {}

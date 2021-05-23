@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutask/data/entities/entities.dart';
 import 'package:flutask/data/repositories/repositories.dart';
+import 'package:flutask/presentation/utils/utils.dart';
 
 part 'task_event.dart';
 
@@ -30,6 +31,8 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       yield* _mapWatchCompletedTaskToState(event);
     } else if (event is WatchTaskByCategory) {
       yield* _mapWatchTaskByCategoryToState(event);
+    } else if (event is WatchTaskByStatus) {
+      yield* _mapWatchTaskByStatusToState(event);
     } else if (event is InsertTask) {
       yield* _mapInsertTaskToState(event);
     } else if (event is UpdateTask) {
@@ -54,9 +57,14 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     yield TaskStream(entity: entity);
   }
 
+  Stream<TaskState> _mapWatchTaskByStatusToState(WatchTaskByStatus event) async* {
+    final Stream<TaskWithCategoryEntity> entity = _taskRepository.watchAllTaskByStatus(event.statusType);
+    yield TaskStream(entity: entity);
+  }
+
   Stream<TaskState> _mapWatchOnGoingTaskToState(WatchOnGoingTask event) async* {
-    final Stream<TaskWithCategoryEntity> entity = _taskRepository.watchcompleteTasks();
-    yield completeTaskstream(entity: entity);
+    final Stream<TaskWithCategoryEntity> entity = _taskRepository.watchOnGoingTasks();
+    yield OnGoingTaskStream(entity: entity);
   }
 
   Stream<TaskState> _mapWatchCompletedTaskToState(WatchCompletedTask event) async* {

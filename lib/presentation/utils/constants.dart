@@ -43,9 +43,13 @@ class Keys {
   static const String completeTasks = 'completeTasks';
   static const String index = 'index';
   static const String heroTitleCategory = 'heroTitleCategory';
+  static const String heroStatus = 'heroStatus';
+  static const String statusType = 'statusType';
 }
 
 class FormatDate {
   static const String monthDayYear = 'MMM dd, yyyy';
   static const String deadline = 'hh:mm aa, MMM dd, yyyy';
 }
+
+enum StatusType {ON_GOING, COMPLETE}

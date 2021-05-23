@@ -25,6 +25,13 @@ class PageRouter {
             bundle: args as ArgumentBundle,
           ),
         );
+      case PagePath.onGoingComplete:
+        return _buildRoute(
+          settings,
+          OnGoingCompletePage(
+            bundle: args as ArgumentBundle,
+          ),
+        );
       default:
         return _errorRoute();
     }
