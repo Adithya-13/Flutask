@@ -12,7 +12,7 @@ Flutter Task Management App
 - [ ] Profile Page
 - [x] Add Task BottomSheet
 - [x] Detail Task
-- [ ] Detail Category
+- [x] Detail Category
 
 ## Util Tasks
 
@@ -21,13 +21,13 @@ Flutter Task Management App
 - [x] completed attribute
 - [x] task with category list
 - [x] category with total tasks
-- [ ] done tasks
+- [x] done tasks
 - [x] fix padding in bottom nav bar item
 - [x] cleaning up dao
 - [x] error border
 - [ ] show case view library
 - [x] update & delete tasks
-- [ ] create snackBar
+- [x] create snackBar
 
 ## Future Feature
 
