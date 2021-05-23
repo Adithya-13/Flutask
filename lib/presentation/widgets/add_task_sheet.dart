@@ -9,8 +9,10 @@ import 'package:flutter_color/flutter_color.dart';
 
 class AddTaskSheet extends StatefulWidget {
   const AddTaskSheet({
-    Key? key,
+    Key? key, this.categoryId,
   }) : super(key: key);
+
+  final int? categoryId;
 
   @override
   _AddTaskSheetState createState() => _AddTaskSheetState();
@@ -20,7 +22,7 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  int? selectedCategory;
+  late int? selectedCategory = widget.categoryId ?? null;
   DateTime? datePicked;
   TimeOfDay? timePicked;
 

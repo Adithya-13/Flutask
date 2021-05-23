@@ -40,6 +40,18 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
     super.initState();
   }
 
+  _showBottomSheet(int categoryId) {
+    context.read<TaskCategoryBloc>().add(GetTaskCategory());
+    showCupertinoModalBottomSheet(
+      expand: false,
+      context: context,
+      enableDrag: true,
+      topRadius: Radius.circular(20),
+      backgroundColor: Colors.transparent,
+      builder: (context) => AddTaskSheet(categoryId: categoryId),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +76,7 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
               ),
               IconButton(
                 icon: Icon(Icons.add),
-                onPressed: () {},
+                onPressed: () => _showBottomSheet(categoryItem.id!),
               ),
             ],
             backgroundColor: categoryItem.gradient.colors[0]
