@@ -49,3 +49,5 @@ class FormatDate {
   static const String monthDayYear = 'MMM dd, yyyy';
   static const String deadline = 'hh:mm aa, MMM dd, yyyy';
 }
+
+enum StatusType {ON_GOING, COMPLETE}

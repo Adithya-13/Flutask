@@ -170,10 +170,10 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           BlocBuilder<TaskBloc, TaskState>(
             buildWhen: (previous, current) {
-              return current is completeTaskstream;
+              return current is OnGoingTaskStream;
             },
             builder: (context, state) {
-              if (state is completeTaskstream) {
+              if (state is OnGoingTaskStream) {
                 final entity = state.entity;
                 return StreamBuilder<TaskWithCategoryEntity>(
                   stream: entity,
