@@ -170,10 +170,10 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           BlocBuilder<TaskBloc, TaskState>(
             buildWhen: (previous, current) {
-              return current is OnGoingTaskStream;
+              return current is completeTaskstream;
             },
             builder: (context, state) {
-              if (state is OnGoingTaskStream) {
+              if (state is completeTaskstream) {
                 final entity = state.entity;
                 return StreamBuilder<TaskWithCategoryEntity>(
                   stream: entity,
@@ -263,7 +263,7 @@ class _DashboardPageState extends State<DashboardPage> {
       itemBuilder: (BuildContext context, int index) {
         final taskItem = dataList[index];
         return taskCategoryItemWidget(
-            taskItem.taskCategoryItemEntity, taskItem.totalTasks, index);
+            taskItem.taskCategoryItemEntity, taskItem.totalTasks, taskItem.completeTasks, index);
       },
       staggeredTileBuilder: (int index) =>
           StaggeredTile.count(2, index.isEven ? 2.4 : 1.8),
@@ -273,12 +273,12 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget taskCategoryItemWidget(
-      TaskCategoryItemEntity categoryItem, int totalTasks, int index) {
+      TaskCategoryItemEntity categoryItem, int totalTasks, int completeTasks, int index) {
     return Container(
       decoration: BoxDecoration(
         gradient: categoryItem.gradient.withDiagonalGradient,
         borderRadius: BorderRadius.circular(32),
-        boxShadow: AppTheme.getShadow(AppTheme.cornflowerBlue),
+        boxShadow: AppTheme.getShadow(categoryItem.gradient.colors[1]),
       ),
       child: Padding(
         padding: EdgeInsets.all(16),
@@ -333,6 +333,7 @@ class _DashboardPageState extends State<DashboardPage> {
               extras: {
                 Keys.categoryItem: categoryItem,
                 Keys.totalTasks: totalTasks,
+                Keys.completeTasks: completeTasks,
                 Keys.index: index,
               },
               identifier: 'detail Category'),

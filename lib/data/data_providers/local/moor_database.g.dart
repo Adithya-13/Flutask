@@ -24,21 +24,18 @@ class Task extends DataClass implements Insertable<Task> {
   factory Task.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
-    final boolType = db.typeSystem.forDartType<bool>();
     return Task(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      categoryId: intType
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      categoryId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}category_id'])!,
-      title:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}title'])!,
-      description: stringType
+      title: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}title'])!,
+      description: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
-      deadline: dateTimeType
+      deadline: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}deadline']),
-      isCompleted: boolType
+      isCompleted: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}is_completed'])!,
     );
   }
@@ -132,7 +129,7 @@ class Task extends DataClass implements Insertable<Task> {
               $mrjc(description.hashCode,
                   $mrjc(deadline.hashCode, isCompleted.hashCode))))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Task &&
           other.id == this.id &&
@@ -392,16 +389,15 @@ class TaskCategory extends DataClass implements Insertable<TaskCategory> {
   factory TaskCategory.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return TaskCategory(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      title:
-          stringType.mapFromDatabaseResponse(data['${effectivePrefix}title'])!,
-      startColor: intType
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      title: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}title'])!,
+      startColor: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}start_color'])!,
-      endColor:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}end_color'])!,
+      endColor: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}end_color'])!,
     );
   }
   @override
@@ -467,7 +463,7 @@ class TaskCategory extends DataClass implements Insertable<TaskCategory> {
   int get hashCode => $mrjf($mrjc(id.hashCode,
       $mrjc(title.hashCode, $mrjc(startColor.hashCode, endColor.hashCode))));
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is TaskCategory &&
           other.id == this.id &&

@@ -9,7 +9,11 @@ class CategoryTotalTaskEntity extends BaseEntity {
 class CategoryTotalTaskItemEntity extends BaseEntity {
   final TaskCategoryItemEntity taskCategoryItemEntity;
   final int totalTasks;
+  final int completeTasks;
 
-  CategoryTotalTaskItemEntity(
-      {required this.taskCategoryItemEntity, required this.totalTasks});
+  CategoryTotalTaskItemEntity({
+    required this.taskCategoryItemEntity,
+    required this.totalTasks,
+    required this.completeTasks,
+  });
 }

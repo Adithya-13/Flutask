@@ -29,10 +29,10 @@ class TaskStream extends TaskState {
   List<Object> get props => [entity];
 }
 
-class OnGoingTaskStream extends TaskState {
+class completeTaskstream extends TaskState {
   final Stream<TaskWithCategoryEntity> entity;
 
-  OnGoingTaskStream({required this.entity});
+  completeTaskstream({required this.entity});
 
   @override
   List<Object> get props => [entity];
