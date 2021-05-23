@@ -14,7 +14,7 @@ class TaskRepository {
       .watchAllTasks()
       .map((event) => DataMapper.toTaskWithCategoryEntity(event));
 
-  Stream<TaskWithCategoryEntity> watchOnGoingTasks() => _taskDao
+  Stream<TaskWithCategoryEntity> watchcompleteTasks() => _taskDao
       .watchOnGoingTask()
       .map((event) => DataMapper.toTaskWithCategoryEntity(event));
 

@@ -55,8 +55,8 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   }
 
   Stream<TaskState> _mapWatchOnGoingTaskToState(WatchOnGoingTask event) async* {
-    final Stream<TaskWithCategoryEntity> entity = _taskRepository.watchOnGoingTasks();
-    yield OnGoingTaskStream(entity: entity);
+    final Stream<TaskWithCategoryEntity> entity = _taskRepository.watchcompleteTasks();
+    yield completeTaskstream(entity: entity);
   }
 
   Stream<TaskState> _mapWatchCompletedTaskToState(WatchCompletedTask event) async* {

@@ -25,10 +25,17 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
   late TaskCategoryItemEntity categoryItem =
       widget.bundle.extras[Keys.categoryItem];
   late int totalTasks = widget.bundle.extras[Keys.totalTasks];
+  late int completeTasks = widget.bundle.extras[Keys.completeTasks];
   late int index = widget.bundle.extras[Keys.index];
+  late int percent;
 
   @override
   void initState() {
+    try{
+      percent = completeTasks ~/ totalTasks;
+    }catch(_){
+      percent = 0;
+    }
     context.read<TaskBloc>().add(WatchTaskByCategory(id: categoryItem.id!));
     super.initState();
   }
@@ -95,7 +102,7 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
                               style: AppTheme.headline2.withWhite,
                             ),
                             Text(
-                              'Completed Tasks 2 / 5',
+                              'Completed Tasks $completeTasks / $totalTasks',
                               style: AppTheme.text3.withWhite,
                             ),
                           ],
@@ -104,9 +111,9 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
                           radius: 120.0,
                           lineWidth: 13.0,
                           animation: true,
-                          percent: 0.7,
+                          percent: percent * 1.0,
                           center: Text(
-                            "70%",
+                            "${percent * 100}%",
                             style: AppTheme.headline3.withDarkPurple,
                           ),
                           curve: Curves.easeOutExpo,
