@@ -34,3 +34,19 @@ Flutter Task Management App
 - [ ] save to excel
 - [ ] notification
 - [ ] statistics
+- [ ] event organizer
+- [ ] calendar
+- [ ] multi-language
+- [ ] setting
+- [ ] search tasks
+
+## task category
+
+- title
+- description
+- total tasks
+- gradient
+- circular & linear progress bar total tasks (complete and on going)
+- collapse toolbar
+- edit category (change gradient, title, description)
+- search

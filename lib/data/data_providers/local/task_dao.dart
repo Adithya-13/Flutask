@@ -29,16 +29,18 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
 
   Stream<List<TaskWithCategory>> watchOnGoingTask() {
     final query = (select(tasks)
-      ..where((tbl) => tbl.isCompleted.equals(false))
-      ..orderBy(orderTaskByDate())).join(leftOuterJoinTaskWithCategory());
+          ..where((tbl) => tbl.isCompleted.equals(false))
+          ..orderBy(orderTaskByDate()))
+        .join(leftOuterJoinTaskWithCategory());
 
     return toTaskWithCategory(query);
   }
 
   Stream<List<TaskWithCategory>> watchCompletedTask() {
     final query = (select(tasks)
-        ..where((tbl) => tbl.isCompleted.equals(true))
-        ..orderBy(orderTaskByDate())).join(leftOuterJoinTaskWithCategory());
+          ..where((tbl) => tbl.isCompleted.equals(true))
+          ..orderBy(orderTaskByDate()))
+        .join(leftOuterJoinTaskWithCategory());
 
     return toTaskWithCategory(query);
   }
@@ -57,14 +59,17 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
 
   Stream<List<CategoryTotalTask>> watchAllTaskCategories() {
     final amountOfTasks = tasks.id.count();
+    final completeTasks = tasks.isCompleted.equals(true);
 
-    final query = db.select(taskCategories).join(leftOuterJoinCategoryTotalTask());
+    final query =
+        db.select(taskCategories).join(leftOuterJoinCategoryTotalTask());
 
     query
       ..addColumns([amountOfTasks])
+      ..addColumns([completeTasks.count()])
       ..groupBy([taskCategories.id]);
 
-    return toCategoryTotalTask(query, amountOfTasks);
+    return toCategoryTotalTask(query, amountOfTasks, completeTasks.count());
   }
 
   Future<int> insertNewCategory(TaskCategoriesCompanion newCategory) =>
@@ -92,11 +97,12 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
       ];
 
   List<Join> leftOuterJoinCategoryTotalTask() => [
-    leftOuterJoin(tasks, tasks.categoryId.equalsExp(taskCategories.id),
-        useColumns: false)
-  ];
+        leftOuterJoin(tasks, tasks.categoryId.equalsExp(taskCategories.id),
+            useColumns: false)
+      ];
 
-  Stream<List<TaskWithCategory>> toTaskWithCategory(JoinedSelectStatement<Table, DataClass> query) {
+  Stream<List<TaskWithCategory>> toTaskWithCategory(
+      JoinedSelectStatement<Table, DataClass> query) {
     return query.watch().map((rows) {
       return rows.map((row) {
         return TaskWithCategory(
@@ -107,12 +113,23 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
     });
   }
 
-  Stream<List<CategoryTotalTask>> toCategoryTotalTask(JoinedSelectStatement<Table, DataClass> query, Expression<int> amountOfTasks) {
+  Stream<List<CategoryTotalTask>> toCategoryTotalTask(
+    JoinedSelectStatement<Table, DataClass> query,
+    Expression<int> amountOfTasks,
+    Expression<int> completeTasks,
+  ) {
     return query.watch().map((event) {
-      return event
-          .map((row) => CategoryTotalTask(
-          row.readTable(taskCategories), row.read(amountOfTasks)))
-          .toList();
+      return event.map(
+        (row) {
+          print(
+              "amountOfTasks ${row.read(amountOfTasks)}, completeTasks ${row.read(completeTasks)}");
+          return CategoryTotalTask(
+            row.readTable(taskCategories),
+            row.read(amountOfTasks),
+            row.read(completeTasks),
+          );
+        },
+      ).toList();
     });
   }
 }
