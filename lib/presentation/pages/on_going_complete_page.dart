@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_color/flutter_color.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class OnGoingCompletePage extends StatefulWidget {
   final ArgumentBundle bundle;
@@ -22,25 +21,18 @@ class OnGoingCompletePage extends StatefulWidget {
 }
 
 class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
-  late TaskCategoryItemEntity categoryItem =
-      widget.bundle.extras[Keys.categoryItem];
-  late int totalTasks = widget.bundle.extras[Keys.totalTasks];
-  late int completeTasks = widget.bundle.extras[Keys.completeTasks];
-  late int index = widget.bundle.extras[Keys.index];
-  late int percent;
+
+  late StatusType statusType = widget.bundle.extras[Keys.statusType];
+  late String title = statusType == StatusType.ON_GOING ? 'On Going' : 'Complete';
+  LinearGradient randomGradient = LinearGradient(colors: []).randomGradientColor;
 
   @override
   void initState() {
-    try{
-      percent = completeTasks ~/ totalTasks;
-    }catch(_){
-      percent = 0;
-    }
-    context.read<TaskBloc>().add(WatchTaskByCategory(id: categoryItem.id!));
+    context.read<TaskBloc>().add(WatchTaskByStatus(statusType: statusType));
     super.initState();
   }
 
-  _showBottomSheet(int categoryId) {
+  _showBottomSheet() {
     context.read<TaskCategoryBloc>().add(GetTaskCategory());
     showCupertinoModalBottomSheet(
       expand: false,
@@ -48,7 +40,7 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
       enableDrag: true,
       topRadius: Radius.circular(20),
       backgroundColor: Colors.transparent,
-      builder: (context) => AddTaskSheet(categoryId: categoryId),
+      builder: (context) => AddTaskSheet(),
     );
   }
 
@@ -63,9 +55,9 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
             floating: false,
             pinned: true,
             title: Hero(
-              tag: Keys.heroTitleCategory + index.toString(),
+              tag: Keys.heroTitleCategory + statusType.toString(),
               child: Text(
-                categoryItem.title,
+                title,
                 style: AppTheme.headline2.withWhite,
               ),
             ),
@@ -76,13 +68,13 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
               ),
               IconButton(
                 icon: Icon(Icons.add),
-                onPressed: () => _showBottomSheet(categoryItem.id!),
+                onPressed: () => _showBottomSheet(),
               ),
             ],
-            backgroundColor: categoryItem.gradient.colors[0]
-                .mix(categoryItem.gradient.colors[1], 0.5),
+            backgroundColor: randomGradient.colors[0]
+                .mix(randomGradient.colors[1], 0.5),
             stretch: true,
-            shadowColor: AppTheme.getShadow(categoryItem.gradient.colors[1])[0].color,
+            shadowColor: AppTheme.getShadow(randomGradient.colors[1])[0].color,
             elevation: 8,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
@@ -90,7 +82,7 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: BoxDecoration(
-                  gradient: categoryItem.gradient.withDiagonalGradient,
+                  gradient: randomGradient.withDiagonalGradient,
                   borderRadius:
                       BorderRadius.vertical(bottom: Radius.circular(20)),
                 ),
@@ -104,35 +96,18 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
                     SizedBox(
                       height: 56,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    Column(
                       children: [
-                        Column(
-                          children: [
-                            Text(
-                              'Your Tasks',
-                              style: AppTheme.headline2.withWhite,
-                            ),
-                            Text(
-                              'Completed Tasks $completeTasks / $totalTasks',
-                              style: AppTheme.text3.withWhite,
-                            ),
-                          ],
+                        Text(
+                          'Your $title Tasks',
+                          style: AppTheme.headline1.withWhite,
                         ),
-                        CircularPercentIndicator(
-                          radius: 120.0,
-                          lineWidth: 13.0,
-                          animation: true,
-                          percent: percent * 1.0,
-                          center: Text(
-                            "${percent * 100}%",
-                            style: AppTheme.headline3.withDarkPurple,
-                          ),
-                          curve: Curves.easeOutExpo,
-                          animationDuration: 3000,
-                          circularStrokeCap: CircularStrokeCap.round,
-                          progressColor: AppTheme.boldColorFont,
-                          backgroundColor: Colors.white,
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                          'Total Tasks 0',
+                          style: AppTheme.text2.withWhite,
                         ),
                       ],
                     ),
@@ -143,7 +118,7 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
           ),
           SliverList(
             delegate: SliverChildListDelegate([
-              _onGoing(),
+              _taskList(),
             ]),
           ),
         ],
@@ -151,7 +126,7 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
     );
   }
 
-  _onGoing() {
+  _taskList() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: BlocBuilder<TaskBloc, TaskState>(

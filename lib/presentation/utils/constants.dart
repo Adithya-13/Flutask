@@ -43,6 +43,8 @@ class Keys {
   static const String completeTasks = 'completeTasks';
   static const String index = 'index';
   static const String heroTitleCategory = 'heroTitleCategory';
+  static const String heroStatus = 'heroStatus';
+  static const String statusType = 'statusType';
 }
 
 class FormatDate {
