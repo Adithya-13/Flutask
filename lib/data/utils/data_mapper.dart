@@ -42,7 +42,6 @@ class DataMapper {
                     taskCategoryItemEntity:
                         toTaskCategoryItemEntity(item.category),
                     totalTasks: item.totalTasks,
-                    completeTasks: item.completeTasks,
                   ))
               .toList());
 

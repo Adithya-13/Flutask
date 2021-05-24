@@ -59,17 +59,15 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
 
   Stream<List<CategoryTotalTask>> watchAllTaskCategories() {
     final amountOfTasks = tasks.id.count();
-    final completeTasks = tasks.isCompleted.equals(true);
 
     final query =
         db.select(taskCategories).join(leftOuterJoinCategoryTotalTask());
 
     query
       ..addColumns([amountOfTasks])
-      ..addColumns([completeTasks.count()])
       ..groupBy([taskCategories.id]);
 
-    return toCategoryTotalTask(query, amountOfTasks, completeTasks.count());
+    return toCategoryTotalTask(query, amountOfTasks);
   }
 
   Future<int> insertNewCategory(TaskCategoriesCompanion newCategory) =>
@@ -116,17 +114,13 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
   Stream<List<CategoryTotalTask>> toCategoryTotalTask(
     JoinedSelectStatement<Table, DataClass> query,
     Expression<int> amountOfTasks,
-    Expression<int> completeTasks,
   ) {
     return query.watch().map((event) {
       return event.map(
         (row) {
-          print(
-              "amountOfTasks ${row.read(amountOfTasks)}, completeTasks ${row.read(completeTasks)}");
           return CategoryTotalTask(
             row.readTable(taskCategories),
             row.read(amountOfTasks),
-            row.read(completeTasks),
           );
         },
       ).toList();

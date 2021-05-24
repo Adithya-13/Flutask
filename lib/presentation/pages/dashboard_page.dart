@@ -263,7 +263,7 @@ class _DashboardPageState extends State<DashboardPage> {
       itemBuilder: (BuildContext context, int index) {
         final taskItem = dataList[index];
         return taskCategoryItemWidget(
-            taskItem.taskCategoryItemEntity, taskItem.totalTasks, taskItem.completeTasks, index);
+            taskItem.taskCategoryItemEntity, taskItem.totalTasks, index);
       },
       staggeredTileBuilder: (int index) =>
           StaggeredTile.count(2, index.isEven ? 2.4 : 1.8),
@@ -273,7 +273,7 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget taskCategoryItemWidget(
-      TaskCategoryItemEntity categoryItem, int totalTasks, int completeTasks, int index) {
+      TaskCategoryItemEntity categoryItem, int totalTasks, int index) {
     return Container(
       decoration: BoxDecoration(
         gradient: categoryItem.gradient.withDiagonalGradient,
@@ -332,8 +332,6 @@ class _DashboardPageState extends State<DashboardPage> {
           arguments: ArgumentBundle(
               extras: {
                 Keys.categoryItem: categoryItem,
-                Keys.totalTasks: totalTasks,
-                Keys.completeTasks: completeTasks,
                 Keys.index: index,
               },
               identifier: 'detail Category'),

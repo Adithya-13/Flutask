@@ -24,20 +24,53 @@ class DetailCategoryTaskPage extends StatefulWidget {
 class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
   late TaskCategoryItemEntity categoryItem =
       widget.bundle.extras[Keys.categoryItem];
-  late int totalTasks = widget.bundle.extras[Keys.totalTasks];
-  late int completeTasks = widget.bundle.extras[Keys.completeTasks];
+  late int totalTasks = 0;
+  late int completeTasks = 0;
   late int index = widget.bundle.extras[Keys.index];
-  late int percent;
 
   @override
   void initState() {
-    try{
-      percent = completeTasks ~/ totalTasks;
-    }catch(_){
-      percent = 0;
-    }
+    percent();
     context.read<TaskBloc>().add(WatchTaskByCategory(id: categoryItem.id!));
     super.initState();
+  }
+
+  double percent() {
+    try {
+      print("complete $completeTasks, total $totalTasks");
+      final percentValue = completeTasks / totalTasks;
+      if (percentValue.isNaN || percentValue.isInfinite) {
+        return 0.0;
+      }
+      return percentValue;
+    } catch (_) {
+      return 0.0;
+    }
+  }
+
+  void setCompleteAndTotalValue(
+      AsyncSnapshot<TaskWithCategoryEntity> snapshot) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      completeTasks = 0;
+      totalTasks = 0;
+      for (TaskWithCategoryItemEntity item
+          in snapshot.data!.taskWithCategoryList) {
+        if (item.taskCategoryItemEntity.id == categoryItem.id) {
+          if (item.taskItemEntity.isCompleted == true) {
+            completeTasks++;
+          }
+          totalTasks++;
+        }
+      }
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    completeTasks = 0;
+    totalTasks = 0;
+    super.dispose();
   }
 
   _showBottomSheet(int categoryId) {
@@ -82,7 +115,8 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
             backgroundColor: categoryItem.gradient.colors[0]
                 .mix(categoryItem.gradient.colors[1], 0.5),
             stretch: true,
-            shadowColor: AppTheme.getShadow(categoryItem.gradient.colors[1])[0].color,
+            shadowColor:
+                AppTheme.getShadow(categoryItem.gradient.colors[1])[0].color,
             elevation: 8,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
@@ -123,9 +157,9 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
                           radius: 120.0,
                           lineWidth: 13.0,
                           animation: true,
-                          percent: percent * 1.0,
+                          percent: percent(),
                           center: Text(
-                            "${percent * 100}%",
+                            "${(percent() * 100).toInt()}%",
                             style: AppTheme.headline3.withDarkPurple,
                           ),
                           curve: Curves.easeOutExpo,
@@ -164,6 +198,7 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
             return StreamBuilder<TaskWithCategoryEntity>(
               stream: entity,
               builder: (context, snapshot) {
+                setCompleteAndTotalValue(snapshot);
                 if (snapshot.hasError) {
                   return FailureWidget(message: snapshot.stackTrace.toString());
                 } else if (!snapshot.hasData) {
