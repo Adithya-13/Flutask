@@ -4,12 +4,13 @@ import 'package:flutask/presentation/utils/utils.dart';
 import 'package:flutask/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_color/flutter_color.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AddTaskSheet extends StatefulWidget {
   const AddTaskSheet({
-    Key? key, this.categoryId,
+    Key? key,
+    this.categoryId,
   }) : super(key: key);
 
   final int? categoryId;
@@ -204,8 +205,24 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                                           ? datePicked!
                                               .format(FormatDate.monthDayYear)
                                           : 'Date',
-                                      icon: SvgPicture.asset(Resources.date,
-                                          color: Colors.white, width: 16),
+                                      prefixWidget: SvgPicture.asset(
+                                          Resources.date,
+                                          color: Colors.white,
+                                          width: 16),
+                                      suffixWidget: datePicked != null
+                                          ? GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  datePicked = null;
+                                                });
+                                              },
+                                              child: Icon(
+                                                Icons.close_rounded,
+                                                color: Colors.white,
+                                                size: 16,
+                                              ),
+                                            )
+                                          : null,
                                     ),
                                   ),
                                   SizedBox(width: 20),
@@ -215,8 +232,24 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                                       text: timePicked != null
                                           ? timePicked!.format(context)
                                           : 'Time',
-                                      icon: SvgPicture.asset(Resources.clock,
-                                          color: Colors.white, width: 16),
+                                      prefixWidget: SvgPicture.asset(
+                                          Resources.clock,
+                                          color: Colors.white,
+                                          width: 16),
+                                      suffixWidget: timePicked != null
+                                          ? GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  timePicked = null;
+                                                });
+                                              },
+                                              child: Icon(
+                                                Icons.close_rounded,
+                                                color: Colors.white,
+                                                size: 16,
+                                              ),
+                                            )
+                                          : null,
                                     ),
                                   ),
                                 ],

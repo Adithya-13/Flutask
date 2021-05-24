@@ -110,13 +110,13 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
         categoryId: selectedCategory!,
         isCompleted: isCompleted,
       );
-      if (datePicked != null && timePicked != null) {
+      if (datePicked != null) {
         final DateTime savedDeadline = DateTime(
           datePicked!.year,
           datePicked!.month,
           datePicked!.day,
-          timePicked!.hour,
-          timePicked!.minute,
+          timePicked != null ? timePicked!.hour : DateTime.now().hour,
+          timePicked != null ? timePicked!.minute : DateTime.now().minute,
         );
         taskItemEntity = TaskItemEntity(
           id: taskItem.id,
@@ -249,8 +249,24 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
                                           ? datePicked!
                                               .format(FormatDate.monthDayYear)
                                           : 'Date',
-                                      icon: SvgPicture.asset(Resources.date,
-                                          color: Colors.white, width: 16),
+                                      prefixWidget: SvgPicture.asset(
+                                          Resources.date,
+                                          color: Colors.white,
+                                          width: 16),
+                                      suffixWidget: datePicked != null
+                                          ? GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  datePicked = null;
+                                                });
+                                              },
+                                              child: Icon(
+                                                Icons.close_rounded,
+                                                color: Colors.white,
+                                                size: 16,
+                                              ),
+                                            )
+                                          : null,
                                     ),
                                   ),
                                   SizedBox(width: 20),
@@ -260,8 +276,24 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
                                       text: timePicked != null
                                           ? timePicked!.format(context)
                                           : 'Time',
-                                      icon: SvgPicture.asset(Resources.clock,
-                                          color: Colors.white, width: 16),
+                                      prefixWidget: SvgPicture.asset(
+                                          Resources.clock,
+                                          color: Colors.white,
+                                          width: 16),
+                                      suffixWidget: timePicked != null
+                                          ? GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  timePicked = null;
+                                                });
+                                              },
+                                              child: Icon(
+                                                Icons.close_rounded,
+                                                color: Colors.white,
+                                                size: 16,
+                                              ),
+                                            )
+                                          : null,
                                     ),
                                   ),
                                 ],
