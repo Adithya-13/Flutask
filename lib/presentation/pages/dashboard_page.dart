@@ -154,13 +154,27 @@ class _DashboardPageState extends State<DashboardPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'On Going',
-                style: AppTheme.headline2,
-                textAlign: TextAlign.start,
+              Hero(
+                tag: Keys.heroStatus + StatusType.ON_GOING.toString(),
+                child: Text(
+                  'On Going',
+                  style: AppTheme.headline2,
+                  textAlign: TextAlign.start,
+                ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    PagePath.onGoingComplete,
+                    arguments: ArgumentBundle(
+                      extras: {
+                        Keys.statusType : StatusType.ON_GOING,
+                      },
+                      identifier: 'on going detail'
+                    ),
+                  );
+                },
                 child: Text(
                   'See all',
                   style: AppTheme.text2.withPink,
@@ -170,10 +184,10 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           BlocBuilder<TaskBloc, TaskState>(
             buildWhen: (previous, current) {
-              return current is completeTaskstream;
+              return current is OnGoingTaskStream;
             },
             builder: (context, state) {
-              if (state is completeTaskstream) {
+              if (state is OnGoingTaskStream) {
                 final entity = state.entity;
                 return StreamBuilder<TaskWithCategoryEntity>(
                   stream: entity,
@@ -209,13 +223,27 @@ class _DashboardPageState extends State<DashboardPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Complete',
-                style: AppTheme.headline2,
-                textAlign: TextAlign.start,
+              Hero(
+                tag: Keys.heroStatus + StatusType.COMPLETE.toString(),
+                child: Text(
+                  'Complete',
+                  style: AppTheme.headline2,
+                  textAlign: TextAlign.start,
+                ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    PagePath.onGoingComplete,
+                    arguments: ArgumentBundle(
+                        extras: {
+                          Keys.statusType : StatusType.COMPLETE,
+                        },
+                        identifier: 'complete detail'
+                    ),
+                  );
+                },
                 child: Text(
                   'See all',
                   style: AppTheme.text2.withPink,

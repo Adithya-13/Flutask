@@ -4,8 +4,8 @@ import 'package:flutask/presentation/utils/utils.dart';
 import 'package:flutask/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_color/flutter_color.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class UpdateTaskSheet extends StatefulWidget {
   final TaskWithCategoryItemEntity item;
@@ -17,7 +17,6 @@ class UpdateTaskSheet extends StatefulWidget {
 }
 
 class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
-
   late TaskItemEntity taskItem;
   late TaskCategoryItemEntity categoryItem;
   TextEditingController titleController = TextEditingController();
@@ -36,7 +35,9 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
     descriptionController = TextEditingController(text: taskItem.description);
     selectedCategory = categoryItem.id;
     datePicked = taskItem.deadline;
-    timePicked = taskItem.deadline != null ? TimeOfDay.fromDateTime(taskItem.deadline!) : null;
+    timePicked = taskItem.deadline != null
+        ? TimeOfDay.fromDateTime(taskItem.deadline!)
+        : null;
     isCompleted = taskItem.isCompleted;
     super.initState();
   }
@@ -109,13 +110,13 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
         categoryId: selectedCategory!,
         isCompleted: isCompleted,
       );
-      if (datePicked != null && timePicked != null) {
+      if (datePicked != null) {
         final DateTime savedDeadline = DateTime(
           datePicked!.year,
           datePicked!.month,
           datePicked!.day,
-          timePicked!.hour,
-          timePicked!.minute,
+          timePicked != null ? timePicked!.hour : DateTime.now().hour,
+          timePicked != null ? timePicked!.minute : DateTime.now().minute,
         );
         taskItemEntity = TaskItemEntity(
           id: taskItem.id,
@@ -150,7 +151,7 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
                 child: state is TaskCategoryLoading
                     ? LoadingWidget()
                     : SingleChildScrollView(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: BouncingScrollPhysics(),
                         child: Form(
                           key: _formKey,
                           child: Column(
@@ -158,7 +159,8 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   GestureDetector(
                                     child: SvgPicture.asset(
@@ -167,7 +169,9 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
                                       width: 20,
                                     ),
                                     onTap: () {
-                                      context.read<TaskBloc>().add(DeleteTask(id: taskItem.id!));
+                                      context
+                                          .read<TaskBloc>()
+                                          .add(DeleteTask(id: taskItem.id!));
                                       Helper.showCustomSnackBar(
                                         context,
                                         content: 'Success Delete Task',
@@ -176,7 +180,8 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
                                       Navigator.pop(context);
                                     },
                                   ),
-                                  Text('Update Task', style: AppTheme.headline3),
+                                  Text('Update Task',
+                                      style: AppTheme.headline3),
                                   GestureDetector(
                                     child: SvgPicture.asset(
                                       Resources.complete,
@@ -198,7 +203,8 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
                                   enabledBorder: AppTheme.enabledBorder,
                                   focusedBorder: AppTheme.focusedBorder,
                                   errorBorder: AppTheme.errorBorder,
-                                  focusedErrorBorder: AppTheme.focusedErrorBorder,
+                                  focusedErrorBorder:
+                                      AppTheme.focusedErrorBorder,
                                   isDense: true,
                                   hintText: 'Type your title here',
                                   hintStyle: AppTheme.text1,
@@ -218,7 +224,8 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
                                   enabledBorder: AppTheme.enabledBorder,
                                   focusedBorder: AppTheme.focusedBorder,
                                   errorBorder: AppTheme.errorBorder,
-                                  focusedErrorBorder: AppTheme.focusedErrorBorder,
+                                  focusedErrorBorder:
+                                      AppTheme.focusedErrorBorder,
                                   isDense: true,
                                   hintText: 'Type your description here',
                                   hintStyle: AppTheme.text1,
@@ -242,8 +249,24 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
                                           ? datePicked!
                                               .format(FormatDate.monthDayYear)
                                           : 'Date',
-                                      icon: SvgPicture.asset(Resources.date,
-                                          color: Colors.white, width: 16),
+                                      prefixWidget: SvgPicture.asset(
+                                          Resources.date,
+                                          color: Colors.white,
+                                          width: 16),
+                                      suffixWidget: datePicked != null
+                                          ? GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  datePicked = null;
+                                                });
+                                              },
+                                              child: Icon(
+                                                Icons.close_rounded,
+                                                color: Colors.white,
+                                                size: 16,
+                                              ),
+                                            )
+                                          : null,
                                     ),
                                   ),
                                   SizedBox(width: 20),
@@ -253,8 +276,24 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
                                       text: timePicked != null
                                           ? timePicked!.format(context)
                                           : 'Time',
-                                      icon: SvgPicture.asset(Resources.clock,
-                                          color: Colors.white, width: 16),
+                                      prefixWidget: SvgPicture.asset(
+                                          Resources.clock,
+                                          color: Colors.white,
+                                          width: 16),
+                                      suffixWidget: timePicked != null
+                                          ? GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  timePicked = null;
+                                                });
+                                              },
+                                              child: Icon(
+                                                Icons.close_rounded,
+                                                color: Colors.white,
+                                                size: 16,
+                                              ),
+                                            )
+                                          : null,
                                     ),
                                   ),
                                 ],
@@ -266,7 +305,8 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
                                         enabledBorder: AppTheme.enabledBorder,
                                         focusedBorder: AppTheme.focusedBorder,
                                         errorBorder: AppTheme.errorBorder,
-                                        focusedErrorBorder: AppTheme.focusedErrorBorder,
+                                        focusedErrorBorder:
+                                            AppTheme.focusedErrorBorder,
                                         isDense: true,
                                         hintText: 'Choose Category',
                                         hintStyle: AppTheme.text1,

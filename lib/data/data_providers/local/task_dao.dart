@@ -1,4 +1,5 @@
 import 'package:flutask/data/models/models.dart';
+import 'package:flutask/presentation/utils/utils.dart';
 import 'package:moor_flutter/moor_flutter.dart';
 
 import 'moor_database.dart';
@@ -22,6 +23,16 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
     final query = (select(tasks)
           ..where((tbl) => tbl.categoryId.equals(categoryId))
           ..orderBy(orderTaskByDate()))
+        .join(leftOuterJoinTaskWithCategory());
+
+    return toTaskWithCategory(query);
+  }
+
+  Stream<List<TaskWithCategory>> watchAllTaskByStatus(StatusType statusType) {
+    final status = statusType == StatusType.ON_GOING ? false : true;
+    final query = (select(tasks)
+      ..where((tbl) => tbl.isCompleted.equals(status))
+      ..orderBy(orderTaskByDate()))
         .join(leftOuterJoinTaskWithCategory());
 
     return toTaskWithCategory(query);

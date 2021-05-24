@@ -9,6 +9,30 @@ class AppTheme {
     colors: [pinkSalmon, frenchRose],
   );
 
+  static const Color lightBrown = Color(0xFFFEB395);
+  static const Color brown = Color(0xFFF17E50);
+  static const LinearGradient brownGradient = LinearGradient(
+    colors: [lightBrown, brown],
+  );
+
+  static const Color lightLemon = Color(0xFFFEED95);
+  static const Color lemon = Color(0xFFF1D650);
+  static const LinearGradient lemonGradient = LinearGradient(
+    colors: [lightLemon, lemon],
+  );
+
+  static const Color lightTosca = Color(0xFF95FBFE);
+  static const Color tosca = Color(0xFF50F1D9);
+  static const LinearGradient toscaGradient = LinearGradient(
+    colors: [lightTosca, tosca],
+  );
+
+  static const Color lightDonker = Color(0xFF9C95FE);
+  static const Color donker = Color(0xFF6850F1);
+  static const LinearGradient donkerGradient = LinearGradient(
+    colors: [lightDonker, donker],
+  );
+
   static const Color perano = Color(0xFFB09DF2);
   static const Color cornflowerBlue = Color(0xFF8C77FB);
   static const LinearGradient purpleGradient = LinearGradient(
@@ -33,34 +57,10 @@ class AppTheme {
     colors: [pinkSalmon, frenchRose],
   );
 
-  static const Color lightPurple = Color(0xFFC165DD);
-  static const Color purple = Color(0xFF5C27FE);
-  static const LinearGradient darkPurpleGradient = LinearGradient(
-    colors: [pinkSalmon, frenchRose],
-  );
-
   static const Color lightGreen = Color(0xFF2AFEB7);
   static const Color green = Color(0xFF08C792);
   static const LinearGradient greenGradient = LinearGradient(
     colors: [lightGreen, green],
-  );
-
-  static const Color lightYellow = Color(0xFFFACD67);
-  static const Color pink = Color(0xFFFC76B3);
-  static const LinearGradient yellowPinkGradient = LinearGradient(
-    colors: [lightYellow, pink],
-  );
-
-  static const Color lightBluePastel = Color(0xFF00F7A7);
-  static const Color bluePastel = Color(0xFF04F5ED);
-  static const LinearGradient lightBlueGradient = LinearGradient(
-    colors: [lightBluePastel, bluePastel],
-  );
-
-  static const Color blue = Color(0xFF1DE5E2);
-  static const Color lightPink = Color(0xFFB588F7);
-  static const LinearGradient bluePinkGradient = LinearGradient(
-    colors: [blue, lightPink],
   );
 
   static const Color yellow = Color(0xFFFFE324);
@@ -81,14 +81,16 @@ class AppTheme {
     orangeGradient,
     blueGradient,
     darkOrangeGradient,
-    darkPurpleGradient,
     greenGradient,
-    yellowPinkGradient,
-    lightBlueGradient,
-    bluePinkGradient,
     yellowGradient,
     darkBlueGradient,
+    brownGradient,
+    lemonGradient,
+    toscaGradient,
+    donkerGradient,
   ];
+
+  static const Color lightPurple = Color(0xFFE594FF);
 
   static const Color boldColorFont = Color(0xFF2A2E49);
   static const Color normalColorFont = Color(0xFFa2a1ae);
@@ -123,25 +125,25 @@ class AppTheme {
   static const TextStyle text1 = TextStyle(
     fontSize: 16,
     color: normalColorFont,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w500,
   );
 
   static const TextStyle text2 = TextStyle(
     fontSize: 16,
     color: Colors.white,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w500,
   );
 
   static const TextStyle text3 = TextStyle(
     fontSize: 14,
     color: normalColorFont,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w500,
   );
 
   static const TextStyle text4 = TextStyle(
     fontSize: 14,
     color: Colors.white,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w500,
   );
 
   static OutlineInputBorder enabledBorder = OutlineInputBorder(
