@@ -139,7 +139,7 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
                 child: state is TaskCategoryLoading
                     ? LoadingWidget()
                     : SingleChildScrollView(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: BouncingScrollPhysics(),
                         child: Form(
                           key: _formKey,
                           child: Column(
