@@ -125,25 +125,25 @@ class AppTheme {
   static const TextStyle text1 = TextStyle(
     fontSize: 16,
     color: normalColorFont,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w500,
   );
 
   static const TextStyle text2 = TextStyle(
     fontSize: 16,
     color: Colors.white,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w500,
   );
 
   static const TextStyle text3 = TextStyle(
     fontSize: 14,
     color: normalColorFont,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w500,
   );
 
   static const TextStyle text4 = TextStyle(
     fontSize: 14,
     color: Colors.white,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w500,
   );
 
   static OutlineInputBorder enabledBorder = OutlineInputBorder(

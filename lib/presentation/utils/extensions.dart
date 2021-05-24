@@ -47,7 +47,7 @@ extension TextStyling on TextStyle {
   }
 
   TextStyle get normal {
-    return this.copyWith(fontWeight: FontWeight.w400);
+    return this.copyWith(fontWeight: FontWeight.w500);
   }
 
   TextStyle get light {

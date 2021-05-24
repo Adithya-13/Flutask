@@ -85,7 +85,7 @@ flutter:
         - asset: assets/fonts/GothamBold.ttf
           weight: 700
         - asset: assets/fonts/GothamMedium.ttf
-          weight: 400
+          weight: 500
         - asset: assets/fonts/GothamLight.ttf
           weight: 100
   #
