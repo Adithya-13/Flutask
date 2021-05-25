@@ -33,6 +33,11 @@ class TaskRepository {
           .watchAllTaskByStatus(statusType)
           .map((event) => DataMapper.toTaskWithCategoryEntity(event));
 
+  Stream<TaskWithCategoryEntity> watchAllTaskByDate(DateTime dateTime) =>
+      _taskDao
+          .watchAllTaskByDate(dateTime)
+          .map((event) => DataMapper.toTaskWithCategoryEntity(event));
+
   Future<int> insertNewTask(TaskItemEntity item) {
     return _taskDao.insertNewTask(DataMapper.toTask(item));
   }

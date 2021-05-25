@@ -53,7 +53,7 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: datePicked ?? DateTime.now(),
-      firstDate: DateTime.now(),
+      firstDate: DateTime(2019),
       lastDate: DateTime(2025),
       helpText: 'Select Deadline Date',
       confirmText: 'Select',

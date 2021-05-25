@@ -20,6 +20,15 @@ class WatchTaskByStatus extends TaskEvent {
   List<Object?> get props => [statusType];
 }
 
+class WatchTaskByDate extends TaskEvent {
+  final DateTime dateTime;
+
+  WatchTaskByDate({required this.dateTime});
+
+  @override
+  List<Object?> get props => [dateTime];
+}
+
 class WatchOnGoingTask extends TaskEvent {}
 
 class WatchCompletedTask extends TaskEvent {}
