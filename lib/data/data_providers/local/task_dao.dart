@@ -131,7 +131,6 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
       JoinedSelectStatement<Table, DataClass> query) {
     return query.watch().map((rows) {
       return rows.map((row) {
-        print("tasks ${row.read(tasks.id)}}");
         return TaskWithCategory(
           row.readTable(tasks),
           row.readTableOrNull(taskCategories)!,

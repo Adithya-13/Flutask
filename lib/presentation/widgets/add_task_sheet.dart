@@ -100,13 +100,13 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
         description: descriptionController.text,
         categoryId: selectedCategory!,
       );
-      if (datePicked != null && timePicked != null) {
+      if (datePicked != null) {
         final DateTime savedDeadline = DateTime(
           datePicked!.year,
           datePicked!.month,
           datePicked!.day,
-          timePicked!.hour,
-          timePicked!.minute,
+          timePicked != null ? timePicked!.hour : DateTime.now().hour,
+          timePicked != null ? timePicked!.minute : DateTime.now().minute,
         );
         taskItemEntity = TaskItemEntity(
           title: titleController.text,

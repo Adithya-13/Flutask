@@ -57,62 +57,64 @@ class _CalendarPageState extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _topBar(),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          datePicked.format(FormatDate.monthYear),
-                          style: AppTheme.headline2,
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          '10 Tasks on ${datePicked.format(FormatDate.dayDate)}',
-                          style: AppTheme.text1,
-                        ),
-                      ],
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _topBar(),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            datePicked.format(FormatDate.monthYear),
+                            style: AppTheme.headline2,
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            '10 Tasks on ${datePicked.format(FormatDate.dayDate)}',
+                            style: AppTheme.text1,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  RippleCircleButton(
-                    onTap: () => _showDeadlineDatePicker(),
-                    child: SvgPicture.asset(Resources.date,
-                        color: Colors.white, width: 20),
-                  ),
-                ],
+                    RippleCircleButton(
+                      onTap: () => _showDeadlineDatePicker(),
+                      child: SvgPicture.asset(Resources.date,
+                          color: Colors.white, width: 20),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            CalendarTimeline(
-              initialDate: datePicked,
-              firstDate: DateTime(2019, 1, 15),
-              lastDate: DateTime(2025, 11, 20),
-              onDateSelected: (date) {
-                setState(() {
-                  datePicked = date!;
-                  _getTaskByDate();
-                });
-              },
-              leftMargin: 20,
-              monthColor: Colors.blueGrey,
-              dayColor: Colors.teal[200],
-              activeDayColor: Colors.white,
-              activeBackgroundDayColor: Colors.redAccent[100],
-              dotsColor: Color(0xFF333A47),
-              locale: 'en_US',
-            ),
-            _taskByDate(),
-          ],
+              CalendarTimeline(
+                initialDate: datePicked,
+                firstDate: DateTime(2019, 1, 15),
+                lastDate: DateTime(2025, 11, 20),
+                onDateSelected: (date) {
+                  setState(() {
+                    datePicked = date!;
+                    _getTaskByDate();
+                  });
+                },
+                leftMargin: 20,
+                monthColor: Colors.blueGrey,
+                dayColor: Colors.teal[200],
+                activeDayColor: Colors.white,
+                activeBackgroundDayColor: Colors.redAccent[100],
+                dotsColor: Color(0xFF333A47),
+                locale: 'en_US',
+              ),
+              _taskByDate(),
+            ],
+          ),
         ),
       ),
     );

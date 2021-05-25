@@ -8,7 +8,7 @@ Flutter Task Management App
 - [x] OnBoard Page
 - [x] Dashboard Page
 - [ ] Bag Page
-- [ ] Calendar Page
+- [X] Calendar Page
 - [ ] Profile Page
 - [x] Add Task BottomSheet
 - [x] Detail Task
@@ -35,7 +35,7 @@ Flutter Task Management App
 - [ ] notification
 - [ ] statistics
 - [ ] event organizer
-- [ ] calendar
+- [X] calendar
 - [ ] multi-language
 - [ ] setting
 - [ ] search tasks
@@ -50,3 +50,7 @@ Flutter Task Management App
 - collapse toolbar
 - edit category (change gradient, title, description)
 - search
+
+# Bug
+
+- get task by date is not working properly (must add expression of hour and minute too!)
