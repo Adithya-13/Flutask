@@ -77,7 +77,7 @@ class CalendarTimeline extends StatefulWidget {
 
 class _CalendarTimelineState extends State<CalendarTimeline> {
   final ItemScrollController _controllerYear = ItemScrollController();
-  final ItemScrollController _controllerMonth = ItemScrollController();
+  // final ItemScrollController _controllerMonth = ItemScrollController();
   final ItemScrollController _controllerDay = ItemScrollController();
 
   int? _yearSelectedIndex;
@@ -119,6 +119,7 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         if (widget.showYears) _buildYearList(),
+        // _buildMonthList(),
         _buildDayList(),
       ],
     );
@@ -129,7 +130,7 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
   /// the days show will be the available
   SizedBox _buildDayList() {
     return SizedBox(
-      height: 180,
+      height: 160,
       child: ScrollablePositionedList.builder(
         itemScrollController: _controllerDay,
         initialScrollIndex: _daySelectedIndex ?? 0,
@@ -176,7 +177,7 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
       child: ScrollablePositionedList.builder(
         initialScrollIndex: _monthSelectedIndex ?? 0,
         initialAlignment: _scrollAlignment,
-        itemScrollController: _controllerMonth,
+        // itemScrollController: _controllerMonth,
         padding: EdgeInsets.only(left: widget.leftMargin),
         scrollDirection: Axis.horizontal,
         itemCount: _months.length,
@@ -340,6 +341,7 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
   }
 
   void _moveToYearIndex(int index) {
+    print('year $index');
     _controllerYear.scrollTo(
       index: index,
       alignment: _scrollAlignment,
@@ -356,12 +358,13 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
   }
 
   void _moveToMonthIndex(int index) {
-    _controllerMonth.scrollTo(
-      index: index,
-      alignment: _scrollAlignment,
-      duration: Duration(milliseconds: 500),
-      curve: Curves.easeInOutCubic,
-    );
+    // print('month $index');
+    // _controllerMonth.scrollTo(
+    //   index: index,
+    //   alignment: _scrollAlignment,
+    //   duration: Duration(milliseconds: 500),
+    //   curve: Curves.easeInOutCubic,
+    // );
   }
 
   _goToActualDay(int index) {
@@ -373,6 +376,7 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
   }
 
   void _moveToDayIndex(int index) {
+    print('day $index');
     _controllerDay.scrollTo(
       index: index,
       alignment: _scrollAlignment,
