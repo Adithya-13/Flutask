@@ -45,6 +45,31 @@ class RippleButton extends StatelessWidget {
   }
 }
 
+class RippleCircleButton extends StatelessWidget {
+  final Widget child;
+  final VoidCallback onTap;
+
+  const RippleCircleButton({
+    Key? key,
+    required this.onTap, required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: AppTheme.purpleGradient.withHorizontalGradient,
+        boxShadow: AppTheme.getShadow(AppTheme.cornflowerBlue),
+        shape: BoxShape.circle,
+      ),
+      child: Padding(
+          padding: EdgeInsets.all(16),
+          child: child,
+          ).addRipple(onTap: onTap),
+    );
+  }
+}
+
 class PinkButton extends StatelessWidget {
   final String text;
   final Widget? icon;

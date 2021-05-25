@@ -119,7 +119,6 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         if (widget.showYears) _buildYearList(),
-        _buildMonthList(),
         _buildDayList(),
       ],
     );
@@ -136,6 +135,7 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
         initialScrollIndex: _daySelectedIndex ?? 0,
         initialAlignment: _scrollAlignment,
         scrollDirection: Axis.horizontal,
+        physics: BouncingScrollPhysics(),
         itemCount: _days.length,
         padding: EdgeInsets.only(left: widget.leftMargin, right: 20),
         itemBuilder: (BuildContext context, int index) {
