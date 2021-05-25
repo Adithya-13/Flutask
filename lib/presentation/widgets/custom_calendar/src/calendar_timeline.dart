@@ -130,14 +130,14 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
   /// the days show will be the available
   SizedBox _buildDayList() {
     return SizedBox(
-      height: 75,
+      height: 180,
       child: ScrollablePositionedList.builder(
         itemScrollController: _controllerDay,
         initialScrollIndex: _daySelectedIndex ?? 0,
         initialAlignment: _scrollAlignment,
         scrollDirection: Axis.horizontal,
         itemCount: _days.length,
-        padding: EdgeInsets.only(left: widget.leftMargin, right: 10),
+        padding: EdgeInsets.only(left: widget.leftMargin, right: 20),
         itemBuilder: (BuildContext context, int index) {
           final currentDay = _days[index];
           final shortName =
@@ -160,11 +160,6 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
                 dotsColor: widget.dotsColor,
                 dayNameColor: widget.dayNameColor,
               ),
-              if (index == _days.length - 1)
-                SizedBox(
-                    width: MediaQuery.of(context).size.width -
-                        widget.leftMargin -
-                        65)
             ],
           );
         },

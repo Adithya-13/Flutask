@@ -19,7 +19,6 @@ class CalendarPage extends StatelessWidget {
               activeDayColor: Colors.white,
               activeBackgroundDayColor: Colors.redAccent[100],
               dotsColor: Color(0xFF333A47),
-              selectableDayPredicate: (date) => date.day != 23,
               locale: 'en_US',
             ),
           ],
