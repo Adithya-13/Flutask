@@ -45,7 +45,7 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: datePicked ?? DateTime.now(),
-      firstDate: DateTime.now(),
+      firstDate: DateTime(2019),
       lastDate: DateTime(2025),
       helpText: 'Select Deadline Date',
       confirmText: 'Select',
@@ -100,13 +100,13 @@ class _AddTaskSheetState extends State<AddTaskSheet> {
         description: descriptionController.text,
         categoryId: selectedCategory!,
       );
-      if (datePicked != null && timePicked != null) {
+      if (datePicked != null) {
         final DateTime savedDeadline = DateTime(
           datePicked!.year,
           datePicked!.month,
           datePicked!.day,
-          timePicked!.hour,
-          timePicked!.minute,
+          timePicked != null ? timePicked!.hour : DateTime.now().hour,
+          timePicked != null ? timePicked!.minute : DateTime.now().minute,
         );
         taskItemEntity = TaskItemEntity(
           title: titleController.text,

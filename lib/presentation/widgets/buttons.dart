@@ -25,22 +25,47 @@ class RippleButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  prefixWidget ?? Container(),
-                  AutoSizeText(
-                    text,
-                    style: AppTheme.text2,
-                    textAlign: TextAlign.center,
-                    minFontSize: 8,
-                    maxLines: 1,
-                  ),
-                  suffixWidget ?? Container(),
-                ],
-              )
-      ).addRipple(onTap: onTap),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              prefixWidget ?? Container(),
+              AutoSizeText(
+                text,
+                style: AppTheme.text2,
+                textAlign: TextAlign.center,
+                minFontSize: 8,
+                maxLines: 1,
+              ),
+              suffixWidget ?? Container(),
+            ],
+          )).addRipple(onTap: onTap),
+    );
+  }
+}
+
+class RippleCircleButton extends StatelessWidget {
+  final Widget child;
+  final VoidCallback onTap;
+
+  const RippleCircleButton({
+    Key? key,
+    required this.onTap, required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: AppTheme.purpleGradient.withHorizontalGradient,
+        boxShadow: AppTheme.getShadow(AppTheme.cornflowerBlue),
+        shape: BoxShape.circle,
+      ),
+      child: Padding(
+          padding: EdgeInsets.all(16),
+          child: child,
+          ).addRipple(onTap: onTap),
     );
   }
 }

@@ -31,8 +31,23 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
   Stream<List<TaskWithCategory>> watchAllTaskByStatus(StatusType statusType) {
     final status = statusType == StatusType.ON_GOING ? false : true;
     final query = (select(tasks)
-      ..where((tbl) => tbl.isCompleted.equals(status))
-      ..orderBy(orderTaskByDate()))
+          ..where((tbl) => tbl.isCompleted.equals(status))
+          ..orderBy(orderTaskByDate()))
+        .join(leftOuterJoinTaskWithCategory());
+
+    return toTaskWithCategory(query);
+  }
+
+  Stream<List<TaskWithCategory>> watchAllTaskByDate(DateTime dateTime) {
+    final query = (select(tasks)
+          ..where((tbl) {
+            final date = tbl.deadline;
+
+            return date.year.equals(dateTime.year) &
+                date.month.equals(dateTime.month) &
+                date.day.equals(dateTime.day);
+          })
+          ..orderBy(orderTaskByDate()))
         .join(leftOuterJoinTaskWithCategory());
 
     return toTaskWithCategory(query);
