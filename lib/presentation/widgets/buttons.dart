@@ -25,22 +25,22 @@ class RippleButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  prefixWidget ?? Container(),
-                  AutoSizeText(
-                    text,
-                    style: AppTheme.text2,
-                    textAlign: TextAlign.center,
-                    minFontSize: 8,
-                    maxLines: 1,
-                  ),
-                  suffixWidget ?? Container(),
-                ],
-              )
-      ).addRipple(onTap: onTap),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              prefixWidget ?? Container(),
+              AutoSizeText(
+                text,
+                style: AppTheme.text2,
+                textAlign: TextAlign.center,
+                minFontSize: 8,
+                maxLines: 1,
+              ),
+              suffixWidget ?? Container(),
+            ],
+          )).addRipple(onTap: onTap),
     );
   }
 }
