@@ -241,6 +241,7 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
           topRadius: Radius.circular(20),
           backgroundColor: Colors.transparent,
           builder: (context) => TaskSheet(
+            isUpdate: true,
               item: TaskWithCategoryItemEntity(
             taskItemEntity: item,
             taskCategoryItemEntity: category,

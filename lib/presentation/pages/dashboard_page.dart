@@ -393,6 +393,7 @@ class _DashboardPageState extends State<DashboardPage> {
           topRadius: Radius.circular(20),
           backgroundColor: Colors.transparent,
           builder: (context) => TaskSheet(
+            isUpdate: true,
               item: TaskWithCategoryItemEntity(
             taskItemEntity: item,
             taskCategoryItemEntity: category,

@@ -51,7 +51,7 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   _getTaskByDate(){
-    context.read<TaskBloc>().add(WatchTaskByDate(dateTime: datePicked));
+    context.read<TaskBloc>().add(WatchTaskByDate(dateTime: datePicked.toLocal()));
   }
 
   @override
@@ -186,6 +186,7 @@ class _CalendarPageState extends State<CalendarPage> {
           topRadius: Radius.circular(20),
           backgroundColor: Colors.transparent,
           builder: (context) => TaskSheet(
+            isUpdate: true,
               item: TaskWithCategoryItemEntity(
                 taskItemEntity: item,
                 taskCategoryItemEntity: category,
