@@ -61,9 +61,19 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutask',
         theme: ThemeData(
-            primarySwatch: Colors.deepPurple,
-            scaffoldBackgroundColor: AppTheme.scaffoldColor,
-            fontFamily: 'Gotham'),
+          primarySwatch: Colors.deepPurple,
+          scaffoldBackgroundColor: AppTheme.scaffoldColor,
+          fontFamily: 'Gotham',
+          inputDecorationTheme: InputDecorationTheme(
+            enabledBorder: AppTheme.enabledBorder,
+            focusedBorder: AppTheme.focusedBorder,
+            errorBorder: AppTheme.errorBorder,
+            focusedErrorBorder:
+            AppTheme.focusedErrorBorder,
+            isDense: true,
+            hintStyle: AppTheme.text1,
+          ),
+        ),
         onGenerateRoute: _router.getRoute,
         navigatorObservers: [_router.routeObserver],
       ),

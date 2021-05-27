@@ -194,14 +194,7 @@ class _TaskSheetState extends State<TaskSheet> {
                                 style: AppTheme.text1.withDarkPurple,
                                 controller: titleController,
                                 decoration: InputDecoration(
-                                  enabledBorder: AppTheme.enabledBorder,
-                                  focusedBorder: AppTheme.focusedBorder,
-                                  errorBorder: AppTheme.errorBorder,
-                                  focusedErrorBorder:
-                                      AppTheme.focusedErrorBorder,
-                                  isDense: true,
                                   hintText: 'Type your title here',
-                                  hintStyle: AppTheme.text1,
                                 ),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -215,14 +208,7 @@ class _TaskSheetState extends State<TaskSheet> {
                                 style: AppTheme.text1.withDarkPurple,
                                 controller: descriptionController,
                                 decoration: InputDecoration(
-                                  enabledBorder: AppTheme.enabledBorder,
-                                  focusedBorder: AppTheme.focusedBorder,
-                                  errorBorder: AppTheme.errorBorder,
-                                  focusedErrorBorder:
-                                      AppTheme.focusedErrorBorder,
-                                  isDense: true,
                                   hintText: 'Type your description here',
-                                  hintStyle: AppTheme.text1,
                                 ),
                                 maxLines: 5,
                                 scrollPhysics: BouncingScrollPhysics(),
@@ -317,14 +303,7 @@ class _TaskSheetState extends State<TaskSheet> {
                               state is TaskCategorySuccess
                                   ? DropdownButtonFormField<int>(
                                       decoration: InputDecoration(
-                                        enabledBorder: AppTheme.enabledBorder,
-                                        focusedBorder: AppTheme.focusedBorder,
-                                        errorBorder: AppTheme.errorBorder,
-                                        focusedErrorBorder:
-                                            AppTheme.focusedErrorBorder,
-                                        isDense: true,
                                         hintText: 'Choose Category',
-                                        hintStyle: AppTheme.text1,
                                       ),
                                       validator: (value) {
                                         if (value == null) {
