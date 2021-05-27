@@ -6,7 +6,6 @@ import 'package:flutask/presentation/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_color/flutter_color.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class DetailCategoryTaskPage extends StatefulWidget {
@@ -77,17 +76,10 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),
         slivers: [
-          SliverAppBar(
-            expandedHeight: 250.0,
-            floating: false,
-            pinned: true,
-            title: Hero(
-              tag: Keys.heroTitleCategory + index.toString(),
-              child: Text(
-                categoryItem.title,
-                style: AppTheme.headline2.withWhite,
-              ),
-            ),
+          WideAppBar(
+            tag: index.toString(),
+            title: categoryItem.title,
+            gradient: categoryItem.gradient,
             actions: [
               IconButton(
                 icon: Icon(Icons.edit),
@@ -101,67 +93,49 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
                 ),
               ),
             ],
-            backgroundColor: categoryItem.gradient.colors[0]
-                .mix(categoryItem.gradient.colors[1], 0.5),
-            stretch: true,
-            shadowColor:
-                AppTheme.getShadow(categoryItem.gradient.colors[1])[0].color,
-            elevation: 8,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-            ),
-            flexibleSpace: FlexibleSpaceBar(
-              background: Container(
-                decoration: BoxDecoration(
-                  gradient: categoryItem.gradient.withDiagonalGradient,
-                  borderRadius:
-                      BorderRadius.vertical(bottom: Radius.circular(20)),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).padding.top,
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                SizedBox(
+                  height: 56,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).padding.top,
-                    ),
-                    SizedBox(
-                      height: 56,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    Column(
                       children: [
-                        Column(
-                          children: [
-                            Text(
-                              'Your Tasks',
-                              style: AppTheme.headline2.withWhite,
-                            ),
-                            Text(
-                              'Completed Tasks $completeTasks / $totalTasks',
-                              style: AppTheme.text3.withWhite,
-                            ),
-                          ],
+                        Text(
+                          'Your Tasks',
+                          style: AppTheme.headline2.withWhite,
                         ),
-                        CircularPercentIndicator(
-                          radius: 120.0,
-                          lineWidth: 13.0,
-                          animation: true,
-                          percent: percent(),
-                          center: Text(
-                            "${(percent() * 100).toInt()}%",
-                            style: AppTheme.headline3.withDarkPurple,
-                          ),
-                          curve: Curves.easeOutExpo,
-                          animationDuration: 3000,
-                          circularStrokeCap: CircularStrokeCap.round,
-                          progressColor: AppTheme.boldColorFont,
-                          backgroundColor: Colors.white,
+                        Text(
+                          'Completed Tasks $completeTasks / $totalTasks',
+                          style: AppTheme.text3.withWhite,
                         ),
                       ],
                     ),
+                    CircularPercentIndicator(
+                      radius: 120.0,
+                      lineWidth: 13.0,
+                      animation: true,
+                      percent: percent(),
+                      center: Text(
+                        "${(percent() * 100).toInt()}%",
+                        style: AppTheme.headline3.withDarkPurple,
+                      ),
+                      curve: Curves.easeOutExpo,
+                      animationDuration: 3000,
+                      circularStrokeCap: CircularStrokeCap.round,
+                      progressColor: AppTheme.boldColorFont,
+                      backgroundColor: Colors.white,
+                    ),
                   ],
                 ),
-              ),
+              ],
             ),
           ),
           SliverList(
