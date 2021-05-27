@@ -185,7 +185,7 @@ class _CalendarPageState extends State<CalendarPage> {
           enableDrag: true,
           topRadius: Radius.circular(20),
           backgroundColor: Colors.transparent,
-          builder: (context) => UpdateTaskSheet(
+          builder: (context) => TaskSheet(
               item: TaskWithCategoryItemEntity(
                 taskItemEntity: item,
                 taskCategoryItemEntity: category,

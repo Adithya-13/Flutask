@@ -392,7 +392,7 @@ class _DashboardPageState extends State<DashboardPage> {
           enableDrag: true,
           topRadius: Radius.circular(20),
           backgroundColor: Colors.transparent,
-          builder: (context) => UpdateTaskSheet(
+          builder: (context) => TaskSheet(
               item: TaskWithCategoryItemEntity(
             taskItemEntity: item,
             taskCategoryItemEntity: category,

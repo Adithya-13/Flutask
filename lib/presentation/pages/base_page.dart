@@ -37,7 +37,7 @@ class _BasePageState extends State<BasePage> {
       enableDrag: true,
       topRadius: Radius.circular(20),
       backgroundColor: Colors.transparent,
-      builder: (context) => AddTaskSheet(),
+      builder: (context) => TaskSheet(),
     );
   }
 

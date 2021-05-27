@@ -341,7 +341,6 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
   }
 
   void _moveToYearIndex(int index) {
-    print('year $index');
     _controllerYear.scrollTo(
       index: index,
       alignment: _scrollAlignment,
@@ -358,7 +357,6 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
   }
 
   void _moveToMonthIndex(int index) {
-    // print('month $index');
     // _controllerMonth.scrollTo(
     //   index: index,
     //   alignment: _scrollAlignment,
@@ -376,7 +374,6 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
   }
 
   void _moveToDayIndex(int index) {
-    print('day $index');
     _controllerDay.scrollTo(
       index: index,
       alignment: _scrollAlignment,
