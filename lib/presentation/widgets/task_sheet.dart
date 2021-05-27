@@ -12,8 +12,7 @@ class TaskSheet extends StatefulWidget {
   final int? categoryId;
   final bool isUpdate;
 
-  const TaskSheet(
-      {Key? key, this.task, this.categoryId, this.isUpdate = false})
+  const TaskSheet({Key? key, this.task, this.categoryId, this.isUpdate = false})
       : super(key: key);
 
   @override
@@ -56,58 +55,6 @@ class _TaskSheetState extends State<TaskSheet> {
     titleController.dispose();
     descriptionController.dispose();
     super.dispose();
-  }
-
-  _showDeadlineDatePicker() async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: datePicked ?? DateTime.now(),
-      firstDate: DateTime(2019),
-      lastDate: DateTime(2025),
-      helpText: 'Select Deadline Date',
-      confirmText: 'Select',
-      cancelText: 'No Deadline',
-      builder: (context, child) {
-        return Theme(
-          data: ThemeData(fontFamily: 'Gotham').copyWith(
-            colorScheme: ColorScheme.light().copyWith(
-              primary: AppTheme.cornflowerBlue,
-            ),
-          ), // This will change to light theme.
-          child: child!,
-        );
-      },
-    );
-    if (picked != null && picked != datePicked) {
-      setState(() {
-        datePicked = picked;
-      });
-    }
-  }
-
-  _showDeadlineTimePicker() async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: timePicked ?? TimeOfDay.now(),
-      helpText: 'Select Deadline Time',
-      confirmText: 'Select',
-      cancelText: 'No Deadline',
-      builder: (context, child) {
-        return Theme(
-          data: ThemeData(fontFamily: 'Gotham').copyWith(
-            colorScheme: ColorScheme.light().copyWith(
-              primary: AppTheme.cornflowerBlue,
-            ),
-          ), // This will change to light theme.
-          child: child!,
-        );
-      },
-    );
-    if (picked != null && picked != timePicked) {
-      setState(() {
-        timePicked = picked;
-      });
-    }
   }
 
   _updateTask() {
@@ -287,64 +234,85 @@ class _TaskSheetState extends State<TaskSheet> {
                                 },
                               ),
                               SizedBox(height: 20),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: RippleButton(
-                                      onTap: _showDeadlineDatePicker,
-                                      text: datePicked != null
-                                          ? datePicked!
-                                              .format(FormatDate.monthDayYear)
-                                          : 'Date',
-                                      prefixWidget: SvgPicture.asset(
-                                          Resources.date,
-                                          color: Colors.white,
-                                          width: 16),
-                                      suffixWidget: datePicked != null
-                                          ? GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  datePicked = null;
-                                                });
-                                              },
-                                              child: Icon(
-                                                Icons.close_rounded,
-                                                color: Colors.white,
-                                                size: 16,
-                                              ),
-                                            )
-                                          : null,
-                                    ),
+                              Row(children: [
+                                Expanded(
+                                  child: RippleButton(
+                                    onTap: () async {
+                                      final picked =
+                                          await Helper.showDeadlineDatePicker(
+                                        context,
+                                        datePicked ?? DateTime.now(),
+                                      );
+                                      if (picked != null &&
+                                          picked != datePicked) {
+                                        setState(() {
+                                          datePicked = picked;
+                                        });
+                                      }
+                                    },
+                                    text: datePicked != null
+                                        ? datePicked!
+                                            .format(FormatDate.monthDayYear)
+                                        : 'Date',
+                                    prefixWidget: SvgPicture.asset(
+                                        Resources.date,
+                                        color: Colors.white,
+                                        width: 16),
+                                    suffixWidget: datePicked != null
+                                        ? GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                datePicked = null;
+                                              });
+                                            },
+                                            child: Icon(
+                                              Icons.close_rounded,
+                                              color: Colors.white,
+                                              size: 16,
+                                            ),
+                                          )
+                                        : null,
                                   ),
-                                  SizedBox(width: 20),
-                                  Expanded(
-                                    child: RippleButton(
-                                      onTap: _showDeadlineTimePicker,
-                                      text: timePicked != null
-                                          ? timePicked!.format(context)
-                                          : 'Time',
-                                      prefixWidget: SvgPicture.asset(
-                                          Resources.clock,
-                                          color: Colors.white,
-                                          width: 16),
-                                      suffixWidget: timePicked != null
-                                          ? GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  timePicked = null;
-                                                });
-                                              },
-                                              child: Icon(
-                                                Icons.close_rounded,
-                                                color: Colors.white,
-                                                size: 16,
-                                              ),
-                                            )
-                                          : null,
-                                    ),
+                                ),
+                                SizedBox(width: 20),
+                                Expanded(
+                                  child: RippleButton(
+                                    onTap: () async {
+                                      final picked = await Helper.showDeadlineTimePicker(
+                                        context,
+                                        timePicked ?? TimeOfDay.now(),
+                                      );
+                                      if (picked != null &&
+                                          picked != timePicked) {
+                                        setState(() {
+                                          timePicked = picked;
+                                        });
+                                      }
+                                    },
+                                    text: timePicked != null
+                                        ? timePicked!.format(context)
+                                        : 'Time',
+                                    prefixWidget: SvgPicture.asset(
+                                        Resources.clock,
+                                        color: Colors.white,
+                                        width: 16),
+                                    suffixWidget: timePicked != null
+                                        ? GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                timePicked = null;
+                                              });
+                                            },
+                                            child: Icon(
+                                              Icons.close_rounded,
+                                              color: Colors.white,
+                                              size: 16,
+                                            ),
+                                          )
+                                        : null,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ]),
                               SizedBox(height: 20),
                               state is TaskCategorySuccess
                                   ? DropdownButtonFormField<int>(
@@ -382,8 +350,11 @@ class _TaskSheetState extends State<TaskSheet> {
                                   : Container(),
                               SizedBox(height: 20),
                               PinkButton(
-                                text: widget.isUpdate ? 'Update Task' : 'Save Tasks',
-                                onTap: widget.isUpdate ? _updateTask : _saveTask,
+                                text: widget.isUpdate
+                                    ? 'Update Task'
+                                    : 'Save Tasks',
+                                onTap:
+                                    widget.isUpdate ? _updateTask : _saveTask,
                               ),
                               SizedBox(height: 20),
                             ],

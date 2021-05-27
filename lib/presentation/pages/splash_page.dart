@@ -10,6 +10,7 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+
   @override
   void initState() {
     _navigateOtherScreen();
@@ -19,11 +20,13 @@ class _SplashPageState extends State<SplashPage> {
   void _navigateOtherScreen() {
     GetStorage _getStorage = GetStorage();
     bool isInitial = _getStorage.read(Keys.isOnBoardInitial) ?? true;
-    Future.delayed(Duration(seconds: 3))
-        .then((_) => Navigator.pushReplacementNamed(
-              context,
-              isInitial ? PagePath.onBoard : PagePath.base,
-            ));
+    if(isInitial){
+      Future.delayed(Duration(seconds: 3))
+          .then((_) => Navigator.pushReplacementNamed(context, PagePath.onBoard));
+    } else {
+      Future.delayed(Duration(seconds: 3))
+          .then((_) => Navigator.pushReplacementNamed(context, PagePath.base));
+    }
   }
 
   @override
@@ -40,7 +43,7 @@ class _SplashPageState extends State<SplashPage> {
               height: 80,
             ),
             SizedBox(height: 10),
-            Text('Flutask', style: AppTheme.headline1),
+            Text('FluTask', style: AppTheme.headline1),
           ],
         ),
       ),

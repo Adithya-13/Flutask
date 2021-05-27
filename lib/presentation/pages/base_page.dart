@@ -41,7 +41,7 @@ class _BasePageState extends State<BasePage> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(56),
           child: Icon(Icons.add, color: Colors.white)
-              .addRipple(onTap: Helper.showBottomSheet(context)),
+              .addRipple(onTap: () => Helper.showBottomSheet(context)),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

@@ -22,34 +22,6 @@ class _CalendarPageState extends State<CalendarPage> {
     super.initState();
   }
 
-  _showDeadlineDatePicker() async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: datePicked,
-      firstDate: DateTime(2019),
-      lastDate: DateTime(2025),
-      helpText: 'Select Date',
-      confirmText: 'Select',
-      cancelText: 'Cancel',
-      builder: (context, child) {
-        return Theme(
-          data: ThemeData(fontFamily: 'Gotham').copyWith(
-            colorScheme: ColorScheme.light().copyWith(
-              primary: AppTheme.cornflowerBlue,
-            ),
-          ), // This will change to light theme.
-          child: child!,
-        );
-      },
-    );
-    if (picked != null && picked != datePicked) {
-      setState(() {
-        datePicked = picked;
-        _getTaskByDate();
-      });
-    }
-  }
-
   _getTaskByDate(){
     context.read<TaskBloc>().add(WatchTaskByDate(dateTime: datePicked.toLocal()));
   }
@@ -87,7 +59,20 @@ class _CalendarPageState extends State<CalendarPage> {
                       ),
                     ),
                     RippleCircleButton(
-                      onTap: () => _showDeadlineDatePicker(),
+                      onTap: () async {
+                        final picked =
+                        await Helper.showDeadlineDatePicker(
+                          context,
+                          datePicked,
+                        );
+                        if (picked != null &&
+                            picked != datePicked) {
+                          setState(() {
+                            datePicked = picked;
+                            _getTaskByDate();
+                          });
+                        }
+                      },
                       child: SvgPicture.asset(Resources.date,
                           color: Colors.white, width: 20),
                     ),

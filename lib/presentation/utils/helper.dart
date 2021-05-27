@@ -21,7 +21,6 @@ class Helper {
       elevation: 0,
       behavior: SnackBarBehavior.floating,
     );
-
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
@@ -44,5 +43,55 @@ class Helper {
         isUpdate: isUpdate,
       ),
     );
+  }
+
+  static Future<DateTime?> showDeadlineDatePicker(
+    BuildContext context,
+    DateTime datePicked,
+  ) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: datePicked,
+      firstDate: DateTime(2019),
+      lastDate: DateTime(2025),
+      helpText: 'Select Deadline Date',
+      confirmText: 'Select',
+      cancelText: 'No Deadline',
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData(fontFamily: 'Gotham').copyWith(
+            colorScheme: ColorScheme.light().copyWith(
+              primary: AppTheme.cornflowerBlue,
+            ),
+          ), // This will change to light theme.
+          child: child!,
+        );
+      },
+    );
+      return picked;
+  }
+
+  static Future<TimeOfDay?> showDeadlineTimePicker(
+    BuildContext context,
+    TimeOfDay timePicked,
+  ) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: timePicked,
+      helpText: 'Select Deadline Time',
+      confirmText: 'Select',
+      cancelText: 'No Deadline',
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData(fontFamily: 'Gotham').copyWith(
+            colorScheme: ColorScheme.light().copyWith(
+              primary: AppTheme.cornflowerBlue,
+            ),
+          ), // This will change to light theme.
+          child: child!,
+        );
+      },
+    );
+      return picked;
   }
 }
