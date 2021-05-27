@@ -7,38 +7,47 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_color/flutter_color.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class UpdateTaskSheet extends StatefulWidget {
-  final TaskWithCategoryItemEntity item;
+class TaskSheet extends StatefulWidget {
+  final TaskWithCategoryItemEntity? item;
+  final int? categoryId;
+  final bool isUpdate;
 
-  const UpdateTaskSheet({Key? key, required this.item}) : super(key: key);
+  const TaskSheet(
+      {Key? key, this.item, this.categoryId, this.isUpdate = false})
+      : super(key: key);
 
   @override
-  _UpdateTaskSheetState createState() => _UpdateTaskSheetState();
+  _TaskSheetState createState() => _TaskSheetState();
 }
 
-class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
+class _TaskSheetState extends State<TaskSheet> {
   late TaskItemEntity taskItem;
   late TaskCategoryItemEntity categoryItem;
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  int? selectedCategory;
+  late int? selectedCategory = widget.categoryId ?? null;
   DateTime? datePicked;
   TimeOfDay? timePicked;
   bool isCompleted = false;
 
   @override
   void initState() {
-    taskItem = widget.item.taskItemEntity;
-    categoryItem = widget.item.taskCategoryItemEntity;
-    titleController = TextEditingController(text: taskItem.title);
-    descriptionController = TextEditingController(text: taskItem.description);
-    selectedCategory = categoryItem.id;
-    datePicked = taskItem.deadline;
-    timePicked = taskItem.deadline != null
-        ? TimeOfDay.fromDateTime(taskItem.deadline!)
-        : null;
-    isCompleted = taskItem.isCompleted;
+    if (widget.isUpdate) {
+      taskItem = widget.item!.taskItemEntity;
+      categoryItem = widget.item!.taskCategoryItemEntity;
+      titleController = TextEditingController(text: taskItem.title);
+      descriptionController = TextEditingController(text: taskItem.description);
+      selectedCategory = categoryItem.id;
+      datePicked = taskItem.deadline;
+      timePicked = taskItem.deadline != null
+          ? TimeOfDay.fromDateTime(taskItem.deadline!)
+          : null;
+      isCompleted = taskItem.isCompleted;
+    } else {
+      titleController = TextEditingController();
+      descriptionController = TextEditingController();
+    }
     super.initState();
   }
 
@@ -137,6 +146,39 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
     }
   }
 
+  _saveTask() {
+    if (_formKey.currentState!.validate()) {
+      TaskItemEntity taskItemEntity = TaskItemEntity(
+        title: titleController.text,
+        description: descriptionController.text,
+        categoryId: selectedCategory!,
+      );
+      if (datePicked != null) {
+        final DateTime savedDeadline = DateTime(
+          datePicked!.year,
+          datePicked!.month,
+          datePicked!.day,
+          timePicked != null ? timePicked!.hour : DateTime.now().hour,
+          timePicked != null ? timePicked!.minute : DateTime.now().minute,
+        );
+        taskItemEntity = TaskItemEntity(
+          title: titleController.text,
+          description: descriptionController.text,
+          categoryId: selectedCategory!,
+          deadline: savedDeadline,
+          isCompleted: false,
+        );
+      }
+      context.read<TaskBloc>().add(InsertTask(taskItemEntity: taskItemEntity));
+      Helper.showCustomSnackBar(
+        context,
+        content: 'Success Add Task',
+        bgColor: AppTheme.lightPurple.lighter(30),
+      );
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TaskCategoryBloc, TaskCategoryState>(
@@ -158,43 +200,48 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  GestureDetector(
-                                    child: SvgPicture.asset(
-                                      Resources.trash,
-                                      height: 20,
-                                      width: 20,
+                              widget.isUpdate
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        GestureDetector(
+                                          child: SvgPicture.asset(
+                                            Resources.trash,
+                                            height: 20,
+                                            width: 20,
+                                          ),
+                                          onTap: () {
+                                            context.read<TaskBloc>().add(
+                                                DeleteTask(id: taskItem.id!));
+                                            Helper.showCustomSnackBar(
+                                              context,
+                                              content: 'Success Delete Task',
+                                              bgColor: AppTheme.redPastel
+                                                  .lighter(30),
+                                            );
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        Text('Update Task',
+                                            style: AppTheme.headline3),
+                                        GestureDetector(
+                                          child: SvgPicture.asset(
+                                            Resources.complete,
+                                            height: 20,
+                                            width: 20,
+                                          ),
+                                          onTap: () {
+                                            isCompleted = true;
+                                            _updateTask();
+                                          },
+                                        ),
+                                      ],
+                                    )
+                                  : Center(
+                                      child: Text('Add Task',
+                                          style: AppTheme.headline3),
                                     ),
-                                    onTap: () {
-                                      context
-                                          .read<TaskBloc>()
-                                          .add(DeleteTask(id: taskItem.id!));
-                                      Helper.showCustomSnackBar(
-                                        context,
-                                        content: 'Success Delete Task',
-                                        bgColor: AppTheme.redPastel.lighter(30),
-                                      );
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                  Text('Update Task',
-                                      style: AppTheme.headline3),
-                                  GestureDetector(
-                                    child: SvgPicture.asset(
-                                      Resources.complete,
-                                      height: 20,
-                                      width: 20,
-                                    ),
-                                    onTap: () {
-                                      isCompleted = true;
-                                      _updateTask();
-                                    },
-                                  ),
-                                ],
-                              ),
                               SizedBox(height: 20),
                               TextFormField(
                                 style: AppTheme.text1.withDarkPurple,
@@ -335,8 +382,8 @@ class _UpdateTaskSheetState extends State<UpdateTaskSheet> {
                                   : Container(),
                               SizedBox(height: 20),
                               PinkButton(
-                                text: 'Update Task',
-                                onTap: _updateTask,
+                                text: widget.isUpdate ? 'Update Task' : 'Save Tasks',
+                                onTap: widget.isUpdate ? _updateTask : _saveTask,
                               ),
                               SizedBox(height: 20),
                             ],

@@ -48,7 +48,7 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
       enableDrag: true,
       topRadius: Radius.circular(20),
       backgroundColor: Colors.transparent,
-      builder: (context) => AddTaskSheet(categoryId: categoryId),
+      builder: (context) => TaskSheet(categoryId: categoryId),
     );
   }
 
@@ -205,7 +205,7 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
           enableDrag: true,
           topRadius: Radius.circular(20),
           backgroundColor: Colors.transparent,
-          builder: (context) => UpdateTaskSheet(
+          builder: (context) => TaskSheet(
               item: TaskWithCategoryItemEntity(
             taskItemEntity: item,
             taskCategoryItemEntity: category,

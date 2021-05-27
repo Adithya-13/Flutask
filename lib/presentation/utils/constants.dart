@@ -49,7 +49,7 @@ class Keys {
 
 class FormatDate {
   static const String monthDayYear = 'MMM dd, yyyy';
-  static const String deadline = 'hh:mm aa, MMM dd, yyyy';
+  static const String deadline = 'HH:mm, MMM dd, yyyy';
   static const String monthYear = 'MMMM, yyyy';
   static const String dayDate = 'EEE, dd';
 }

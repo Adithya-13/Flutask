@@ -40,7 +40,7 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
       enableDrag: true,
       topRadius: Radius.circular(20),
       backgroundColor: Colors.transparent,
-      builder: (context) => AddTaskSheet(),
+      builder: (context) => TaskSheet(),
     );
   }
 
@@ -180,7 +180,7 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
           enableDrag: true,
           topRadius: Radius.circular(20),
           backgroundColor: Colors.transparent,
-          builder: (context) => UpdateTaskSheet(
+          builder: (context) => TaskSheet(
               item: TaskWithCategoryItemEntity(
             taskItemEntity: item,
             taskCategoryItemEntity: category,
