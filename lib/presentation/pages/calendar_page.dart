@@ -187,7 +187,7 @@ class _CalendarPageState extends State<CalendarPage> {
           backgroundColor: Colors.transparent,
           builder: (context) => TaskSheet(
             isUpdate: true,
-              item: TaskWithCategoryItemEntity(
+              task: TaskWithCategoryItemEntity(
                 taskItemEntity: item,
                 taskCategoryItemEntity: category,
               )),

@@ -1,10 +1,7 @@
-import 'package:flutask/logic/blocs/blocs.dart';
 import 'package:flutask/presentation/pages/pages.dart';
 import 'package:flutask/presentation/utils/utils.dart';
 import 'package:flutask/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class BasePage extends StatefulWidget {
   @override
@@ -29,18 +26,6 @@ class _BasePageState extends State<BasePage> {
 
   Widget get _getPage => bodyList[_currentBody];
 
-  _showBottomSheet() {
-    context.read<TaskCategoryBloc>().add(GetTaskCategory());
-    showCupertinoModalBottomSheet(
-      expand: false,
-      context: context,
-      enableDrag: true,
-      topRadius: Radius.circular(20),
-      backgroundColor: Colors.transparent,
-      builder: (context) => TaskSheet(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +41,7 @@ class _BasePageState extends State<BasePage> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(56),
           child: Icon(Icons.add, color: Colors.white)
-              .addRipple(onTap: _showBottomSheet),
+              .addRipple(onTap: Helper.showBottomSheet(context)),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

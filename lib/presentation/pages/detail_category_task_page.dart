@@ -7,8 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_color/flutter_color.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class DetailCategoryTaskPage extends StatefulWidget {
@@ -73,18 +71,6 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
     super.dispose();
   }
 
-  _showBottomSheet(int categoryId) {
-    context.read<TaskCategoryBloc>().add(GetTaskCategory());
-    showCupertinoModalBottomSheet(
-      expand: false,
-      context: context,
-      enableDrag: true,
-      topRadius: Radius.circular(20),
-      backgroundColor: Colors.transparent,
-      builder: (context) => TaskSheet(categoryId: categoryId),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,7 +95,10 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
               ),
               IconButton(
                 icon: Icon(Icons.add),
-                onPressed: () => _showBottomSheet(categoryItem.id!),
+                onPressed: Helper.showBottomSheet(
+                  context,
+                  categoryId: categoryItem.id!,
+                ),
               ),
             ],
             backgroundColor: categoryItem.gradient.colors[0]
@@ -177,7 +166,7 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
           ),
           SliverList(
             delegate: SliverChildListDelegate([
-              _onGoing(),
+              _taskList(),
             ]),
           ),
         ],
@@ -185,7 +174,7 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
     );
   }
 
-  _onGoing() {
+  _taskList() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: BlocBuilder<TaskBloc, TaskState>(
@@ -223,85 +212,11 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         final item = data.taskWithCategoryList[index];
-        return taskItemWidget(
-            context, item.taskItemEntity, item.taskCategoryItemEntity);
-      },
-    );
-  }
-
-  Widget taskItemWidget(BuildContext context, TaskItemEntity item,
-      TaskCategoryItemEntity category) {
-    return GestureDetector(
-      onTap: () {
-        context.read<TaskCategoryBloc>().add(GetTaskCategory());
-        showCupertinoModalBottomSheet(
-          expand: false,
-          context: context,
-          enableDrag: true,
-          topRadius: Radius.circular(20),
-          backgroundColor: Colors.transparent,
-          builder: (context) => TaskSheet(
-            isUpdate: true,
-              item: TaskWithCategoryItemEntity(
-            taskItemEntity: item,
-            taskCategoryItemEntity: category,
-          )),
+        return TaskItemWidget(
+          task: item.taskItemEntity,
+          category: item.taskCategoryItemEntity,
         );
       },
-      child: Container(
-        padding: EdgeInsets.all(24),
-        margin: EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(item.title, style: AppTheme.headline3),
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  SvgPicture.asset(Resources.clock, width: 20),
-                  SizedBox(width: 8),
-                  Text(
-                      item.deadline != null
-                          ? item.deadline!.format(FormatDate.deadline)
-                          : 'No Deadline',
-                      style: AppTheme.text3),
-                ],
-              ),
-              SizedBox(height: 16),
-              Wrap(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppTheme.perano.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(category.title, style: AppTheme.text3),
-                  ),
-                  SizedBox(width: 8),
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: (item.isCompleted
-                              ? AppTheme.greenPastel
-                              : AppTheme.redPastel)
-                          .withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(item.isCompleted ? 'Done' : 'On Going',
-                        style: AppTheme.text3),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

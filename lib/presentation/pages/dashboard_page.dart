@@ -7,9 +7,7 @@ import 'package:flutask/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class DashboardPage extends StatefulWidget {
   @override
@@ -44,6 +42,26 @@ class _DashboardPageState extends State<DashboardPage> {
           ));
       getStorage.write(Keys.isInitial, false);
     }
+  }
+
+  _goToOnGoingPage() {
+    Navigator.pushNamed(
+      context,
+      PagePath.onGoingComplete,
+      arguments: ArgumentBundle(extras: {
+        Keys.statusType: StatusType.ON_GOING,
+      }, identifier: 'on going detail'),
+    );
+  }
+
+  _goToCompletePage() {
+    Navigator.pushNamed(
+      context,
+      PagePath.onGoingComplete,
+      arguments: ArgumentBundle(extras: {
+        Keys.statusType: StatusType.COMPLETE,
+      }, identifier: 'complete detail'),
+    );
   }
 
   @override
@@ -163,18 +181,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
               TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    PagePath.onGoingComplete,
-                    arguments: ArgumentBundle(
-                      extras: {
-                        Keys.statusType : StatusType.ON_GOING,
-                      },
-                      identifier: 'on going detail'
-                    ),
-                  );
-                },
+                onPressed: _goToOnGoingPage,
                 child: Text(
                   'See all',
                   style: AppTheme.text2.withPink,
@@ -232,18 +239,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 ),
               ),
               TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    PagePath.onGoingComplete,
-                    arguments: ArgumentBundle(
-                        extras: {
-                          Keys.statusType : StatusType.COMPLETE,
-                        },
-                        identifier: 'complete detail'
-                    ),
-                  );
-                },
+                onPressed: _goToCompletePage,
                 child: Text(
                   'See all',
                   style: AppTheme.text2.withPink,
@@ -357,12 +353,10 @@ class _DashboardPageState extends State<DashboardPage> {
         Navigator.pushNamed(
           context,
           PagePath.detailCategory,
-          arguments: ArgumentBundle(
-              extras: {
-                Keys.categoryItem: categoryItem,
-                Keys.index: index,
-              },
-              identifier: 'detail Category'),
+          arguments: ArgumentBundle(extras: {
+            Keys.categoryItem: categoryItem,
+            Keys.index: index,
+          }, identifier: 'detail Category'),
         );
       }),
     );
@@ -375,85 +369,11 @@ class _DashboardPageState extends State<DashboardPage> {
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
         final item = data.taskWithCategoryList[index];
-        return taskItemWidget(
-            context, item.taskItemEntity, item.taskCategoryItemEntity);
-      },
-    );
-  }
-
-  Widget taskItemWidget(BuildContext context, TaskItemEntity item,
-      TaskCategoryItemEntity category) {
-    return GestureDetector(
-      onTap: () {
-        context.read<TaskCategoryBloc>().add(GetTaskCategory());
-        showCupertinoModalBottomSheet(
-          expand: false,
-          context: context,
-          enableDrag: true,
-          topRadius: Radius.circular(20),
-          backgroundColor: Colors.transparent,
-          builder: (context) => TaskSheet(
-            isUpdate: true,
-              item: TaskWithCategoryItemEntity(
-            taskItemEntity: item,
-            taskCategoryItemEntity: category,
-          )),
+        return TaskItemWidget(
+          task: item.taskItemEntity,
+          category: item.taskCategoryItemEntity,
         );
       },
-      child: Container(
-        padding: EdgeInsets.all(24),
-        margin: EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(item.title, style: AppTheme.headline3),
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  SvgPicture.asset(Resources.clock, width: 20),
-                  SizedBox(width: 8),
-                  Text(
-                      item.deadline != null
-                          ? item.deadline!.format(FormatDate.deadline)
-                          : 'No Deadline',
-                      style: AppTheme.text3),
-                ],
-              ),
-              SizedBox(height: 16),
-              Wrap(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppTheme.perano.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(category.title, style: AppTheme.text3),
-                  ),
-                  SizedBox(width: 8),
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: (item.isCompleted
-                              ? AppTheme.greenPastel
-                              : AppTheme.redPastel)
-                          .withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(item.isCompleted ? 'Done' : 'On Going',
-                        style: AppTheme.text3),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

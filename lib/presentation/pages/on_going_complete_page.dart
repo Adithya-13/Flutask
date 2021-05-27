@@ -32,18 +32,6 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
     super.initState();
   }
 
-  _showBottomSheet() {
-    context.read<TaskCategoryBloc>().add(GetTaskCategory());
-    showCupertinoModalBottomSheet(
-      expand: false,
-      context: context,
-      enableDrag: true,
-      topRadius: Radius.circular(20),
-      backgroundColor: Colors.transparent,
-      builder: (context) => TaskSheet(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +56,7 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
               ),
               IconButton(
                 icon: Icon(Icons.add),
-                onPressed: () => _showBottomSheet(),
+                onPressed: () => Helper.showBottomSheet(context),
               ),
             ],
             backgroundColor: randomGradient.colors[0]
@@ -182,7 +170,7 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
           backgroundColor: Colors.transparent,
           builder: (context) => TaskSheet(
             isUpdate: true,
-              item: TaskWithCategoryItemEntity(
+              task: TaskWithCategoryItemEntity(
             taskItemEntity: item,
             taskCategoryItemEntity: category,
           )),

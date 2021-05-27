@@ -8,12 +8,12 @@ import 'package:flutter_color/flutter_color.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class TaskSheet extends StatefulWidget {
-  final TaskWithCategoryItemEntity? item;
+  final TaskWithCategoryItemEntity? task;
   final int? categoryId;
   final bool isUpdate;
 
   const TaskSheet(
-      {Key? key, this.item, this.categoryId, this.isUpdate = false})
+      {Key? key, this.task, this.categoryId, this.isUpdate = false})
       : super(key: key);
 
   @override
@@ -34,8 +34,8 @@ class _TaskSheetState extends State<TaskSheet> {
   @override
   void initState() {
     if (widget.isUpdate) {
-      taskItem = widget.item!.taskItemEntity;
-      categoryItem = widget.item!.taskCategoryItemEntity;
+      taskItem = widget.task!.taskItemEntity;
+      categoryItem = widget.task!.taskCategoryItemEntity;
       titleController = TextEditingController(text: taskItem.title);
       descriptionController = TextEditingController(text: taskItem.description);
       selectedCategory = categoryItem.id;
