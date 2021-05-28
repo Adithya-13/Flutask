@@ -13,6 +13,7 @@ Flutter Task Management App
 - [x] Add Task BottomSheet
 - [x] Detail Task
 - [x] Detail Category
+- [ ] Search Page
 
 ## Util Tasks
 
