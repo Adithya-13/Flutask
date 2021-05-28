@@ -32,6 +32,8 @@ class PageRouter {
             bundle: args as ArgumentBundle,
           ),
         );
+      case PagePath.search:
+        return _buildRoute(settings, SearchPage());
       default:
         return _errorRoute();
     }

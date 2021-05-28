@@ -97,25 +97,30 @@ class _DashboardPageState extends State<DashboardPage> {
           ),
           SizedBox(width: 20),
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: AppTheme.cornflowerBlue),
-              ),
-              padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Search Tasks here',
-                    style: AppTheme.text3,
-                  ),
-                  Icon(
-                    Icons.search_rounded,
-                    color: AppTheme.cornflowerBlue,
-                  ),
-                ],
-              ),
+            child: Hero(
+              tag: Keys.heroSearch,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  border: Border.all(color: AppTheme.cornflowerBlue),
+                ),
+                padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Search Tasks here',
+                        style: AppTheme.text3,
+                      ),
+                    ),
+                    Icon(
+                      Icons.search_rounded,
+                      color: AppTheme.cornflowerBlue,
+                    ),
+                  ],
+                ),
+              ).addRipple(onTap: () => Navigator.pushNamed(context, PagePath.search),),
             ),
           ),
         ],

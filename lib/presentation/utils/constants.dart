@@ -45,6 +45,8 @@ class Keys {
   static const String heroTitleCategory = 'heroTitleCategory';
   static const String heroStatus = 'heroStatus';
   static const String statusType = 'statusType';
+
+  static const String heroSearch = 'Search Hero';
 }
 
 class FormatDate {
