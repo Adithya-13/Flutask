@@ -36,8 +36,12 @@ void main() async {
             create: (context) => TaskBloc(
               taskRepository: context.read<TaskRepository>(),
             ),
-            child: Container(),
           ),
+          BlocProvider<SearchBloc>(
+            create: (context) => SearchBloc(
+              taskRepository: context.read<TaskRepository>(),
+            ),
+          )
         ],
         child: MyApp(),
       ),

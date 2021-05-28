@@ -38,6 +38,11 @@ class TaskRepository {
           .watchAllTaskByDate(dateTime)
           .map((event) => DataMapper.toTaskWithCategoryEntity(event));
 
+  Stream<TaskWithCategoryEntity> searchTasks(String searchQuery) =>
+      _taskDao
+          .searchTasks(searchQuery)
+          .map((event) => DataMapper.toTaskWithCategoryEntity(event));
+
   Future<int> insertNewTask(TaskItemEntity item) {
     return _taskDao.insertNewTask(DataMapper.toTask(item));
   }

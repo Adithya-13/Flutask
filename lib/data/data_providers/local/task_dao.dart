@@ -53,6 +53,15 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
     return toTaskWithCategory(query);
   }
 
+  Stream<List<TaskWithCategory>> searchTasks(String searchQuery) {
+    final query = (select(tasks)
+          ..where((tbl) => tbl.title.like('%$searchQuery%'))
+          ..orderBy(orderTaskByTitle()))
+        .join(leftOuterJoinTaskWithCategory());
+
+    return toTaskWithCategory(query);
+  }
+
   Stream<List<TaskWithCategory>> watchOnGoingTask() {
     final query = (select(tasks)
           ..where((tbl) => tbl.isCompleted.equals(false))
@@ -112,6 +121,13 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
       (t) => OrderingTerm(
           expression: t.deadline.isNotNull(), mode: OrderingMode.desc),
       (t) => OrderingTerm(expression: t.deadline, mode: OrderingMode.asc),
+    ];
+  }
+
+  List<OrderingTerm Function($TasksTable)> orderTaskByTitle() {
+    return [
+      (t) => OrderingTerm(
+          expression: t.title, mode: OrderingMode.asc),
     ];
   }
 
