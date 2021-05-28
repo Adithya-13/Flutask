@@ -54,29 +54,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        WidgetsBinding.instance!.focusManager.primaryFocus?.unfocus();
-      },
-      child: MaterialApp(
-        title: 'Flutask',
-        theme: ThemeData(
-          primarySwatch: Colors.deepPurple,
-          scaffoldBackgroundColor: AppTheme.scaffoldColor,
-          fontFamily: 'Gotham',
-          inputDecorationTheme: InputDecorationTheme(
-            enabledBorder: AppTheme.enabledBorder,
-            focusedBorder: AppTheme.focusedBorder,
-            errorBorder: AppTheme.errorBorder,
-            focusedErrorBorder:
-            AppTheme.focusedErrorBorder,
-            isDense: true,
-            hintStyle: AppTheme.text1,
-          ),
+    return MaterialApp(
+      title: 'Flutask',
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+        scaffoldBackgroundColor: AppTheme.scaffoldColor,
+        fontFamily: 'Gotham',
+        inputDecorationTheme: InputDecorationTheme(
+          enabledBorder: AppTheme.enabledBorder,
+          focusedBorder: AppTheme.focusedBorder,
+          errorBorder: AppTheme.errorBorder,
+          focusedErrorBorder:
+          AppTheme.focusedErrorBorder,
+          isDense: true,
+          hintStyle: AppTheme.text1,
         ),
-        onGenerateRoute: _router.getRoute,
-        navigatorObservers: [_router.routeObserver],
       ),
+      onGenerateRoute: _router.getRoute,
+      navigatorObservers: [_router.routeObserver],
     );
   }
 

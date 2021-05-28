@@ -224,6 +224,7 @@ class _TaskSheetState extends State<TaskSheet> {
                                 Expanded(
                                   child: RippleButton(
                                     onTap: () async {
+                                      Helper.unfocus();
                                       final picked =
                                           await Helper.showDeadlineDatePicker(
                                         context,
@@ -264,7 +265,9 @@ class _TaskSheetState extends State<TaskSheet> {
                                 Expanded(
                                   child: RippleButton(
                                     onTap: () async {
-                                      final picked = await Helper.showDeadlineTimePicker(
+                                      Helper.unfocus();
+                                      final picked =
+                                          await Helper.showDeadlineTimePicker(
                                         context,
                                         timePicked ?? TimeOfDay.now(),
                                       );
@@ -311,6 +314,7 @@ class _TaskSheetState extends State<TaskSheet> {
                                         }
                                         return null;
                                       },
+                                      onTap: () => Helper.unfocus(),
                                       onChanged: (value) {
                                         setState(() {
                                           selectedCategory = value;

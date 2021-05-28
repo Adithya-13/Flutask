@@ -94,4 +94,8 @@ class Helper {
     );
       return picked;
   }
+
+  static void unfocus() {
+    WidgetsBinding.instance!.focusManager.primaryFocus?.unfocus();
+  }
 }
