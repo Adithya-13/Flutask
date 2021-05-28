@@ -70,7 +70,7 @@ class _SearchPageState extends State<SearchPage> {
                       Icons.search_outlined,
                       color: AppTheme.cornflowerBlue,
                     ),
-                    hintText: 'Search Tasks here',
+                    hintText: 'Type your Tasks here',
                   ),
                   onChanged: (value) {
                     if(value.isNotEmpty){
@@ -95,7 +95,7 @@ class _SearchPageState extends State<SearchPage> {
       child: BlocBuilder<SearchBloc, SearchState>(
         builder: (context, state) {
           if(state is SearchInitial){
-            return Container(child: Text("search task"),);
+            return SearchWidget();
           } else if (state is SearchStream) {
             final entity = state.entity;
             return StreamBuilder<TaskWithCategoryEntity>(
