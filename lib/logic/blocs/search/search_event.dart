@@ -15,3 +15,5 @@ class SearchTask extends SearchEvent {
   @override
   List<Object?> get props => [searchQuery];
 }
+
+class SetInitialSearch extends SearchEvent {}

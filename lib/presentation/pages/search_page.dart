@@ -1,6 +1,10 @@
+import 'package:flutask/data/entities/entities.dart';
+import 'package:flutask/logic/blocs/blocs.dart';
 import 'package:flutask/presentation/utils/utils.dart';
+import 'package:flutask/presentation/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -8,6 +12,14 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+
+  String searchQuery = '';
+
+  @override
+  void initState() {
+    context.read<SearchBloc>().add(SetInitialSearch());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +31,7 @@ class _SearchPageState extends State<SearchPage> {
             child: Column(
               children: [
                 _searchField(),
+                _taskList(),
               ],
             ),
           ),
@@ -59,13 +72,76 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                     hintText: 'Search Tasks here',
                   ),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    if(value.isNotEmpty){
+                      searchQuery = value;
+                      context.read<SearchBloc>().add(SearchTask(searchQuery: value));
+                    } else {
+                      context.read<SearchBloc>().add(SetInitialSearch());
+                    }
+                  },
                 ),
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  _taskList() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: BlocBuilder<SearchBloc, SearchState>(
+        builder: (context, state) {
+          if(state is SearchInitial){
+            return Container(child: Text("search task"),);
+          } else if (state is SearchStream) {
+            final entity = state.entity;
+            return StreamBuilder<TaskWithCategoryEntity>(
+              stream: entity,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return FailureWidget(message: snapshot.stackTrace.toString());
+                } else if (!snapshot.hasData) {
+                  return LoadingWidget();
+                } else if (snapshot.data!.taskWithCategoryList.isEmpty) {
+                  return EmptyWidget();
+                }
+                print(snapshot.data!.taskWithCategoryList.length);
+                return taskListView(snapshot.data!);
+              },
+            );
+          }
+          return EmptyWidget();
+        },
+      ),
+    );
+  }
+
+  Widget taskListView(TaskWithCategoryEntity data) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          'Found ${data.taskWithCategoryList.length} Tasks in $searchQuery',
+          style: AppTheme.headline3,
+          textAlign: TextAlign.start,
+        ),
+        ListView.builder(
+          itemCount: data.taskWithCategoryList.length,
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            final item = data.taskWithCategoryList[index];
+            return TaskItemWidget(
+              task: item.taskItemEntity,
+              category: item.taskCategoryItemEntity,
+            );
+          },
+        ),
+      ],
     );
   }
 }
