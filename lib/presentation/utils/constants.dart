@@ -33,6 +33,7 @@ class Resources {
   static const String loading = 'assets/lottie/loading.json';
   static const String empty = 'assets/lottie/empty.json';
   static const String error = 'assets/lottie/error.json';
+  static const String search = 'assets/lottie/search.json';
 }
 
 class Keys {
@@ -45,6 +46,8 @@ class Keys {
   static const String heroTitleCategory = 'heroTitleCategory';
   static const String heroStatus = 'heroStatus';
   static const String statusType = 'statusType';
+
+  static const String heroSearch = 'Search Hero';
 }
 
 class FormatDate {

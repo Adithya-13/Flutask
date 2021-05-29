@@ -1,4 +1,5 @@
 export 'bag_page.dart';
+export 'search_page.dart';
 export 'base_page.dart';
 export 'calendar_page.dart';
 export 'dashboard_page.dart';

@@ -15,6 +15,7 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage> {
   DateTime datePicked = DateTime.now();
+  final ValueNotifier<int> totalTask = ValueNotifier(0);
 
   @override
   void initState() {
@@ -22,8 +23,10 @@ class _CalendarPageState extends State<CalendarPage> {
     super.initState();
   }
 
-  _getTaskByDate(){
-    context.read<TaskBloc>().add(WatchTaskByDate(dateTime: datePicked.toLocal()));
+  _getTaskByDate() {
+    context
+        .read<TaskBloc>()
+        .add(WatchTaskByDate(dateTime: datePicked.toLocal()));
   }
 
   @override
@@ -51,22 +54,23 @@ class _CalendarPageState extends State<CalendarPage> {
                             style: AppTheme.headline2,
                           ),
                           SizedBox(height: 8),
-                          Text(
-                            '10 Tasks on ${datePicked.format(FormatDate.dayDate)}',
-                            style: AppTheme.text1,
+                          ValueListenableBuilder<int>(
+                            valueListenable: totalTask,
+                            builder: (context, value, child) => Text(
+                              '$value Tasks on ${datePicked.format(FormatDate.dayDate)}',
+                              style: AppTheme.text1,
+                            ),
                           ),
                         ],
                       ),
                     ),
                     RippleCircleButton(
                       onTap: () async {
-                        final picked =
-                        await Helper.showDeadlineDatePicker(
+                        final picked = await Helper.showDeadlineDatePicker(
                           context,
                           datePicked,
                         );
-                        if (picked != null &&
-                            picked != datePicked) {
+                        if (picked != null && picked != datePicked) {
                           setState(() {
                             datePicked = picked;
                             _getTaskByDate();
@@ -129,14 +133,18 @@ class _CalendarPageState extends State<CalendarPage> {
             return StreamBuilder<TaskWithCategoryEntity>(
               stream: entity,
               builder: (context, snapshot) {
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
+                  totalTask.value = snapshot.data!.taskWithCategoryList.length;
+                });
                 if (snapshot.hasError) {
                   return FailureWidget(message: snapshot.stackTrace.toString());
                 } else if (!snapshot.hasData) {
                   return LoadingWidget();
                 } else if (snapshot.data!.taskWithCategoryList.isEmpty) {
                   return EmptyWidget();
+                } else {
+                  return taskListView(snapshot.data!);
                 }
-                return taskListView(snapshot.data!);
               },
             );
           }
@@ -171,7 +179,7 @@ class _CalendarPageState extends State<CalendarPage> {
           topRadius: Radius.circular(20),
           backgroundColor: Colors.transparent,
           builder: (context) => TaskSheet(
-            isUpdate: true,
+              isUpdate: true,
               task: TaskWithCategoryItemEntity(
                 taskItemEntity: item,
                 taskCategoryItemEntity: category,
@@ -218,8 +226,8 @@ class _CalendarPageState extends State<CalendarPage> {
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: (item.isCompleted
-                          ? AppTheme.greenPastel
-                          : AppTheme.redPastel)
+                              ? AppTheme.greenPastel
+                              : AppTheme.redPastel)
                           .withOpacity(0.2),
                       borderRadius: BorderRadius.circular(8),
                     ),

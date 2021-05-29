@@ -53,3 +53,26 @@ class FailureWidget extends StatelessWidget {
     );
   }
 }
+
+class SearchWidget extends StatelessWidget {
+
+  const SearchWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.3,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            LottieBuilder.asset(Resources.search,
+                height: MediaQuery.of(context).size.height * 0.2),
+            SizedBox(height: 20),
+            Text("Search Tasks here", style: AppTheme.text1),
+          ],
+        ),
+      ),
+    );
+  }
+}
