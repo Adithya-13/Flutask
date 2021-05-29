@@ -21,20 +21,18 @@ class DetailCategoryTaskPage extends StatefulWidget {
 class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
   late TaskCategoryItemEntity categoryItem =
       widget.bundle.extras[Keys.categoryItem];
-  late int totalTasks = 0;
-  late int completeTasks = 0;
+  final ValueNotifier<int> totalTasks = ValueNotifier(0);
+  final ValueNotifier<int> completeTasks = ValueNotifier(0);
   late int index = widget.bundle.extras[Keys.index];
 
   @override
   void initState() {
-    percent();
     context.read<TaskBloc>().add(WatchTaskByCategory(id: categoryItem.id!));
     super.initState();
   }
 
-  double percent() {
+  double percent(int totalTasks, int completeTasks) {
     try {
-      print("complete $completeTasks, total $totalTasks");
       final percentValue = completeTasks / totalTasks;
       if (percentValue.isNaN || percentValue.isInfinite) {
         return 0.0;
@@ -48,15 +46,15 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
   void setCompleteAndTotalValue(
       AsyncSnapshot<TaskWithCategoryEntity> snapshot) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      completeTasks = 0;
-      totalTasks = 0;
+      completeTasks.value = 0;
+      totalTasks.value = 0;
       for (TaskWithCategoryItemEntity item
           in snapshot.data!.taskWithCategoryList) {
         if (item.taskCategoryItemEntity.id == categoryItem.id) {
           if (item.taskItemEntity.isCompleted == true) {
-            completeTasks++;
+            completeTasks.value++;
           }
-          totalTasks++;
+          totalTasks.value++;
         }
       }
       setState(() {});
@@ -65,8 +63,8 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
 
   @override
   void dispose() {
-    completeTasks = 0;
-    totalTasks = 0;
+    completeTasks.value = 0;
+    totalTasks.value = 0;
     super.dispose();
   }
 
@@ -87,7 +85,7 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
               ),
               IconButton(
                 icon: Icon(Icons.add),
-                onPressed: Helper.showBottomSheet(
+                onPressed: () => Helper.showBottomSheet(
                   context,
                   categoryId: categoryItem.id!,
                 ),
@@ -103,37 +101,43 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
                 SizedBox(
                   height: 56,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
+                ValueListenableBuilder2<int, int>(
+                  totalTasks,
+                  completeTasks,
+                  builder: (context, totalTasks, completeTasks, child) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
-                          'Your Tasks',
-                          style: AppTheme.headline2.withWhite,
+                        Column(
+                          children: [
+                            Text(
+                              'Your Tasks',
+                              style: AppTheme.headline2.withWhite,
+                            ),
+                            Text(
+                              'Completed Tasks $completeTasks / $totalTasks',
+                              style: AppTheme.text3.withWhite,
+                            ),
+                          ],
                         ),
-                        Text(
-                          'Completed Tasks $completeTasks / $totalTasks',
-                          style: AppTheme.text3.withWhite,
+                        CircularPercentIndicator(
+                          radius: 120.0,
+                          lineWidth: 13.0,
+                          animation: true,
+                          percent: percent(totalTasks, completeTasks),
+                          center: Text(
+                            "${(percent(totalTasks, completeTasks) * 100).toInt()}%",
+                            style: AppTheme.headline3.withDarkPurple,
+                          ),
+                          curve: Curves.easeOutExpo,
+                          animationDuration: 3000,
+                          circularStrokeCap: CircularStrokeCap.round,
+                          progressColor: AppTheme.boldColorFont,
+                          backgroundColor: Colors.white,
                         ),
                       ],
-                    ),
-                    CircularPercentIndicator(
-                      radius: 120.0,
-                      lineWidth: 13.0,
-                      animation: true,
-                      percent: percent(),
-                      center: Text(
-                        "${(percent() * 100).toInt()}%",
-                        style: AppTheme.headline3.withDarkPurple,
-                      ),
-                      curve: Curves.easeOutExpo,
-                      animationDuration: 3000,
-                      circularStrokeCap: CircularStrokeCap.round,
-                      progressColor: AppTheme.boldColorFont,
-                      backgroundColor: Colors.white,
-                    ),
-                  ],
+                    );
+                  }
                 ),
               ],
             ),
@@ -161,15 +165,16 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
             return StreamBuilder<TaskWithCategoryEntity>(
               stream: entity,
               builder: (context, snapshot) {
-                setCompleteAndTotalValue(snapshot);
                 if (snapshot.hasError) {
                   return FailureWidget(message: snapshot.stackTrace.toString());
                 } else if (!snapshot.hasData) {
                   return LoadingWidget();
                 } else if (snapshot.data!.taskWithCategoryList.isEmpty) {
                   return EmptyWidget();
+                } else {
+                  setCompleteAndTotalValue(snapshot);
+                  return taskListView(snapshot.data!);
                 }
-                return taskListView(snapshot.data!);
               },
             );
           }

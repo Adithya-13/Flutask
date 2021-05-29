@@ -126,7 +126,7 @@ class _SearchPageState extends State<SearchPage> {
       children: [
         Text(
           'Found ${data.taskWithCategoryList.length} Tasks in $searchQuery',
-          style: AppTheme.headline3,
+          style: AppTheme.text1,
           textAlign: TextAlign.start,
         ),
         ListView.builder(
