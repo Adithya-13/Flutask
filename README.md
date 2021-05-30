@@ -8,7 +8,7 @@ Flutter Task Management App
 - [x] OnBoard Page
 - [x] Dashboard Page
 - [ ] Bag Page
-- [X] Calendar Page
+- [x] Calendar Page
 - [ ] Profile Page
 - [x] Add Task BottomSheet
 - [x] Detail Task
@@ -28,8 +28,8 @@ Flutter Task Management App
 - [x] error border
 - [x] update & delete tasks
 - [x] create snackBar
-- [ ] date & time picker cupertino
-- [ ] change time picker [with this lib](https://pub.dev/packages/day_night_time_picker)
+- [x] date & time picker cupertino
+- [x] change time picker [with this lib](https://pub.dev/packages/day_night_time_picker)
 - [ ] add category task
 - [ ] search in category
 - [ ] edit category
@@ -40,11 +40,11 @@ Flutter Task Management App
 - [ ] notification
 - [ ] statistics
 - [ ] event organizer
-- [X] calendar
+- [x] calendar
 - [ ] multi-language
 - [ ] setting
 - [ ] attachment
-- [X] search tasks
+- [x] search tasks
 - [ ] [showcase](https://pub.dev/packages/showcaseview)
 - [ ] Backup to Cloud
 - [ ] Sign in & Sign up
@@ -52,7 +52,7 @@ Flutter Task Management App
 ## Feedback from user
 
 - [ ] scrollable list at the end of item will scroll overflow
-- [ ] number in time picker is missing, use all number instead. (change style of time picker) 
+- [x] number in time picker is missing, use all number instead. (change style of time picker) 
 - [ ] scroll calendar animation no smooth
 - [ ] description make optional
 - [ ] initial category task (work, health)
