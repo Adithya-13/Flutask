@@ -1,3 +1,4 @@
+import 'package:auto_animated/auto_animated.dart';
 import 'package:flutask/data/entities/entities.dart';
 import 'package:flutask/logic/blocs/blocs.dart';
 import 'package:flutask/presentation/utils/extensions.dart';
@@ -6,7 +7,6 @@ import 'package:flutask/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class CalendarPage extends StatefulWidget {
   @override
@@ -134,7 +134,9 @@ class _CalendarPageState extends State<CalendarPage> {
               stream: entity,
               builder: (context, snapshot) {
                 WidgetsBinding.instance!.addPostFrameCallback((_) {
-                  totalTask.value = snapshot.data!.taskWithCategoryList.length;
+                  if(snapshot.hasData){
+                    totalTask.value = snapshot.data!.taskWithCategoryList.length;
+                  }
                 });
                 if (snapshot.hasError) {
                   return FailureWidget(message: snapshot.stackTrace.toString());
@@ -155,91 +157,19 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   Widget taskListView(TaskWithCategoryEntity data) {
-    return ListView.builder(
+    return LiveList.options(
+      options: Helper.options,
       itemCount: data.taskWithCategoryList.length,
       shrinkWrap: true,
       physics: BouncingScrollPhysics(),
-      itemBuilder: (context, index) {
+      itemBuilder: (context, index, animation) {
         final item = data.taskWithCategoryList[index];
-        return taskItemWidget(
-            context, item.taskItemEntity, item.taskCategoryItemEntity);
-      },
-    );
-  }
-
-  Widget taskItemWidget(BuildContext context, TaskItemEntity item,
-      TaskCategoryItemEntity category) {
-    return GestureDetector(
-      onTap: () {
-        context.read<TaskCategoryBloc>().add(GetTaskCategory());
-        showCupertinoModalBottomSheet(
-          expand: false,
-          context: context,
-          enableDrag: true,
-          topRadius: Radius.circular(20),
-          backgroundColor: Colors.transparent,
-          builder: (context) => TaskSheet(
-              isUpdate: true,
-              task: TaskWithCategoryItemEntity(
-                taskItemEntity: item,
-                taskCategoryItemEntity: category,
-              )),
+        return TaskItemWidget(
+          task: item.taskItemEntity,
+          category: item.taskCategoryItemEntity,
+          animation: animation,
         );
       },
-      child: Container(
-        padding: EdgeInsets.all(24),
-        margin: EdgeInsets.symmetric(vertical: 12),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(item.title, style: AppTheme.headline3),
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  SvgPicture.asset(Resources.clock, width: 20),
-                  SizedBox(width: 8),
-                  Text(
-                      item.deadline != null
-                          ? item.deadline!.format(FormatDate.deadline)
-                          : 'No Deadline',
-                      style: AppTheme.text3),
-                ],
-              ),
-              SizedBox(height: 16),
-              Wrap(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppTheme.perano.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(category.title, style: AppTheme.text3),
-                  ),
-                  SizedBox(width: 8),
-                  Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: (item.isCompleted
-                              ? AppTheme.greenPastel
-                              : AppTheme.redPastel)
-                          .withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(item.isCompleted ? 'Done' : 'On Going',
-                        style: AppTheme.text3),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

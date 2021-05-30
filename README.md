@@ -33,6 +33,7 @@ Flutter Task Management App
 - [ ] add category task
 - [ ] search in category
 - [ ] edit category
+- [ ] change description of onboard
 
 ## Future Feature
 
@@ -57,7 +58,7 @@ Flutter Task Management App
 - [x] description make optional
 - [x] initial category task (work, health)
 - [x] in the calendar, if the day is sunday, set different color (pink)
-- [ ] list animation in search
+- [x] list animation in search
 - [ ] category task remove see all
 - [x] update task -> mark as done, check icon save edit
 - [x] delete task add dialog before really deleted

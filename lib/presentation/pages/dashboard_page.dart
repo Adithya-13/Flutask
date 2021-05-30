@@ -1,3 +1,4 @@
+import 'package:auto_animated/auto_animated.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutask/data/entities/entities.dart';
 import 'package:flutask/logic/blocs/blocs.dart';
@@ -397,15 +398,16 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget taskListView(TaskWithCategoryEntity data) {
-    return ListView.builder(
+    return LiveList.options(
+      options: Helper.options,
       itemCount: data.taskWithCategoryList.length,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
+      itemBuilder: (context, index, animation) {
         final item = data.taskWithCategoryList[index];
         return TaskItemWidget(
           task: item.taskItemEntity,
-          category: item.taskCategoryItemEntity,
+          category: item.taskCategoryItemEntity, animation: animation,
         );
       },
     );

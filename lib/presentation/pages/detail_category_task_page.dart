@@ -1,3 +1,4 @@
+import 'package:auto_animated/auto_animated.dart';
 import 'package:flutask/data/entities/entities.dart';
 import 'package:flutask/logic/blocs/blocs.dart';
 import 'package:flutask/presentation/routes/routes.dart';
@@ -185,15 +186,17 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
   }
 
   Widget taskListView(TaskWithCategoryEntity data) {
-    return ListView.builder(
+    return LiveList.options(
+      options: Helper.options,
       itemCount: data.taskWithCategoryList.length,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
+      itemBuilder: (context, index, animation) {
         final item = data.taskWithCategoryList[index];
         return TaskItemWidget(
           task: item.taskItemEntity,
           category: item.taskCategoryItemEntity,
+          animation: animation,
         );
       },
     );

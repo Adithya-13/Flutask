@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_animated/auto_animated.dart';
 import 'package:day_night_time_picker/day_night_time_picker.dart';
 import 'package:day_night_time_picker/lib/constants.dart';
 import 'package:flutask/data/entities/entities.dart';
@@ -157,4 +158,25 @@ class Helper {
   static void unfocus() {
     WidgetsBinding.instance!.focusManager.primaryFocus?.unfocus();
   }
+
+  static LiveOptions get options => LiveOptions(
+    // Start animation after (default zero)
+    delay: Duration(seconds: 0),
+
+    // Show each item through (default 250)
+    showItemInterval: Duration(milliseconds: 250),
+
+    // Animation duration (default 250)
+    showItemDuration: Duration(milliseconds: 250),
+
+    // Animations starts at 0.05 visible
+    // item fraction in sight (default 0.025)
+    visibleFraction: 0.05,
+
+    // Repeat the animation of the appearance
+    // when scrolling in the opposite direction (default false)
+    // To get the effect as in a showcase for ListView, set true
+    reAnimateOnVisibility: false,
+
+  );
 }
