@@ -54,7 +54,7 @@ Flutter Task Management App
 - [ ] scrollable list at the end of item will scroll overflow
 - [x] number in time picker is missing, use all number instead. (change style of time picker) 
 - [ ] scroll calendar animation no smooth
-- [ ] description make optional
+- [x] description make optional
 - [ ] initial category task (work, health)
 - [ ] in the calendar, if the day is sunday, set different color (pink)
 - [ ] list animation in search

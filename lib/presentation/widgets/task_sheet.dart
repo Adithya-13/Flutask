@@ -212,12 +212,6 @@ class _TaskSheetState extends State<TaskSheet> {
                                 ),
                                 maxLines: 5,
                                 scrollPhysics: BouncingScrollPhysics(),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your description task';
-                                  }
-                                  return null;
-                                },
                               ),
                               SizedBox(height: 20),
                               Row(children: [
