@@ -54,8 +54,12 @@ extension TextStyling on TextStyle {
     return this.copyWith(fontWeight: FontWeight.w100);
   }
 
-  TextStyle get withDarkPurple {
+  TextStyle get withBlack {
     return this.copyWith(color: AppTheme.boldColorFont);
+  }
+
+  TextStyle get withPurple {
+    return this.copyWith(color: AppTheme.cornflowerBlue);
   }
 
   TextStyle get withGreyPurple {

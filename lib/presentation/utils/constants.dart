@@ -34,6 +34,7 @@ class Resources {
   static const String empty = 'assets/lottie/empty.json';
   static const String error = 'assets/lottie/error.json';
   static const String search = 'assets/lottie/search.json';
+  static const String garbage = 'assets/lottie/garbage.json';
 }
 
 class Keys {

@@ -127,7 +127,7 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
                           percent: percent(totalTasks, completeTasks),
                           center: Text(
                             "${(percent(totalTasks, completeTasks) * 100).toInt()}%",
-                            style: AppTheme.headline3.withDarkPurple,
+                            style: AppTheme.headline3.withBlack,
                           ),
                           curve: Curves.easeOutExpo,
                           animationDuration: 3000,

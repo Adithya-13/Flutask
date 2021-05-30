@@ -60,4 +60,4 @@ Flutter Task Management App
 - [ ] list animation in search
 - [ ] category task remove see all
 - [x] update task -> mark as done, check icon save edit
-- [ ] delete task add dialog before really deleted
+- [x] delete task add dialog before really deleted

@@ -56,7 +56,7 @@ class _SearchPageState extends State<SearchPage> {
               child: Material(
                 child: TextField(
                   autofocus: true,
-                  style: AppTheme.text1.withDarkPurple,
+                  style: AppTheme.text1.withBlack,
                   decoration: InputDecoration(
                     enabledBorder: AppTheme.enabledBorder
                         .copyWith(borderRadius: BorderRadius.circular(24)),

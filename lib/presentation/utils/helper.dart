@@ -19,7 +19,7 @@ class Helper {
     final snackBar = SnackBar(
       content: Text(
         content,
-        style: AppTheme.text1.withDarkPurple,
+        style: AppTheme.text1.withBlack,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),

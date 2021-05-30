@@ -1,3 +1,4 @@
+import 'package:day_night_time_picker/lib/filter_wrapper.dart';
 import 'package:flutask/data/entities/entities.dart';
 import 'package:flutask/logic/blocs/blocs.dart';
 import 'package:flutask/presentation/utils/utils.dart';
@@ -6,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_color/flutter_color.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'buttons.dart';
+import 'state_widgets.dart';
 
 class TaskSheet extends StatefulWidget {
   final TaskWithCategoryItemEntity? task;
@@ -58,15 +62,59 @@ class _TaskSheetState extends State<TaskSheet> {
   }
 
   _deleteTask() {
-    context.read<TaskBloc>().add(
-        DeleteTask(id: taskItem.id!));
-    Helper.showCustomSnackBar(
-      context,
-      content: 'Success Delete Task',
-      bgColor: AppTheme.redPastel
-          .lighter(30),
-    );
-    Navigator.pop(context);
+    showDialog<bool>(
+      context: context,
+      builder: (context) => FilterWrapper(
+        blurAmount: 5,
+        child: AlertDialog(
+          title: Text("Delete the task?", style: AppTheme.headline3),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              GarbageWidget(),
+              SizedBox(height: 20),
+              Text(
+                'Are you sure want to delete the task?',
+                style: AppTheme.text1,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(
+                  'Cancel',
+                  style: AppTheme.text1,
+                )),
+            TextButton(
+              onPressed: () {
+                context.read<TaskBloc>().add(DeleteTask(id: taskItem.id!));
+                Helper.showCustomSnackBar(
+                  context,
+                  content: 'Success Delete Task',
+                  bgColor: AppTheme.redPastel.lighter(30),
+                );
+                Navigator.pop(context, true);
+              },
+              child: Text(
+                'Delete',
+                style: AppTheme.text1.withPurple,
+              ),
+            ),
+          ],
+          insetPadding:
+          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          clipBehavior: Clip.antiAlias,
+        ),
+      ),
+    ).then((isDelete) {
+      if(isDelete != null && isDelete){
+        Navigator.pop(context);
+      }
+    });
   }
 
   _markAsDone() {
@@ -145,13 +193,11 @@ class _TaskSheetState extends State<TaskSheet> {
 
   _getDate() async {
     Helper.unfocus();
-    final picked =
-    await Helper.showDeadlineDatePicker(
+    final picked = await Helper.showDeadlineDatePicker(
       context,
       datePicked ?? DateTime.now(),
     );
-    if (picked != null &&
-        picked != datePicked) {
+    if (picked != null && picked != datePicked) {
       setState(() {
         datePicked = picked;
       });
@@ -225,7 +271,7 @@ class _TaskSheetState extends State<TaskSheet> {
                                     ),
                               SizedBox(height: 20),
                               TextFormField(
-                                style: AppTheme.text1.withDarkPurple,
+                                style: AppTheme.text1.withBlack,
                                 controller: titleController,
                                 decoration: InputDecoration(
                                   hintText: 'Type your title here',
@@ -239,7 +285,7 @@ class _TaskSheetState extends State<TaskSheet> {
                               ),
                               SizedBox(height: 20),
                               TextFormField(
-                                style: AppTheme.text1.withDarkPurple,
+                                style: AppTheme.text1.withBlack,
                                 controller: descriptionController,
                                 decoration: InputDecoration(
                                   hintText: 'Type your description here',
@@ -329,7 +375,7 @@ class _TaskSheetState extends State<TaskSheet> {
                                           child: Text(e.title),
                                         );
                                       }).toList(),
-                                      style: AppTheme.text1.withDarkPurple,
+                                      style: AppTheme.text1.withBlack,
                                       value: selectedCategory,
                                     )
                                   : Container(),
