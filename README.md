@@ -34,6 +34,7 @@ Flutter Task Management App
 - [ ] search in category
 - [ ] edit category
 - [ ] change description of onboard
+- [x] total task of on going or complete
 
 ## Future Feature
 

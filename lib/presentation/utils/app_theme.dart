@@ -21,8 +21,8 @@ class AppTheme {
     colors: [lightLemon, lemon],
   );
 
-  static const Color lightTosca = Color(0xFF95FBFE);
-  static const Color tosca = Color(0xFF50F1D9);
+  static const Color lightTosca = Color(0xFF95D1FE);
+  static const Color tosca = Color(0xFF509EF1);
   static const LinearGradient toscaGradient = LinearGradient(
     colors: [lightTosca, tosca],
   );

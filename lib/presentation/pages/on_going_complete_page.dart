@@ -24,6 +24,8 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
   LinearGradient randomGradient =
       LinearGradient(colors: []).randomGradientColor;
 
+  ValueNotifier<int> totalTasks = ValueNotifier(0);
+
   @override
   void initState() {
     context.read<TaskBloc>().add(WatchTaskByStatus(statusType: statusType));
@@ -69,9 +71,14 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
                     SizedBox(
                       height: 12,
                     ),
-                    Text(
-                      'Total Tasks 0',
-                      style: AppTheme.text2.withWhite,
+                    ValueListenableBuilder<int>(
+                      valueListenable: totalTasks,
+                      builder: (context, value, child) {
+                        return Text(
+                          'Total Tasks $value',
+                          style: AppTheme.text2.withWhite,
+                        );
+                      }
                     ),
                   ],
                 ),
@@ -101,6 +108,11 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
             return StreamBuilder<TaskWithCategoryEntity>(
               stream: entity,
               builder: (context, snapshot) {
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
+                  if(snapshot.hasData){
+                    totalTasks.value = snapshot.data!.taskWithCategoryList.length;
+                  }
+                });
                 if (snapshot.hasError) {
                   return FailureWidget(message: snapshot.stackTrace.toString());
                 } else if (!snapshot.hasData) {

@@ -47,15 +47,17 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
   void setCompleteAndTotalValue(
       AsyncSnapshot<TaskWithCategoryEntity> snapshot) {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      completeTasks.value = 0;
-      totalTasks.value = 0;
-      for (TaskWithCategoryItemEntity item
-          in snapshot.data!.taskWithCategoryList) {
-        if (item.taskCategoryItemEntity.id == categoryItem.id) {
-          if (item.taskItemEntity.isCompleted == true) {
-            completeTasks.value++;
+      if(snapshot.hasData) {
+        completeTasks.value = 0;
+        totalTasks.value = 0;
+        for (TaskWithCategoryItemEntity item
+        in snapshot.data!.taskWithCategoryList) {
+          if (item.taskCategoryItemEntity.id == categoryItem.id) {
+            if (item.taskItemEntity.isCompleted == true) {
+              completeTasks.value++;
+            }
+            totalTasks.value++;
           }
-          totalTasks.value++;
         }
       }
     });
@@ -165,6 +167,7 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
             return StreamBuilder<TaskWithCategoryEntity>(
               stream: entity,
               builder: (context, snapshot) {
+                setCompleteAndTotalValue(snapshot);
                 if (snapshot.hasError) {
                   return FailureWidget(message: snapshot.stackTrace.toString());
                 } else if (!snapshot.hasData) {
@@ -172,7 +175,6 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
                 } else if (snapshot.data!.taskWithCategoryList.isEmpty) {
                   return EmptyWidget();
                 } else {
-                  setCompleteAndTotalValue(snapshot);
                   return taskListView(snapshot.data!);
                 }
               },
