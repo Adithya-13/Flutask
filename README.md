@@ -59,5 +59,5 @@ Flutter Task Management App
 - [x] in the calendar, if the day is sunday, set different color (pink)
 - [ ] list animation in search
 - [ ] category task remove see all
-- [ ] update task -> mark as done, check icon save edit
+- [x] update task -> mark as done, check icon save edit
 - [ ] delete task add dialog before really deleted

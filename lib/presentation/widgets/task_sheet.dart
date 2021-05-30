@@ -57,6 +57,23 @@ class _TaskSheetState extends State<TaskSheet> {
     super.dispose();
   }
 
+  _deleteTask() {
+    context.read<TaskBloc>().add(
+        DeleteTask(id: taskItem.id!));
+    Helper.showCustomSnackBar(
+      context,
+      content: 'Success Delete Task',
+      bgColor: AppTheme.redPastel
+          .lighter(30),
+    );
+    Navigator.pop(context);
+  }
+
+  _markAsDone() {
+    isCompleted = true;
+    _updateTask();
+  }
+
   _updateTask() {
     if (_formKey.currentState!.validate()) {
       TaskItemEntity taskItemEntity = TaskItemEntity(
@@ -126,6 +143,36 @@ class _TaskSheetState extends State<TaskSheet> {
     }
   }
 
+  _getDate() async {
+    Helper.unfocus();
+    final picked =
+    await Helper.showDeadlineDatePicker(
+      context,
+      datePicked ?? DateTime.now(),
+    );
+    if (picked != null &&
+        picked != datePicked) {
+      setState(() {
+        datePicked = picked;
+      });
+    }
+  }
+
+  _getTime() {
+    Helper.unfocus();
+    Helper.showDeadlineTimePicker(
+      context,
+      timePicked ?? TimeOfDay.now(),
+      onTimeChanged: (TimeOfDay timeOfDay) {
+        if (timeOfDay != timePicked) {
+          setState(() {
+            timePicked = timeOfDay;
+          });
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TaskCategoryBloc, TaskCategoryState>(
@@ -158,17 +205,7 @@ class _TaskSheetState extends State<TaskSheet> {
                                             height: 20,
                                             width: 20,
                                           ),
-                                          onTap: () {
-                                            context.read<TaskBloc>().add(
-                                                DeleteTask(id: taskItem.id!));
-                                            Helper.showCustomSnackBar(
-                                              context,
-                                              content: 'Success Delete Task',
-                                              bgColor: AppTheme.redPastel
-                                                  .lighter(30),
-                                            );
-                                            Navigator.pop(context);
-                                          },
+                                          onTap: _deleteTask,
                                         ),
                                         Text('Update Task',
                                             style: AppTheme.headline3),
@@ -178,10 +215,7 @@ class _TaskSheetState extends State<TaskSheet> {
                                             height: 20,
                                             width: 20,
                                           ),
-                                          onTap: () {
-                                            isCompleted = true;
-                                            _updateTask();
-                                          },
+                                          onTap: _updateTask,
                                         ),
                                       ],
                                     )
@@ -217,20 +251,7 @@ class _TaskSheetState extends State<TaskSheet> {
                               Row(children: [
                                 Expanded(
                                   child: RippleButton(
-                                    onTap: () async {
-                                      Helper.unfocus();
-                                      final picked =
-                                          await Helper.showDeadlineDatePicker(
-                                        context,
-                                        datePicked ?? DateTime.now(),
-                                      );
-                                      if (picked != null &&
-                                          picked != datePicked) {
-                                        setState(() {
-                                          datePicked = picked;
-                                        });
-                                      }
-                                    },
+                                    onTap: _getDate,
                                     text: datePicked != null
                                         ? datePicked!
                                             .format(FormatDate.monthDayYear)
@@ -258,20 +279,7 @@ class _TaskSheetState extends State<TaskSheet> {
                                 SizedBox(width: 20),
                                 Expanded(
                                   child: RippleButton(
-                                    onTap: () {
-                                      Helper.unfocus();
-                                      Helper.showDeadlineTimePicker(
-                                        context,
-                                        timePicked ?? TimeOfDay.now(),
-                                        onTimeChanged: (TimeOfDay timeOfDay) {
-                                          if (timeOfDay != timePicked) {
-                                            setState(() {
-                                              timePicked = timeOfDay;
-                                            });
-                                          }
-                                        },
-                                      );
-                                    },
+                                    onTap: _getTime,
                                     text: timePicked != null
                                         ? timePicked!.format(context)
                                         : 'Time',
@@ -328,10 +336,10 @@ class _TaskSheetState extends State<TaskSheet> {
                               SizedBox(height: 20),
                               PinkButton(
                                 text: widget.isUpdate
-                                    ? 'Update Task'
+                                    ? 'Mark as Done'
                                     : 'Save Tasks',
                                 onTap:
-                                    widget.isUpdate ? _updateTask : _saveTask,
+                                    widget.isUpdate ? _markAsDone : _saveTask,
                               ),
                               SizedBox(height: 20),
                             ],
