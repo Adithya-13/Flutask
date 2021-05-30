@@ -58,7 +58,6 @@ class _DetailCategoryTaskPageState extends State<DetailCategoryTaskPage> {
           totalTasks.value++;
         }
       }
-      setState(() {});
     });
   }
 
