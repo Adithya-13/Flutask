@@ -31,13 +31,13 @@ class _DashboardPageState extends State<DashboardPage> {
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
             taskCategoryItemEntity: TaskCategoryItemEntity(
               title: "School",
-              gradient: AppTheme.gradient.randomGradientColor,
+              gradient: AppTheme.orangeGradient,
             ),
           ));
       context.read<TaskCategoryBloc>().add(InsertTaskCategory(
             taskCategoryItemEntity: TaskCategoryItemEntity(
               title: "Other",
-              gradient: AppTheme.gradient.randomGradientColor,
+              gradient: AppTheme.donkerGradient,
             ),
           ));
       getStorage.write(Keys.isInitial, false);

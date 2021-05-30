@@ -264,19 +264,19 @@ class _TaskSheetState extends State<TaskSheet> {
                                 SizedBox(width: 20),
                                 Expanded(
                                   child: RippleButton(
-                                    onTap: () async {
+                                    onTap: () {
                                       Helper.unfocus();
-                                      final picked =
-                                          await Helper.showDeadlineTimePicker(
+                                      Helper.showDeadlineTimePicker(
                                         context,
                                         timePicked ?? TimeOfDay.now(),
+                                        onTimeChanged: (TimeOfDay timeOfDay) {
+                                          if (timeOfDay != timePicked) {
+                                            setState(() {
+                                              timePicked = timeOfDay;
+                                            });
+                                          }
+                                        },
                                       );
-                                      if (picked != null &&
-                                          picked != timePicked) {
-                                        setState(() {
-                                          timePicked = picked;
-                                        });
-                                      }
                                     },
                                     text: timePicked != null
                                         ? timePicked!.format(context)

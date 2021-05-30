@@ -43,6 +43,7 @@ dependencies:
   flutter_color: ^2.0.0
   percent_indicator: ^3.0.1
   scrollable_positioned_list: ^0.2.0-nullsafety.0
+  day_night_time_picker: ^1.0.2
 
 dev_dependencies:
   flutter_test:
