@@ -3,6 +3,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+import '../../../utils/utils.dart';
 import 'day_item.dart';
 import 'month_item.dart';
 import 'util/string_extension.dart';
@@ -157,6 +158,7 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
                     : widget.selectableDayPredicate!(currentDay),
                 dayColor: widget.dayColor,
                 activeDayColor: widget.activeDayColor,
+                dayColorGradient: currentDay.weekday == 7 ? AppTheme.pinkGradient : AppTheme.orangeGradient,
                 activeDayBackgroundColor: widget.activeBackgroundDayColor,
                 dotsColor: widget.dotsColor,
                 dayNameColor: widget.dayNameColor,

@@ -56,7 +56,7 @@ Flutter Task Management App
 - [ ] scroll calendar animation no smooth
 - [x] description make optional
 - [x] initial category task (work, health)
-- [ ] in the calendar, if the day is sunday, set different color (pink)
+- [x] in the calendar, if the day is sunday, set different color (pink)
 - [ ] list animation in search
 - [ ] category task remove see all
 - [ ] update task -> mark as done, check icon save edit

@@ -11,6 +11,7 @@ class DayItem extends StatelessWidget {
   final Color? dayColor;
   final Color? activeDayColor;
   final Color? activeDayBackgroundColor;
+  final LinearGradient dayColorGradient;
   final bool available;
   final Color? dotsColor;
   final Color? dayNameColor;
@@ -25,6 +26,7 @@ class DayItem extends StatelessWidget {
     this.activeDayColor,
     this.activeDayBackgroundColor,
     this.available = true,
+    this.dayColorGradient = AppTheme.orangeGradient,
     this.dotsColor,
     this.dayNameColor,
   }) : super(key: key);
@@ -46,10 +48,10 @@ class DayItem extends StatelessWidget {
       child: Container(
         decoration: isSelected
             ? BoxDecoration(
-                gradient: AppTheme.orangeGradient.withDiagonalGradient,
+                gradient: dayColorGradient.withDiagonalGradient,
                 borderRadius: BorderRadius.circular(40),
                 boxShadow:
-                    AppTheme.getShadow(AppTheme.orangeGradient.colors[1]),
+                    AppTheme.getShadow(dayColorGradient.colors[1]),
               )
             : BoxDecoration(
                 color: Colors.white,
