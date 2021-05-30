@@ -378,6 +378,7 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
       index: index,
       alignment: _scrollAlignment,
       duration: Duration(milliseconds: 500),
+      opacityAnimationWeights: [20, 20, 60],
       curve: Curves.easeInOutCubic,
     );
   }

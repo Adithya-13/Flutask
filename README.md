@@ -13,7 +13,7 @@ Flutter Task Management App
 - [x] Add Task BottomSheet
 - [x] Detail Task
 - [x] Detail Category
-- [ ] Search Page
+- [x] Search Page
 
 ## Util Tasks
 
@@ -26,9 +26,13 @@ Flutter Task Management App
 - [x] fix padding in bottom nav bar item
 - [x] cleaning up dao
 - [x] error border
-- [ ] show case view library
 - [x] update & delete tasks
 - [x] create snackBar
+- [ ] date & time picker cupertino
+- [ ] change time picker [with this lib](https://pub.dev/packages/day_night_time_picker)
+- [ ] add category task
+- [ ] search in category
+- [ ] edit category
 
 ## Future Feature
 
@@ -39,19 +43,21 @@ Flutter Task Management App
 - [X] calendar
 - [ ] multi-language
 - [ ] setting
-- [ ] search tasks
+- [ ] attachment
+- [X] search tasks
+- [ ] [showcase](https://pub.dev/packages/showcaseview)
+- [ ] Backup to Cloud
+- [ ] Sign in & Sign up
 
-## task category
+## Feedback from user
 
-- title
-- description
-- total tasks
-- gradient
-- circular & linear progress bar total tasks (complete and on going)
-- collapse toolbar
-- edit category (change gradient, title, description)
-- search
-
-# Bug
-
-- get task by date is not working properly (must add expression of hour and minute too!)
+- [ ] scrollable list at the end of item will scroll overflow
+- [ ] number in time picker is missing, use all number instead. (change style of time picker) 
+- [ ] scroll calendar animation no smooth
+- [ ] description make optional
+- [ ] initial category task (work, health)
+- [ ] in the calendar, if the day is sunday, set different color (pink)
+- [ ] list animation in search
+- [ ] category task remove see all
+- [ ] update task -> mark as done, check icon save edit
+- [ ] delete task add dialog before really deleted
