@@ -53,7 +53,7 @@ Flutter Task Management App
 
 ## Feedback from user
 
-- [ ] scrollable list at the end of item will scroll overflow
+- [x] scrollable list at the end of item will scroll overflow
 - [x] number in time picker is missing, use all number instead. (change style of time picker) 
 - [ ] scroll calendar animation no smooth
 - [x] description make optional

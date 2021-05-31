@@ -26,7 +26,7 @@ class _CalendarPageState extends State<CalendarPage> {
   _getTaskByDate() {
     context
         .read<TaskBloc>()
-        .add(WatchTaskByDate(dateTime: datePicked.toLocal()));
+        .add(WatchTaskByDate(dateTime: datePicked.toUtc()));
   }
 
   @override

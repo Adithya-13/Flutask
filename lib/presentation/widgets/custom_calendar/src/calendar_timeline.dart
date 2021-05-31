@@ -6,6 +6,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../utils/utils.dart';
 import 'day_item.dart';
 import 'month_item.dart';
+import 'util/custom_behavior.dart';
 import 'util/string_extension.dart';
 import 'year_item.dart';
 
@@ -132,40 +133,43 @@ class _CalendarTimelineState extends State<CalendarTimeline> {
   SizedBox _buildDayList() {
     return SizedBox(
       height: 160,
-      child: ScrollablePositionedList.builder(
-        itemScrollController: _controllerDay,
-        initialScrollIndex: _daySelectedIndex ?? 0,
-        initialAlignment: _scrollAlignment,
-        scrollDirection: Axis.horizontal,
-        physics: BouncingScrollPhysics(),
-        itemCount: _days.length,
-        padding: EdgeInsets.only(left: widget.leftMargin, right: 20),
-        itemBuilder: (BuildContext context, int index) {
-          final currentDay = _days[index];
-          final shortName =
-              DateFormat.E(_locale).format(currentDay).capitalize();
-          return Row(
-            children: <Widget>[
-              DayItem(
-                isSelected: _daySelectedIndex == index,
-                dayNumber: currentDay.day,
-                shortName: shortName.length > 3
-                    ? shortName.substring(0, 3)
-                    : shortName,
-                onTap: () => _goToActualDay(index),
-                available: widget.selectableDayPredicate == null
-                    ? true
-                    : widget.selectableDayPredicate!(currentDay),
-                dayColor: widget.dayColor,
-                activeDayColor: widget.activeDayColor,
-                dayColorGradient: currentDay.weekday == 7 ? AppTheme.pinkGradient : AppTheme.orangeGradient,
-                activeDayBackgroundColor: widget.activeBackgroundDayColor,
-                dotsColor: widget.dotsColor,
-                dayNameColor: widget.dayNameColor,
-              ),
-            ],
-          );
-        },
+      child: ScrollConfiguration(
+        behavior: CustomBehavior(),
+        child: ScrollablePositionedList.builder(
+          itemScrollController: _controllerDay,
+          initialScrollIndex: _daySelectedIndex ?? 0,
+          initialAlignment: _scrollAlignment,
+          scrollDirection: Axis.horizontal,
+          physics: ClampingScrollPhysics(),
+          itemCount: _days.length,
+          padding: EdgeInsets.only(left: widget.leftMargin, right: 20),
+          itemBuilder: (BuildContext context, int index) {
+            final currentDay = _days[index];
+            final shortName =
+                DateFormat.E(_locale).format(currentDay).capitalize();
+            return Row(
+              children: <Widget>[
+                DayItem(
+                  isSelected: _daySelectedIndex == index,
+                  dayNumber: currentDay.day,
+                  shortName: shortName.length > 3
+                      ? shortName.substring(0, 3)
+                      : shortName,
+                  onTap: () => _goToActualDay(index),
+                  available: widget.selectableDayPredicate == null
+                      ? true
+                      : widget.selectableDayPredicate!(currentDay),
+                  dayColor: widget.dayColor,
+                  activeDayColor: widget.activeDayColor,
+                  dayColorGradient: currentDay.weekday == 7 ? AppTheme.pinkGradient : AppTheme.orangeGradient,
+                  activeDayBackgroundColor: widget.activeBackgroundDayColor,
+                  dotsColor: widget.dotsColor,
+                  dayNameColor: widget.dayNameColor,
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

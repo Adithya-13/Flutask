@@ -144,7 +144,7 @@ class _TaskSheetState extends State<TaskSheet> {
           title: titleController.text,
           description: descriptionController.text,
           categoryId: selectedCategory!,
-          deadline: savedDeadline.toLocal(),
+          deadline: savedDeadline.toUtc(),
           isCompleted: isCompleted,
         );
       }
@@ -177,7 +177,7 @@ class _TaskSheetState extends State<TaskSheet> {
           title: titleController.text,
           description: descriptionController.text,
           categoryId: selectedCategory!,
-          deadline: savedDeadline.toLocal(),
+          deadline: savedDeadline.toUtc(),
           isCompleted: false,
         );
       }
