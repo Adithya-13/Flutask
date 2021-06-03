@@ -63,6 +63,7 @@ Clone or Download and Open it into Android Studio, VSCode, or Other IDE / Text E
 - Update Tasks
 - Delete Tasks
 - set Deadline Tasks
+- And more Soon
 
 ## Tech Stack
 - BloC Architecture Pattern
