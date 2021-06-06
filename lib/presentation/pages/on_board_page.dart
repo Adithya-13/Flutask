@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutask/data/models/models.dart';
 import 'package:flutask/presentation/routes/routes.dart';
 import 'package:flutask/presentation/utils/utils.dart';
 import 'package:flutask/presentation/widgets/widgets.dart';
@@ -18,13 +17,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
   int currentContent = 0;
   final GetStorage _getStorage = GetStorage();
   final CarouselController onBoardController = CarouselController();
-  List<OnBoardModel> contentList = [];
-
-  @override
-  void initState() {
-    contentList = StaticData.getOnBoardingList();
-    super.initState();
-  }
+  List<OnBoard> contentList = StaticData.getOnBoardingList();
 
   void _nextContent() {
     if (currentContent == 2) {
@@ -197,41 +190,19 @@ class _OnBoardPageState extends State<OnBoardPage> {
                       : AppTheme.text2)),
           Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                height: 10,
-                width: 10,
-                decoration: BoxDecoration(
-                  color: currentContent == 0
-                      ? Colors.white
-                      : Colors.white.withOpacity(0.5),
-                  shape: BoxShape.circle,
-                ),
-              ),
-              SizedBox(width: 8),
-              Container(
-                height: 10,
-                width: 10,
-                decoration: BoxDecoration(
-                  color: currentContent == 1
-                      ? Colors.white
-                      : Colors.white.withOpacity(0.5),
-                  shape: BoxShape.circle,
-                ),
-              ),
-              SizedBox(width: 8),
-              Container(
-                height: 10,
-                width: 10,
-                decoration: BoxDecoration(
-                  color: currentContent == 2
-                      ? Colors.white
-                      : Colors.white.withOpacity(0.5),
-                  shape: BoxShape.circle,
-                ),
-              ),
-              SizedBox(width: 8),
-            ],
+            children: contentList
+                .map((e) => Container(
+                      height: 10,
+                      width: 10,
+                      margin: EdgeInsets.symmetric(horizontal: 4),
+                      decoration: BoxDecoration(
+                        color: currentContent == e.id
+                            ? Colors.white
+                            : Colors.white.withOpacity(0.5),
+                        shape: BoxShape.circle,
+                      ),
+                    ))
+                .toList(),
           ),
           TextButton(
               onPressed: _nextContent,
