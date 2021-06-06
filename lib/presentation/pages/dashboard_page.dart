@@ -160,7 +160,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 onPressed: () {},
                 child: Text(
                   'See all',
-                  style: AppTheme.text2.withPink,
+                  style: AppTheme.text1.withPink,
                 ),
               ),
             ],
@@ -219,7 +219,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 onPressed: _goToOnGoingPage,
                 child: Text(
                   'See all',
-                  style: AppTheme.text2.withPink,
+                  style: AppTheme.text1.withPink,
                 ),
               ),
             ],
@@ -277,7 +277,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 onPressed: _goToCompletePage,
                 child: Text(
                   'See all',
-                  style: AppTheme.text2.withPink,
+                  style: AppTheme.text1.withPink,
                 ),
               ),
             ],
@@ -380,7 +380,7 @@ class _DashboardPageState extends State<DashboardPage> {
             SizedBox(height: 16),
             Text(
               '$totalTasks Task',
-              style: AppTheme.text2,
+              style: AppTheme.text1.withWhite,
             ),
           ],
         ),

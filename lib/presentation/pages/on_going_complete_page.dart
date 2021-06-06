@@ -76,7 +76,7 @@ class _OnGoingCompletePageState extends State<OnGoingCompletePage> {
                       builder: (context, value, child) {
                         return Text(
                           'Total Tasks $value',
-                          style: AppTheme.text2.withWhite,
+                          style: AppTheme.text1.withWhite,
                         );
                       }
                     ),

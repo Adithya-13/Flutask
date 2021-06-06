@@ -186,8 +186,8 @@ class _OnBoardPageState extends State<OnBoardPage> {
               onPressed: _backContent,
               child: Text('BACK',
                   style: currentContent == 0
-                      ? AppTheme.text2.light
-                      : AppTheme.text2)),
+                      ? AppTheme.text1.withWhite.light
+                      : AppTheme.text1.withWhite)),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: contentList
@@ -207,7 +207,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
           TextButton(
               onPressed: _nextContent,
               child: Text(currentContent == 2 ? 'FINISH' : 'NEXT',
-                  style: AppTheme.text2)),
+                  style: AppTheme.text1.withWhite)),
         ],
       ),
     );

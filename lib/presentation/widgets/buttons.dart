@@ -33,7 +33,7 @@ class RippleButton extends StatelessWidget {
               prefixWidget ?? Container(),
               AutoSizeText(
                 text,
-                style: AppTheme.text2,
+                style: AppTheme.text1.withWhite,
                 textAlign: TextAlign.center,
                 minFontSize: 8,
                 maxLines: 1,

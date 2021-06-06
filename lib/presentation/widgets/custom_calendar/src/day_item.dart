@@ -41,7 +41,7 @@ class DayItem extends StatelessWidget {
     final selectedDateStyle = AppTheme.headline1.withWhite;
 
     final dayStyle = AppTheme.text3.bold.withBlack;
-    final selectedDayStyle = AppTheme.text4.bold;
+    final selectedDayStyle = AppTheme.text3.withWhite.bold;
 
     return GestureDetector(
       onTap: available ? onTap as void Function()? : null,

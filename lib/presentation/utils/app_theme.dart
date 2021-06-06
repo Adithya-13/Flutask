@@ -128,21 +128,9 @@ class AppTheme {
     fontWeight: FontWeight.w500,
   );
 
-  static const TextStyle text2 = TextStyle(
-    fontSize: 16,
-    color: Colors.white,
-    fontWeight: FontWeight.w500,
-  );
-
   static const TextStyle text3 = TextStyle(
     fontSize: 14,
     color: normalColorFont,
-    fontWeight: FontWeight.w500,
-  );
-
-  static const TextStyle text4 = TextStyle(
-    fontSize: 14,
-    color: Colors.white,
     fontWeight: FontWeight.w500,
   );
 
