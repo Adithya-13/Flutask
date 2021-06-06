@@ -35,7 +35,8 @@ class _OnBoardPageState extends State<OnBoardPage> {
     setState(() {
       currentContent++;
     });
-    onBoardController.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+    onBoardController.nextPage(
+        duration: Duration(milliseconds: 300), curve: Curves.easeIn);
   }
 
   void _backContent() {
@@ -46,7 +47,8 @@ class _OnBoardPageState extends State<OnBoardPage> {
     setState(() {
       currentContent--;
     });
-    onBoardController.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+    onBoardController.previousPage(
+        duration: Duration(milliseconds: 300), curve: Curves.easeIn);
   }
 
   void _goToBasePage() {
@@ -86,7 +88,10 @@ class _OnBoardPageState extends State<OnBoardPage> {
                   children: [
                     Align(
                       alignment: Alignment.topRight,
-                      child: RippleButton(onTap: _goToBasePage, text: 'Skip',),
+                      child: RippleButton(
+                        onTap: _goToBasePage,
+                        text: 'Skip',
+                      ),
                     ),
                     SizedBox(height: 20),
                     _carouselOnBoard(),
@@ -147,8 +152,11 @@ class _OnBoardPageState extends State<OnBoardPage> {
                       ),
                     ),
                     SizedBox(height: 20),
-                    Text(items.title,
-                        style: AppTheme.headline1),
+                    Text(
+                      items.title,
+                      style: AppTheme.headline1,
+                      textAlign: TextAlign.center,
+                    ),
                     SizedBox(height: 20),
                     Text(
                       items.description,
@@ -162,7 +170,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
         options: CarouselOptions(
           viewportFraction: 1,
           enableInfiniteScroll: false,
-          aspectRatio: 4/3,
+          aspectRatio: 4 / 3,
           scrollPhysics: BouncingScrollPhysics(),
           initialPage: currentContent,
           onPageChanged: (index, reason) {

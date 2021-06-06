@@ -102,6 +102,7 @@ class PinkButton extends StatelessWidget {
                     text,
                     style: AppTheme.headline3.withWhite,
                     textAlign: TextAlign.center,
+
                   ),
                 ],
               )
