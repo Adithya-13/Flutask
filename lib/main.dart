@@ -18,9 +18,6 @@ void main() async {
   runApp(
     MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<HomeRepository>(
-          create: (context) => HomeRepository(),
-        ),
         RepositoryProvider<TaskRepository>(
           create: (context) => TaskRepository(taskDao: TaskDao(appDatabase)),
         ),
@@ -68,8 +65,7 @@ class MyApp extends StatelessWidget {
           enabledBorder: AppTheme.enabledBorder,
           focusedBorder: AppTheme.focusedBorder,
           errorBorder: AppTheme.errorBorder,
-          focusedErrorBorder:
-          AppTheme.focusedErrorBorder,
+          focusedErrorBorder: AppTheme.focusedErrorBorder,
           isDense: true,
           hintStyle: AppTheme.text1,
         ),

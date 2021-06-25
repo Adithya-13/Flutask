@@ -10,7 +10,7 @@ class PageRouter {
   PageRouter() : routeObserver = RouteObserver<PageRoute>();
 
   Route<dynamic> getRoute(RouteSettings settings) {
-    final args = settings.arguments as ArgumentBundle;
+    final args = settings.arguments;
     switch (settings.name) {
       case PagePath.splash:
         return _buildRoute(settings, SplashPage());
@@ -22,14 +22,14 @@ class PageRouter {
         return _buildRoute(
           settings,
           DetailCategoryTaskPage(
-            bundle: args,
+            bundle: args as ArgumentBundle,
           ),
         );
       case PagePath.onGoingComplete:
         return _buildRoute(
           settings,
           OnGoingCompletePage(
-            bundle: args,
+            bundle: args as ArgumentBundle,
           ),
         );
       case PagePath.search:
