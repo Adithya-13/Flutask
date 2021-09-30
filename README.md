@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://flutter.dev/"><img alt="Platform" src="https://img.shields.io/badge/platform-Flutter-blue.svg"></a>
   <a href="https://dart.dev/"><img alt="Dart" src="https://img.shields.io/badge/dart-2.12.2-blue.svg"></a>
-  <a href="https://github.com/Adithya-13/MadeSubmsission/"><img alt="Star" src="https://img.shields.io/github/stars/Adithya-13/Flutask"></a>
+  <a href="https://github.com/Adithya-13/Flutask/"><img alt="Star" src="https://img.shields.io/github/stars/Adithya-13/Flutask"></a>
 </p>
 
 <p align="center">
